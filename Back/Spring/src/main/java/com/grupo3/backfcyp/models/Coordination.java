@@ -6,7 +6,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "coordinations")
-public class Coordination extends User {
+public class Coordination  {
+
+    private String name;
+    private String password;
+    private String type;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,5 +45,29 @@ public class Coordination extends User {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
