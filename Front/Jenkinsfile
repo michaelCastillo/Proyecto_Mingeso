@@ -1,0 +1,17 @@
+pipeline {
+    agent any
+
+    stages { 
+        stage('Build') {
+            steps {
+                echo 'Se inicia la construcción del Front'
+                sh 'ls'
+                sh 'cd Front'
+                sh 'ls'
+                sh 'cd front-supermercado'
+                sh 'ls'
+                sh 'npm install'
+            }
+        }
+    }
+}
