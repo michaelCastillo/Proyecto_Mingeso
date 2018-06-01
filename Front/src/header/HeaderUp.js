@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap'
 import {  Link } from "react-router-dom";
 import imagen from './computer_77914.png';
+import './HeaderUp.css';
 
 class HeaderUp extends Component {
 
@@ -21,16 +22,26 @@ class HeaderUp extends Component {
                     <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                     <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
                     <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
-                    
+                    <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
+                    <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                     {/*<MenuItem divider />*/}
                     </NavDropdown>
+                    <NavItem eventKey={4} href="/Alumnos">
+                     Alumnos
+                    </NavItem>
+                    <NavItem eventKey={5} href="/Profesores">
+                     Profesores
+                    </NavItem>
+
+                    <NavDropdown eventKey={6}  title="Soluciones" id="basic-nav-dropdown">
+                    <MenuItem eventKey={6.1} href='/soluciones/enproceso'>En proceso</MenuItem>
+                    <MenuItem eventKey={6.2} href='/soluciones/misSoluciones'> Mis soluciones</MenuItem>
+                    </NavDropdown>
                 </Nav>
+                
                 <Nav pullRight>
                     <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
                     Ingresar
-                    </NavItem>
-                    <NavItem eventKey={2} href="#">
-                    Registrar
                     </NavItem>
                 </Nav>
                 </Navbar.Collapse>
