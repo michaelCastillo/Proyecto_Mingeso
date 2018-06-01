@@ -1,39 +1,25 @@
 package com.grupo3.backfcyp.services;
 
 
-import com.grupo3.backfcyp.models.Problem;
-import com.grupo3.backfcyp.models.User;
-import com.grupo3.backfcyp.repositories.UserRepository;
+import com.grupo3.backfcyp.models.*;
+import com.grupo3.backfcyp.repositories.CoordinationRepository;
+import com.grupo3.backfcyp.repositories.StudentRepository;
+import com.grupo3.backfcyp.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserService {
 
-
     @Autowired
-    private UserRepository userRepository;
-
-    @CrossOrigin(origins = {"http://localhost:3000"})
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public List<User> getAllUsers(){
-        return this.userRepository.findAll();
-    }
-
-    @CrossOrigin(origins = {"http://localhost:3000"})
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public User getUser(@PathVariable Long id)
-    {
-        return userRepository.findUserById(id);
-    }
-
+    private StudentRepository studentRepository;
+    @Autowired
+    private TeacherRepository teacherRepository;
+    @Autowired
+    private CoordinationRepository coordinationRepository;
 
     @CrossOrigin()
     @RequestMapping(value="/login",method = RequestMethod.POST)
@@ -54,54 +40,44 @@ public class UserService {
     }
 
     private User userExist(User user){
-        List<User> users = this.userRepository.findAll();
-
-        for (User userFromList:
-             users) {
-            if( (user.getName().compareTo(userFromList.getName()) == 0) && (user.getPassword().compareTo(userFromList.getPassword()) == 0)){
-                return user;
+        if(user.getType().compareTo("student") == 0){
+            List<Student> users = studentRepository.findAll();
+            for (Student userFromList:
+                    users) {
+                if( (user.getName().compareTo(userFromList.getName()) == 0) && (user.getPassword().compareTo(userFromList.getPassword()) == 0)){
+                    return userFromList;
+                }
             }
+        }else if(user.getType().compareTo("coordination") == 0){
+            List<Coordination> users = coordinationRepository.findAll();
+            for (Coordination userFromList:
+                    users) {
+                if( (user.getName().compareTo(userFromList.getName()) == 0) && (user.getPassword().compareTo(userFromList.getPassword()) == 0)){
+                    return userFromList;
+                }
+            }
+        }else if(user.getType().compareTo("teacher") == 0){
+            List<Teacher> users = teacherRepository.findAll();
+            for (Teacher userFromList:
+                    users) {
+                if( (user.getName().compareTo(userFromList.getName()) == 0) && (user.getPassword().compareTo(userFromList.getPassword()) == 0)){
+                    return userFromList;
+                }
+            }
+        }else{
+            System.out.println("El tipo de usuario no existe.");
         }
+
         return null;
     }
 
-
+/*
     @CrossOrigin(origins = {"http://localhost:3000"})
     @RequestMapping(value = "/getProblems/{id}",method = RequestMethod.GET)
     @ResponseBody
     public List<Problem> getProblems(@PathVariable Long id) {
         return this.userRepository.findUserById(id).getProblems();
     }
-
-    @CrossOrigin(origins = {"http://localhost:3000"})
-    //Se guarda un usuario (Sin problemas asociados)
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public User createUser(@RequestBody User user){
-
-        return userRepository.save(user);
-
-    }
-
-    @CrossOrigin()
-    @RequestMapping(value = "/put/{id}", method = RequestMethod.PUT)
-    @ResponseBody
-    public User updateUser(@PathVariable Long id ,@Valid @RequestBody User user){
-        User userFromRepo = this.userRepository.findUserById(id);
-        userFromRepo.setName(user.getName());
-        userFromRepo.setPassword(user.getPassword());
-        return user;
-    }
-
-    @CrossOrigin()
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseEntity<?> deleteUser(@PathVariable Long id){
-        this.userRepository.deleteById(id);
-
-        return ResponseEntity.ok().build();
-    }
-
-
+*/
 
 }
