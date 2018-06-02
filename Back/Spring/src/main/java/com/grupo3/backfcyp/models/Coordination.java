@@ -11,7 +11,7 @@ public class Coordination  {
     private String name;
     private String password;
     private String type;
-
+    private String email;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -22,6 +22,23 @@ public class Coordination  {
 
     @ManyToMany(mappedBy = "coordinations")
     private List<Student> students;
+
+
+    public Coordination(){
+
+    }
+
+    public Coordination(String type){
+        this.type = type;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Long getId() {
         return id;

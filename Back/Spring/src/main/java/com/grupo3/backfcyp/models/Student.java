@@ -13,6 +13,7 @@ public class Student {
     private String name;
     private String password;
     private String type;
+    private String email;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +33,23 @@ public class Student {
 
     @OneToMany(mappedBy = "student")
     private List<Solution> solutions;
+
+
+    public Student(){
+
+    }
+
+    public Student(String type){
+        this.type = type;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public List<Teacher> getTeachers() {
         return teachers;
