@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CoordinationRepository extends JpaRepository<Coordination,Long> {
     public Coordination findCoordinationById(Long id);
+
 }

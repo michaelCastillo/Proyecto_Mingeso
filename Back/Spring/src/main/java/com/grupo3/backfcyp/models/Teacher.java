@@ -9,7 +9,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "teachers")
-public class Teacher extends User{
+public class Teacher{
+
+    private String name;
+    private String password;
+    private String type;
+    private String email;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +31,21 @@ public class Teacher extends User{
 
     @OneToMany(mappedBy = "teacher")
     private List<Problem> problems;
+
+    public Teacher(){
+
+    }
+    public Teacher(String type){
+        this.type = type;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public List<Teacher> getCoordinations() {
         return coordinations;
@@ -53,5 +73,37 @@ public class Teacher extends User{
 
     public void setProblems(List<Problem> problems) {
         this.problems = problems;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
