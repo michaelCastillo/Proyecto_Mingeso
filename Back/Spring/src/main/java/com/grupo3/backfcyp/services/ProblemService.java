@@ -7,6 +7,7 @@ import com.grupo3.backfcyp.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -47,7 +48,7 @@ public class ProblemService {
 
     //Se agrega un problema asociado a un usuario
     @CrossOrigin(origins = {"http://localhost:3000"})
-    @RequestMapping(value = "/{id}/createProblem",method = RequestMethod.POST)
+    @RequestMapping(value = "/createProblem/{id}",method = RequestMethod.POST)
     @ResponseBody
     public Problem createProblem(@PathVariable Long id, @RequestBody Problem problem ){
 
@@ -62,6 +63,12 @@ public class ProblemService {
             return null;
         }
     }
+    @PutMapping(value = "/createProblem/{id}/put")
+    @ResponseBody
+    public Problem updateProblem(@PathVariable Long id,@Valid @RequestBody Problem problem){
+        return this.problemRepository.save(problem);
+    }
+
     /*
     @PostMapping("/{userId}/problems")
     @ResponseBody
