@@ -19,10 +19,8 @@ class Code extends Component{
             o_inputs:[1],
             o_outputs:["hola"],
             language:"",
-            stdout: "",
-            error: "",
-            stderr:"",
-
+            results:[],
+            comparison:[],
 
 
 
@@ -68,19 +66,11 @@ class Code extends Component{
                     console.log(res);
                     console.log(res.data);
                     this.setState({
-                        stdout:res.data.stdout, 
-                        stderr: res.data.stderr,
-                        error: res.data.error,
+                        results:res.data.results,
+                        comparison:res.data.comparison,
                     });
-
-                    //Se toma la id del problema.
-                    var id_problem = res.data.id;
-                    console.log(res.data.id);
-                    //Se crean los parametros y se agregan al problema.
-                    this.parameters.current.handleSubmit(id_problem);
-                    //Se crean los retornos y se agregan al problema.
-                    this.returns.current.post_returnsCreate(id_problem);
-                    alert("Se ha agregado el problema junto con sus parametros y retornos.");
+                    console.log(this.state);
+                    
                     
                 }).catch(error => {
                     alert("Error");
@@ -110,12 +100,21 @@ class Code extends Component{
                             <Col md={6}>
                                 <Label> Stdout:  </Label>
                             </Col>
-                            <Col>
-                                <Label> {this.state.stdout} </Label>
+                            <Col md ={6}>
+                                <Label> {this.state.results.stdout} </Label>
                             </Col>
 
                         </Row>
-                        <Label> Resultados </Label>
+                        <Row>
+                            <Col md={6}>
+                                <Label> Resultados </Label>
+                            </Col>
+                            <Col md={6}>
+                                <Label> {this.state.comparison} </Label>
+                            </Col>
+
+                        </Row>
+                        
                     </Col>
                     
                     <Col md ={6}>
