@@ -34,9 +34,11 @@ public class Code {
         if(this.language.compareTo("python") == 0){
             //Si es python.
             this.strategy = new StrategyPython();
-        }else if(this.language.compareTo("C") == 0){
+        }else if(this.language.compareTo("c") == 0){
             //Strategy C.
-        }else if(this.language.compareTo("Java") == 0){
+
+        }else if(this.language.compareTo("java") == 0){
+            this.strategy = new StrategyJava();
             //Strategy java.
         }
         //Se ejecuta y retorna los resultados.

@@ -27,10 +27,10 @@ public class Problem {
     private Teacher teacher;
 
     //Obtener los los parametros
-    @OneToMany(mappedBy = "problem")
+    @OneToMany(mappedBy = "problem",cascade = CascadeType.ALL)
     private List<Parameter> parameters;
 
-    @OneToMany(mappedBy = "problem")
+    @OneToMany(mappedBy = "problem",cascade = CascadeType.ALL)
     private List<Return> returns;
 
     @OneToMany(mappedBy = "problem")
