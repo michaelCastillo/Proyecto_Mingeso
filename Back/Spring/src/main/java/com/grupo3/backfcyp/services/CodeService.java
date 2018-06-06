@@ -33,8 +33,5 @@ public class CodeService {
         //Se ejecuta y se envian los resultados de la ejecucion
         code.exec();
         return code.getResults();
-
     }
-
-
 }

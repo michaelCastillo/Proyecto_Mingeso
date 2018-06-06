@@ -17,7 +17,7 @@ class CreateProblem extends Component{
 
             statement : '',
             difficulty: 0,
-            language: 'python',
+            language: '',
             name:'',
         };
         this.handleDifficulty = this.handleDifficulty.bind(this);

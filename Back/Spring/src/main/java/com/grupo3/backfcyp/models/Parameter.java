@@ -18,8 +18,8 @@ public class Parameter {
     private String name;
     private String type;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="id_problem", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_problem")
     @JsonIgnore
     private Problem problem;
 
