@@ -32,7 +32,7 @@ public class ProblemService {
     @Autowired
     private ReturnRepository returnRepository;
 
-    @CrossOrigin()
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public List<Problem> getProblems(){
 
@@ -49,7 +49,7 @@ public class ProblemService {
 
 
     //Servicio para obtener el usuario relacionado a un problema, según la ID.
-    @CrossOrigin()
+    @CrossOrigin
     @RequestMapping(value = "/{id}/getUser", method = RequestMethod.GET)
     @ResponseBody
     public String getUser(@PathVariable Long id){
@@ -58,7 +58,7 @@ public class ProblemService {
     }
 
     //Se agrega un problema asociado a un usuario
-    @CrossOrigin()
+    @CrossOrigin
     @RequestMapping(value = "/createProblem/{id}",method = RequestMethod.POST)
     @ResponseBody
     public Problem createProblem(@PathVariable Long id, @RequestBody Problem problem ){
