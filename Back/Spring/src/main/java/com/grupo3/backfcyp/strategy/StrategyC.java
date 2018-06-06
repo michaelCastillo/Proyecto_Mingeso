@@ -36,7 +36,7 @@ public class StrategyC implements Strategy {
                 stdin ="\"stdin\":\"\"" ;
             }
 
-            String input = "{"+stdin +",\"files\": [{\"name\":\"Main.java\", \"content\":  \"" + code.getCode() + "\"}]}";
+            String input = "{"+stdin +",\"files\": [{\"name\":\"main.c\", \"content\":  \"" + code.getCode() + "\"}]}";
             System.out.println(input);
 
             OutputStream outputStream = connection.getOutputStream();

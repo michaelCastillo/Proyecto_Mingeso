@@ -36,8 +36,8 @@ public class Code {
             //Si es python.
             this.strategy = new StrategyPython();
         }else if(this.language.compareTo("c") == 0){
-            //Strategy C.
-
+            this.strategy = new StrategyC();
+            System.out.println("Es C");
         }else if(this.language.compareTo("java") == 0){
             System.out.println("Es java!");
             this.strategy = new StrategyJava();
