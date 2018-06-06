@@ -42,7 +42,7 @@ class Code extends Component{
                                     console.log("problem");
                                     console.log(problem);
                                     this.setState({
-                                        
+
                                         language:problem.language,
                                     });
                                 }).catch(error => {
@@ -91,7 +91,10 @@ class Code extends Component{
               }
 
               handleCode(e){
-                this.setState({code:e.target.value.replace(/"/gi, "\\\"")});
+                var code = e.target.value.replace('\\',"\\\\");
+                code = code.replace(/"/gi, "\\\"");
+                this.setState({code:code});
+                console.log("code");
                 console.log(this.state.code);
                 
               }
