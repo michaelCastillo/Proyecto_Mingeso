@@ -13,8 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class StrategyJava implements Strategy {
-
+public class StrategyC implements Strategy {
 
     @Override
     public Results executeProgram(Code code) {
@@ -23,7 +22,7 @@ public class StrategyJava implements Strategy {
         ArrayList<String> outputs = new ArrayList<String>();
         String output = new String();
         try {
-            URL url = new URL("https://run.glot.io/languages/java/latest");
+            URL url = new URL("https://run.glot.io/languages/c/latest");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
@@ -88,5 +87,4 @@ public class StrategyJava implements Strategy {
         }
         return results;
     }
-
 }
