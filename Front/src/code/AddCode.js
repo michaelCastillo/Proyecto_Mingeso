@@ -18,7 +18,7 @@ class Code extends Component{
             code: "",
             o_inputs:[1],
             o_outputs:["hola"],
-            language:"python",
+            language:"",
             stdout: "",
             error: "",
             stderr:"",
@@ -39,9 +39,11 @@ class Code extends Component{
                                 .then(res => {
                                     const problem = res.data;
                                     //Se asigna falso para opened, para el collapse
+                                    console.log("problem");
                                     console.log(problem);
                                     this.setState({
-                                        languaje:problem.languaje,
+
+                                        language:problem.language,
                                     });
                                 }).catch(error => {
                                     console.log(error.response)
@@ -59,7 +61,7 @@ class Code extends Component{
                     o_outputs: this.state.o_outputs,
                     language: this.state.language,
                 };
-                const url = `http://46.101.81.136:8181/Backend/code/set`;
+                const url = `http://localhost:1313/code/set`;
                 console.log(post_code);
                 axios.post(url,post_code)
                 .then(res => {
@@ -89,7 +91,10 @@ class Code extends Component{
               }
 
               handleCode(e){
-                this.setState({code:e.target.value.replace(/"/gi, "\\\"")});
+                var code = e.target.value.replace('\\',"\\\\");
+                code = code.replace(/"/gi, "\\\"");
+                this.setState({code:code});
+                console.log("code");
                 console.log(this.state.code);
                 
               }
