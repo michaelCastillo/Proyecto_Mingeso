@@ -9,11 +9,10 @@ class Login extends Component{
         super(props);
     
         this.state = {
-          name: "",
+          email:"",
           password: "",
-          tipo:"alumno",
         };
-        this.handleName = this.handleName.bind(this);
+        this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleTipo = this.handleTipo.bind(this);
@@ -25,8 +24,8 @@ class Login extends Component{
       
     }
 
-    handleName(event){
-        this.setState({name: event.target.value});
+    handleEmail(event){
+        this.setState({email: event.target.value});
     };
     
     handlePassword(event){
@@ -45,11 +44,11 @@ class Login extends Component{
       
       handleLogin  = () => {
         let user = {
-          name:this.state.name,
+          email:this.state.email,
           password:this.state.password,
-          tipo:"Admin",
         };
-        axios.post(`http://localhost:1313/users/login`,user)
+        console.log(user);
+        axios.post(`http://46.101.81.136:8181/Backend/users/login`,user)
             .then(res => {
                 let userResponse=res.data;
                 console.log(userResponse);
@@ -61,12 +60,12 @@ class Login extends Component{
       validForm = (nam,pass) => () =>{
         var txt;
         var r
-        console.log("name: "+ nam);
+        console.log("email: "+ nam);
         console.log("password: "+ pass);
         let users = this.state.users;
         
-        users.map( (user, i) => { if((user.name == nam)&& (user.password == pass)){
-          console.log("nombre: "+ user.name);
+        users.map( (user, i) => { if((user.email == nam)&& (user.password == pass)){
+          console.log("nombre: "+ user.email);
           console.log("pass: "+ user.password);
           r = window.confirm("Presione aceptar para comenzar!");
           if (r == true) {           
@@ -96,8 +95,8 @@ render(){
                   <FormControl
                     autoFocus
                     type="text"
-                    value={this.state.name}
-                    onChange={this.handleName}
+                    value={this.state.email}
+                    onChange={this.handleEmail}
                   />
                 </FormGroup>
                 <FormGroup controlId="password" bsSize="large">
@@ -108,13 +107,16 @@ render(){
                     type="password"
                   />
                 </FormGroup>
+                {/*
                 <FormGroup>
+                  
                   <ControlLabel> Tipo </ControlLabel>
                   <FormControl componentClass="select" value={this.state.tipo} onChange={this.handleTipo}> 
                     <option value = "alumno"> alumno </option>
                     <option value="profesor"> profesor </option>
                   </FormControl>
                 </FormGroup>
+                */}
                 <Button             
                   type="submit" onClick = {this.handleLogin}
                 >
