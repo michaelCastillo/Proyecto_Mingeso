@@ -3,13 +3,14 @@ package com.grupo3.backfcyp.strategy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo3.backfcyp.models.Solution;
+import com.grupo3.backfcyp.models.SolutionLog;
 
 import javax.persistence.*;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 @Entity
-@Table(name = "logs")
+@Table(name = "results")
 public class Results {
 
     @Id
@@ -23,9 +24,16 @@ public class Results {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "id_solution")
-    private Solution solution;
+    @JoinColumn(name = "id_log")
+    private SolutionLog solutionLog;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getStdout() {
         return stdout;
@@ -49,5 +57,13 @@ public class Results {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public SolutionLog getSolutionLog() {
+        return solutionLog;
+    }
+
+    public void setSolutionLog(SolutionLog solutionLog) {
+        this.solutionLog = solutionLog;
     }
 }

@@ -1,19 +1,15 @@
 package com.grupo3.backfcyp.services;
 
 
-import com.grupo3.backfcyp.models.Parameter;
-import com.grupo3.backfcyp.models.Problem;
-import com.grupo3.backfcyp.models.Return;
-import com.grupo3.backfcyp.models.Teacher;
+import com.grupo3.backfcyp.models.*;
 import com.grupo3.backfcyp.repositories.ParameterReporitory;
 import com.grupo3.backfcyp.repositories.ProblemRepository;
 import com.grupo3.backfcyp.repositories.ReturnRepository;
-import com.grupo3.backfcyp.repositories.TeacherRepository;
+import com.grupo3.backfcyp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,9 +19,8 @@ public class ProblemService {
 
     @Autowired
     private ProblemRepository problemRepository;
-
     @Autowired
-    private TeacherRepository teacherRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private ParameterReporitory parameterReporitory;
@@ -57,6 +52,40 @@ public class ProblemService {
         return this.problemRepository.findProblemById(id).getTeacher().getName();
     }
 
+
+
+    @CrossOrigin()
+    @RequestMapping(value = "/create/{id}")
+    @ResponseBody
+    public Problem createProblem(@PathVariable Long id,@Valid @RequestBody Problem problem){
+        User user = this.userRepository.findUserById(id);
+        if(user != null){ //Si el usuario existe.
+            if(!user.getRoles().isEmpty()){ //Si tiene roles asignados.
+                for(Role role : user.getRoles()){
+                    if(role.getRole().compareTo("teacher") == 0){//Si es profesor
+
+                        for(Parameter parameter: problem.getParameters()){
+                            parameter.setProblem(problem);
+                            //this.parameterReporitory.save(parameter);
+                        }
+                        for(Return return_: problem.getReturns()){
+                            return_.setProblem(problem);
+                            //this.returnRepository.save(return_);
+                        }
+                        problem.setTeacher(user);
+                        this.problemRepository.save(problem);
+
+                        List<Problem> problems = user.getProblems();
+                        problems.add(problem);
+                        user.setProblems(problems);
+                        return problem;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+/*
     //Se agrega un problema asociado a un usuario
     @CrossOrigin
     @RequestMapping(value = "/createProblem/{id}",method = RequestMethod.POST)
@@ -97,6 +126,7 @@ public class ProblemService {
             return null;
         }
     }
+    */
     @CrossOrigin()
     @PutMapping(value = "/createProblem/{id}/put")
     @ResponseBody

@@ -19,6 +19,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @RestController
@@ -28,10 +30,18 @@ public class CodeService {
     @CrossOrigin()
     @RequestMapping(value = "/set", method = RequestMethod.POST)
     @ResponseBody
-    public Results executeProgram(@RequestBody Code code){
+    public Map<String,Object> executeProgram(@RequestBody Code code){
 
         //Se ejecuta y se envian los resultados de la ejecucion
         code.exec();
-        return code.getResults();
+        Results results= code.getResults();
+        ArrayList<String> results_compare = code.compareResults(); //Se comparan los resultados
+        Map<String,Object> return_to_front = new HashMap<String,Object>();
+        return_to_front.put("results",results);
+        return_to_front.put("comparison",results_compare);
+        System.out.println(return_to_front);
+        return return_to_front;
     }
+
+
 }
