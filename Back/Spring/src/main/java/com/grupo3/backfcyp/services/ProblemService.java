@@ -95,7 +95,7 @@ public class ProblemService {
 
         //Si el usuario existe.
         if(teacherRepository.findTeacherById(id) != null){
-            Teacher teacher=teacherRepository.findTeacherById(id);
+
             List<Problem> problems = teacher.getProblems();
             problems.add(problem);
             teacher.setProblems(problems);
