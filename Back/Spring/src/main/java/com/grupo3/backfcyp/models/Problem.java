@@ -24,7 +24,7 @@ public class Problem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "id_teacher",nullable = false)
-    private Teacher teacher;
+    private User teacher;
 
     //Obtener los los parametros
     @OneToMany(mappedBy = "problem",cascade = CascadeType.ALL)
@@ -84,11 +84,11 @@ public class Problem {
         this.difficulty = difficulty;
     }
 
-    public Teacher getTeacher() {
+    public User getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(Teacher teacher) {
+    public void setTeacher(User teacher) {
         this.teacher = teacher;
     }
 

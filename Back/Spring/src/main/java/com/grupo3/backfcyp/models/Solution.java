@@ -22,25 +22,55 @@ public class Solution {
     private int fails;
     private int time; //in seconds
     private Date timestamp;
-    private boolean success;
+    private boolean success; //if is true, the problem is solved.
+    private boolean closed; //if is true, the problem is solved and
+    //closed. (the user clicked on Send and its success.)
     private int successes;
     private String errors;
-
-    @OneToMany(mappedBy = "solution")
-    private List<Results> logs;
 
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "id_student",nullable = false)
-    private Student student;
+    private User student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name="id_problem",nullable = false)
     private Problem problem;
 
+    @OneToMany(mappedBy = "solution")
+    private List<SolutionLog> solutionLogs;
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getErrors() {
+        return errors;
+    }
+
+    public void setErrors(String errors) {
+        this.errors = errors;
+    }
+
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
+    }
 
     public Long getId() {
         return id;
@@ -106,13 +136,7 @@ public class Solution {
         this.successes = successes;
     }
 
-    public Student getStudent() {
-        return student;
-    }
 
-    public void setStudent(Student student) {
-        this.student = student;
-    }
 
     public Problem getProblem() {
         return problem;
