@@ -4,7 +4,18 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid, Row, Col, Label } from 'react-bootstrap';
+import { Grid, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar} from 'react-bootstrap';
+
+//React ACE!
+import AceEditor from 'react-ace';
+import brace from 'brace';
+
+import 'brace/mode/java';
+import 'brace/mode/python';
+import 'brace/theme/github';
+import 'brace/theme/monokai';
+
+
 
 
 
@@ -19,10 +30,8 @@ class Code extends Component{
             o_inputs:[1],
             o_outputs:["hola"],
             language:"",
-            stdout: "",
-            error: "",
-            stderr:"",
-
+            results:[],
+            comparison:[],
 
 
 
@@ -30,7 +39,7 @@ class Code extends Component{
 
         this.handleCode = this.handleCode.bind(this);
         this.toCode = this.toCode.bind(this);
-        
+        this.handleAce = this.handleAce.bind(this);
         
     };
             componentDidMount(){
@@ -54,9 +63,10 @@ class Code extends Component{
             toCode(){
 
                 alert(this.state.code);
-        
+                var codeFormat = this.state.code.replace('\\',"\\\\");
+                codeFormat = codeFormat.replace(/"/gi, "\\\"");
                 let post_code ={ 
-                    code:this.state.code,
+                    code:codeFormat,
                     o_inputs: this.state.o_inputs,
                     o_outputs: this.state.o_outputs,
                     language: this.state.language,
@@ -68,19 +78,11 @@ class Code extends Component{
                     console.log(res);
                     console.log(res.data);
                     this.setState({
-                        stdout:res.data.stdout, 
-                        stderr: res.data.stderr,
-                        error: res.data.error,
+                        results:res.data.results,
+                        comparison:res.data.comparison,
                     });
-
-                    //Se toma la id del problema.
-                    var id_problem = res.data.id;
-                    console.log(res.data.id);
-                    //Se crean los parametros y se agregan al problema.
-                    this.parameters.current.handleSubmit(id_problem);
-                    //Se crean los retornos y se agregan al problema.
-                    this.returns.current.post_returnsCreate(id_problem);
-                    alert("Se ha agregado el problema junto con sus parametros y retornos.");
+                    console.log(this.state);
+                    
                     
                 }).catch(error => {
                     alert("Error");
@@ -90,46 +92,126 @@ class Code extends Component{
                 });
               }
 
-              handleCode(e){
-                var code = e.target.value.replace('\\',"\\\\");
-                code = code.replace(/"/gi, "\\\"");
-                this.setState({code:code});
-                console.log("code");
-                console.log(this.state.code);
-                
+              handleCode(newValue){
+                this.setState({code:newValue});
+                console.log("Code: ",this.state.code);
+                //var code = this.state.code.concat(newValue);
+                //console.log(code);
+                //var code = newValue.replace('\\',"\\\\");
+                //code = code.replace(/"/gi, "\\\"");
+                //this.setState({code:code});
+                //console.log("code");
+                //console.log(this.state.code);
               }
-
+              handleAce(newValue) {
+                console.log('change',newValue);
+              }
+              onLoad(editor) {
+                console.log("i've loaded");
+              }
+              onComparison(comparison){
+                console.log(comparison);
+                if(comparison == "Correcto"){
+                    return(
+                        <th style={{color:'#2D882D'}}> {comparison}</th>
+                    );
+                }else{
+                    return(
+                        <th style={{color:'#f44242'}}> {comparison}</th>
+                    );
+                }
+              }
 
     render(){
         console.log(this.props);
         return(
             <Grid>
                 <Row>
-                    <Col md ={6}>
+                    <Col md ={5}>
                         <Row>
-                            <Col md={6}>
-                                <Label> Stdout:  </Label>
-                            </Col>
-                            <Col>
-                                <Label> {this.state.stdout} </Label>
-                            </Col>
+                            <Table responsive>
+                                <thead>
+                                    <tr>
+                                    
+                                    <th>Salida</th>
+                                    <th>Comparación</th>
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.comparison.map((comparison) => {return (
+                                            <tr> 
+                                                <th> {this.state.results.stdout} </th>
+                                                {this.onComparison(comparison)}
+                                            </tr>
+                                        
+                                        );})
+                                    
+                                    }
+                                    
+                                    
+                                        
+                                </tbody>
+                                </Table>
 
-                        </Row>
-                        <Label> Resultados </Label>
+                            </Row>
+                            <br/>
+                            <br/>
+                            <Row>
+                                <Col md={6}> 
+                                    <Label>Error: {this.state.results.error}</Label>
+                                </Col>
+                                <Col md={6}> 
+                                    <Label>Salida error:  {this.state.results.stderr}</Label>
+                                </Col>
+                            </Row>
+                        
                     </Col>
                     
-                    <Col md ={6}>
+                    <Col md ={6} xsOffset={1}>
                         <Row> 
                             <font size="5"  face = "Verdana" color="black" >¡Utiliza el editor para programar!:</font> 
                         </Row>
                         <Row>
-                        <textarea  onChange={this.handleCode} name="Text1" cols="50" rows="5" placeholder=" Ingrese el problema a plantear..."></textarea>
+                            <Col md = {12}>
+                            <AceEditor
+                                mode="javascript"
+                                theme="monokai"
+                                name="blah2"
+                                onLoad={this.onLoad}
+                                onChange={this.handleCode}
+                                fontSize={14}
+                                showPrintMargin={true}
+                                showGutter={true}
+                                highlightActiveLine={true}
+                                value={this.state.code}
+                                setOptions={{
+                                enableBasicAutocompletion: false,
+                                enableLiveAutocompletion: false,
+                                enableSnippets: false,
+                                showLineNumbers: true,
+                                tabSize: 2,
+                                }}/>
+                            </Col>
                         </Row>
-                        <Row> 
-                        <button id="eject" type="button"  className="ejecutar" onClick={this.toCode} >Ejecutar</button>
+                        <Row>
+                            <Col  md={12}>
+                                <ButtonGroup justified>
+                                    <Button href="#">Guardar</Button>
+                                    <Button href="#" onClick={this.toCode}>Ejecutar</Button>
+                                    <Button href="#">Enviar</Button>
+                                </ButtonGroup>
+                            </Col>
                         </Row>
+                        
                     </Col>
+                                
                     </Row>
+                    
+
+                    
+                
             </Grid>
         );
     }
@@ -142,4 +224,4 @@ class Code extends Component{
 
 
 
-export default Code;
+export default Code;                
