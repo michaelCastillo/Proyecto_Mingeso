@@ -9,13 +9,13 @@ class Register extends Component{
         super(props);
     
         this.state = {
-          name: "",
-          password: "",
-          email: "",
+          name: '',
+          password: '',
+          email: '',
           roles: [],
           rol: {
             id: 0,
-            role: "",
+            role: '',
           },
         };
         this.handleName = this.handleName.bind(this);
@@ -71,19 +71,27 @@ class Register extends Component{
       };
 
       
-      handleRegister  = () => {
-        let user = {
+      handleRegister  = (event) => {
+        event.preventDefault();
+        const user = {
           name:this.state.name,
           password:this.state.password,
           email:this.state.email,
-          roles:this.state.rol,
+          roles:[this.state.rol]
         };
-        axios.post(`46.101.81.136:8181/Backend/users/createUser`,user)
+        console.log("User: ",user);
+        console.log("User.roles: ",user.roles);
+        console.log("User.roles(0): ", user.roles[0]);
+        const url = 'http://46.101.81.136:8181/Backend/users/create';
+        axios.post(url,user)
             .then(res => {
-                let userResponse=res.data;
-                console.log(userResponse);
+              let userResponse=res.data;
+              console.log(userResponse);
             }).catch(error => {
-                console.log(error.response)
+              alert("Error");
+              console.log(error.response);
+              console.log(error.request);
+              console.log(error.message);
             });
       };
 
