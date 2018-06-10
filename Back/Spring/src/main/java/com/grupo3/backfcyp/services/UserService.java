@@ -35,6 +35,7 @@ public class UserService {
     }
 
     //Creacion de un usuario de cualquier tipo a partir de roles ya creados.
+    @CrossOrigin
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public User createUser(@Valid @RequestBody User user){
