@@ -2,9 +2,9 @@ package com.grupo3.backfcyp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +18,8 @@ public class Role {
 
     @ManyToMany
     @JsonIgnore
-    @JoinTable(name="users_roles",joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    @Nullable
+    @JoinTable(name="users_roles",joinColumns = @JoinColumn(name = "id_roles"), inverseJoinColumns = @JoinColumn(name = "id_users"))
     private List<User> users;
 
     public Long getId() {

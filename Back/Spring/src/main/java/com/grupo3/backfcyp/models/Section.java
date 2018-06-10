@@ -1,7 +1,6 @@
 package com.grupo3.backfcyp.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

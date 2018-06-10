@@ -1,7 +1,6 @@
 package com.grupo3.backfcyp.services;
 
 
-import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.Role;
 import com.grupo3.backfcyp.models.Section;
 import com.grupo3.backfcyp.models.User;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +46,7 @@ public class UserService {
             }
         }
         List<Section> sectionList;
-        if(!(sectionList =  user.getSections() ).isEmpty()){
+        if((sectionList =  user.getSections() ) != null){
             for(Section section: sectionList){
                 Section section_exist = this.sectionRepository.findSectionByCode(section.getCode());
                 if(section_exist != null){

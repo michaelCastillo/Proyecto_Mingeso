@@ -1,7 +1,6 @@
 package com.grupo3.backfcyp.repositories;
 
 import com.grupo3.backfcyp.models.Section;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

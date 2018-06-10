@@ -1,14 +1,10 @@
 package com.grupo3.backfcyp.strategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupo3.backfcyp.models.Solution;
 import com.grupo3.backfcyp.models.SolutionLog;
 
 import javax.persistence.*;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+
 @Entity
 @Table(name = "results")
 public class Results {
