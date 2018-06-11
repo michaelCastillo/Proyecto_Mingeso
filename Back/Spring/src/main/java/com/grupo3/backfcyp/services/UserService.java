@@ -33,6 +33,13 @@ public class UserService {
     public List<User> getUsers(){
         return this.userRepository.findAll();
     }
+    
+    @CrossOrigin
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public User getUserById(@PathVariable Long id){
+        return this.userRepository.findUserById(id);   
+    }
 
     @CrossOrigin
     @RequestMapping(value = "/getByRoles", method = RequestMethod.POST)
