@@ -28,6 +28,7 @@ public class UserService {
     @Autowired
     public SectionRepository sectionRepository;
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<User> getUsers(){
