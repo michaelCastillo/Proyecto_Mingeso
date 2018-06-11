@@ -2,7 +2,6 @@ package com.grupo3.backfcyp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grupo3.backfcyp.strategy.Results;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -42,6 +41,32 @@ public class Solution {
 
     @OneToMany(mappedBy = "solution")
     private List<SolutionLog> solutionLogs;
+
+    public Solution(){
+
+    }
+
+    public Solution(String title, String code, int fails, int time, Date timestamp, boolean success, boolean closed, int successes, String errors, User student, Problem problem) {
+        this.title = title;
+        this.code = code;
+        this.fails = fails;
+        this.time = time;
+        this.timestamp = timestamp;
+        this.success = success;
+        this.closed = closed;
+        this.successes = successes;
+        this.errors = errors;
+        this.student = student;
+        this.problem = problem;
+    }
+
+    public List<SolutionLog> getSolutionLogs() {
+        return solutionLogs;
+    }
+
+    public void setSolutionLogs(List<SolutionLog> solutionLogs) {
+        this.solutionLogs = solutionLogs;
+    }
 
     public boolean isClosed() {
         return closed;

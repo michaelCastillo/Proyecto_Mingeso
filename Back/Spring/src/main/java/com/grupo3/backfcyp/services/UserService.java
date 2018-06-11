@@ -1,7 +1,6 @@
 package com.grupo3.backfcyp.services;
 
 
-import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.Role;
 import com.grupo3.backfcyp.models.Section;
 import com.grupo3.backfcyp.models.User;
@@ -35,6 +34,15 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+    @CrossOrigin
+    @RequestMapping(value = "/getByRoles", method = RequestMethod.POST)
+    @ResponseBody
+    public List<User> getUsersByRole(@RequestBody @Valid Role role){
+        return this.roleRepository.findRoleByRole(role.getRole()).getUsers();
+    }
+
+
+
     //Creacion de un usuario de cualquier tipo a partir de roles ya creados.
     @CrossOrigin
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -50,7 +58,7 @@ public class UserService {
             }
         }
         List<Section> sectionList;
-        if(!(sectionList =  user.getSections() ).isEmpty()){
+        if((sectionList =  user.getSections() ) != null){
             for(Section section: sectionList){
                 Section section_exist = this.sectionRepository.findSectionByCode(section.getCode());
                 if(section_exist != null){

@@ -57,7 +57,7 @@ public class ProblemService {
     @CrossOrigin()
     @RequestMapping(value = "/create/{id}")
     @ResponseBody
-    public Problem createProblem(@PathVariable Long id,@Valid @RequestBody Problem problem){
+    public Problem createProblem(@PathVariable Long id, @Valid @RequestBody Problem problem){
         User user = this.userRepository.findUserById(id);
         if(user != null){ //Si el usuario existe.
             if(!user.getRoles().isEmpty()){ //Si tiene roles asignados.
@@ -130,7 +130,7 @@ public class ProblemService {
     @CrossOrigin()
     @PutMapping(value = "/createProblem/{id}/put")
     @ResponseBody
-    public Problem updateProblem(@PathVariable Long id,@Valid @RequestBody Problem problem){
+    public Problem updateProblem(@PathVariable Long id, @Valid @RequestBody Problem problem){
         return this.problemRepository.save(problem);
     }
 

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupo3.backfcyp.strategy.Results;
 
 import javax.persistence.*;
-import java.lang.invoke.LambdaConversionException;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +27,12 @@ public class SolutionLog {
     @JsonIgnore
     @JoinColumn(name = "id_solution")
     private Solution solution;
+
+    public SolutionLog(){
+        this.date = new Date();
+    }
+
+
 
     public Solution getSolution() {
         return solution;
