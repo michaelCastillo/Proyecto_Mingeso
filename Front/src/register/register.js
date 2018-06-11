@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel, Col, Panel} from "react-bootstrap";
 import './register.css'
 import axios from 'axios';
 
@@ -11,6 +11,7 @@ class Register extends Component{
         this.state = {
           name: '',
           password: '',
+          confirmPassword: '',
           email: '',
           roles: [],
           rol: {
@@ -20,6 +21,7 @@ class Register extends Component{
         };
         this.handleName = this.handleName.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
+        this.handleConfirmPassword = this.handleConfirmPassword.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
         this.handleRole = this.handleRole.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
@@ -52,6 +54,10 @@ class Register extends Component{
     handlePassword(event){
 
         this.setState({password: event.target.value});
+    };
+    
+    handleConfirmPassword(event){
+      this.setState({confirmPassword: event.target.value});
     };
 
     handleSubmit = event => {
@@ -127,8 +133,12 @@ class Register extends Component{
 render(){
   return(
               <div className="Register"  >
-              <grid>
-                <row>
+              <row>
+                <Col md={6} mdOffset={3}>
+              <Panel>
+                <Panel.Heading> Registrarse en FCyP Academy</Panel.Heading>
+                <Panel.Body> 
+              
                 <form onSubmit={this.handleSubmit}>
                  <FormGroup controlId="name"  bsSize="large">
                  <ControlLabel>Nombre</ControlLabel>
@@ -140,10 +150,18 @@ render(){
                   />
                 </FormGroup>
                 <FormGroup controlId="password" bsSize="large">
-                  <ControlLabel>Password</ControlLabel>
+                  <ControlLabel>Contraseña</ControlLabel>
                   <FormControl
                     value={this.state.password}
                     onChange={this.handlePassword}
+                    type="password"
+                  />
+                </FormGroup>
+                <FormGroup controlId="confirm password" bsSize="large">
+                  <ControlLabel>Confirmar contraseña</ControlLabel>
+                  <FormControl
+                    value={this.state.confirmPassword}
+                    onChange={this.handleConfirmPassword}
                     type="password"
                   />
                 </FormGroup>
@@ -169,8 +187,11 @@ render(){
                 </Button>
 
               </form>
+              </Panel.Body>
+              </Panel>
+              </Col>
               </row>
-              </grid>
+              
             </div>
           
 
