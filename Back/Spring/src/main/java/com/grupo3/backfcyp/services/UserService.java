@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,15 @@ public class UserService {
     public List<User> getUsers(){
         return this.userRepository.findAll();
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/getByRoles", method = RequestMethod.POST)
+    @ResponseBody
+    public List<User> getUsersByRole(@RequestBody @Valid Role role){
+        return this.roleRepository.findRoleByRole(role.getRole()).getUsers();
+    }
+
+
 
     //Creacion de un usuario de cualquier tipo a partir de roles ya creados.
     @CrossOrigin
