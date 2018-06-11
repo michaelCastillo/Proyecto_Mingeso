@@ -134,10 +134,7 @@ render(){
   return(
               <div className="Register"  >
               <row>
-                <Col md={6} mdOffset={3}>
-              <Panel>
-                <Panel.Heading> Registrarse en FCyP Academy</Panel.Heading>
-                <Panel.Body> 
+             
               
                 <form onSubmit={this.handleSubmit}>
                  <FormGroup controlId="name"  bsSize="large">
@@ -181,15 +178,13 @@ render(){
                   </FormControl>
                 </FormGroup>
                 <Button             
-                  type="submit" onClick = {this.handleRegister}
+                  type="success" onClick = {this.handleRegister}
                 >
                   Registrar
                 </Button>
 
               </form>
-              </Panel.Body>
-              </Panel>
-              </Col>
+        
               </row>
               
             </div>
