@@ -9,17 +9,20 @@ class Teachers extends Component{
     super(props);
 
     this.state= {
+        role:"teacher",
         teachers:[]
     }
 
   }
 
-  componentDidMount() {
-            
-    axios.get(`http://46.101.81.136:8181/Backend/teachers/`)
+  componentDidMount  = () => {
+    let user = {
+      role:"teacher"
+    };
+    axios.post(`http://46.101.81.136:8181/Backend/users/getByRoles`,user)
         .then(res => {
-            const teachers = res.data;
-            this.setState({teachers});
+            const teachers=res.data;
+            this.setState({ teachers });
         }).catch(error => {
             console.log(error.response)
         });

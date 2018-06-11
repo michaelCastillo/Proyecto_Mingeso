@@ -9,25 +9,27 @@ class Students extends Component{
     super(props);
 
     this.state= {
+        role:"student", 
         students:[]
     }
 
   }
 
-  componentDidMount() {
-            
-    axios.get(`http://46.101.81.136:8181/Backend/student/`)
-        .then(res => {
-            const  students = res.data;
-            this.setState({students});
-        }).catch(error => {
-            console.log(error.response)
-        });
-  };
-
+      componentDidMount  = () => {
+        let user = {
+          role:"student"
+        };
+        axios.post(`http://46.101.81.136:8181/Backend/users/getByRoles`,user)
+            .then(res => {
+                const students=res.data;
+                this.setState({ students });
+            }).catch(error => {
+                console.log(error.response)
+            });
+      };
 render(){
     return(
-      <div id="students" className = " students">
+      <div id="students" className = " students"  >
                 <br/>
                 <br/>
                 <br/>
