@@ -45,12 +45,16 @@ class CreateProblem extends Component{
             returns: this.returns.current.state.returns,
         };
         console.log(problem);
-        const url = `http://46.101.81.136:8181/Backend/problems/createProblem/2`;
+        const url = `http://46.101.81.136:8181/Backend/problems/create/3`;
 
         axios.post(url,problem)
         .then(res => {
-            //Se toma la id del problema.
-            var id_problem = res.data.id;
+              //Se toma la id del problema.
+              var id_problem = res.data.id;
+              //Se crean los parametros y se agregan al problema.
+              this.parameters.current.handleSubmit(id_problem);
+              //Se crean los retornos y se agregan al problema.
+             this.returns.current.post_returnsCreate(id_problem);
             alert("Se ha agregado el problema junto con sus parametros y retornos.");
             
         }).catch(error => {
