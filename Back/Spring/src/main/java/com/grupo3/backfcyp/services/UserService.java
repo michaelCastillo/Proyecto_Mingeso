@@ -33,6 +33,7 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+
     //Creacion de un usuario de cualquier tipo a partir de roles ya creados.
     @CrossOrigin
     @RequestMapping(value = "/create", method = RequestMethod.POST)

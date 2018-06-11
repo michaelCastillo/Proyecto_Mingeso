@@ -13,7 +13,7 @@ public class Code {
     private Strategy strategy;
     private String language;
     private Results results;
-
+    private boolean isCorrect;
 
 
     public Code(Strategy strategy){
@@ -62,15 +62,22 @@ public class Code {
         //Por ahora se hace con una sola salida.
         Results results = this.getResults();
         ArrayList<String> result_compare = new ArrayList<>();
+        int numCorrects = 0;
         if(results.getError().equals("")){
             String[] stdout_s = results.getStdout().split("\n");
             System.out.println("  Glot: "+stdout_s[0]+"  Front: " + this.o_outputs.get(0));
             if(stdout_s[0].equals(this.o_outputs.get(0))){
                 System.out.println("Las salidas son iguales");
+                numCorrects++;
                 result_compare.add("Correcto");
             }else{
                 result_compare.add("Incorrecto");
             }
+        }
+        if(numCorrects == result_compare.size()){
+            this.isCorrect = true;
+        }else{
+            this.isCorrect = false;
         }
         return result_compare;
     }
@@ -78,6 +85,14 @@ public class Code {
 
     public String getCode() {
         return code;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
+    }
+
+    public void setCorrect(boolean correct) {
+        isCorrect = correct;
     }
 
     public void setCode(String code) {

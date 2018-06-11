@@ -6,6 +6,9 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import { Grid, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar} from 'react-bootstrap';
 
+//React Login
+import ReactLoading from "react-loading";
+
 //React ACE!
 import AceEditor from 'react-ace';
 import brace from 'brace';
@@ -23,9 +26,8 @@ class Code extends Component{
 
     constructor(props){
         super(props);
-
         this.state = {
-            
+            ready:false,
             code: "",
             o_inputs:[1],
             o_outputs:["hola"],
@@ -41,6 +43,7 @@ class Code extends Component{
         this.handleCode = this.handleCode.bind(this);
         this.toCode = this.toCode.bind(this);
         this.handleAce = this.handleAce.bind(this);
+        this.tick = this.tick.bind(this);
         
     };
             componentDidMount(){
@@ -74,18 +77,21 @@ class Code extends Component{
                     id_problem:id_problem,
                     id_user:id_user
                 };
-                let sol_resp = axios.post(local_url+`/solutions/create`,solution).
+                let sol_resp = axios.post(global_url+`/solutions/create`,solution).
                 then(res => {
                     console.log("resultado");
                     console.log(res);
                     let solution = res.data;
                     this.setState({solution:solution});
+                    this.setState({ready:true});
                 }).catch(error => {
                     console.log("Ha ocurrido un error: "+error);
                 });
-                
             };
             
+            
+
+
             toCode(){
                 
                 let id_problem = this.props.match.params.id;
@@ -93,13 +99,11 @@ class Code extends Component{
                 codeFormat = codeFormat.replace(/"/gi, "\\\"");
                 let post_code ={ 
                     code:codeFormat,
-                    o_inputs: this.state.o_inputs,
-                    o_outputs: this.state.o_outputs,
-                    language: this.state.language,
-                    id_solution:this.state.solution.id
+                    id_solution:this.state.solution.id,
+                    id_problem:id_problem
                     
                 };
-                const url = `http://localhost:1313/code/execute`;
+                const url = `http://localhost:1313/solutions/execute`;
                 console.log(post_code);
                 axios.post(url,post_code)
                 .then(res => {
@@ -150,104 +154,117 @@ class Code extends Component{
                     );
                 }
               }
+              tick(){
+                  let solution = this.state.solution;
+                  solution.time += 1;
+                  this.setState({solution:solution});
+              }
+              
 
     render(){
+        
         console.log(this.props);
-        return(
-            <Grid>
-                <Row>
-                    <Col md ={5}>
-                        <Row>
-                            <Table responsive>
-                                <thead>
-                                    <tr>
-                                    
-                                    <th>Salida</th>
-                                    <th>Comparación</th>
-                                    
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        this.state.comparison.map((comparison) => {return (
-                                            <tr> 
-                                                <th> {this.state.results.stdout} </th>
-                                                {this.onComparison(comparison)}
-                                            </tr>
-                                        
-                                        );})
-                                    
-                                    }
-                                    
-                                    
-                                        
-                                </tbody>
-                                </Table>
-
-                            </Row>
-                            <br/>
-                            <br/>
+        if(!this.state.ready){
+            return (
+                    <ReactLoading type={"spin"} color={"#000"} height={667} width={375} />
+            );
+        }else{
+            return(
+                <Grid>
+                    <Row>
+                        <Col md ={5}>
                             <Row>
-                                <Col md={6}> 
-                                    <Label>Error: {this.state.results.error}</Label>
-                                </Col>
-                                <Col md={6}> 
-                                    <Label>Salida error:  {this.state.results.stderr}</Label>
+                                <Table responsive>
+                                    <thead>
+                                        <tr>
+                                        
+                                        <th>Salida</th>
+                                        <th>Comparación</th>
+                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            this.state.comparison.map((comparison) => {return (
+                                                <tr> 
+                                                    <th> {this.state.results.stdout} </th>
+                                                    {this.onComparison(comparison)}
+                                                </tr>
+                                            
+                                            );})
+                                        
+                                        }
+                                        
+                                        
+                                            
+                                    </tbody>
+                                    </Table>
+
+                                </Row>
+                                <br/>
+                                <br/>
+                                <Row>
+                                    <Col md={4}> 
+                                        <Label>Time: {this.state.solution.time}</Label>
+                                    </Col>
+                                    <Col md={4}> 
+                                        <Label>Error: {this.state.results.error}</Label>
+                                    </Col>
+                                    <Col md={4}> 
+                                        <Label>Salida error:  {this.state.results.stderr}</Label>
+                                    </Col>
+                                </Row>
+                            
+                        </Col>
+                        
+                        <Col md ={6} xsOffset={1}>
+                            <Row> 
+                                <font size="5"  face = "Verdana" color="black" >¡Utiliza el editor para programar!:</font> 
+                            </Row>
+                            <Row>
+                                <Col md = {12}>
+                                <AceEditor
+                                    mode="javascript"
+                                    theme="monokai"
+                                    name="blah2"
+                                    onLoad={this.onLoad}
+                                    onChange={this.handleCode}
+                                    fontSize={14}
+                                    showPrintMargin={true}
+                                    showGutter={true}
+                                    highlightActiveLine={true}
+                                    value={this.state.solution.code}
+                                    setOptions={{
+                                    enableBasicAutocompletion: false,
+                                    enableLiveAutocompletion: false,
+                                    enableSnippets: false,
+                                    showLineNumbers: true,
+                                    tabSize: 2,
+                                    }}/>
                                 </Col>
                             </Row>
-                        
-                    </Col>
-                    
-                    <Col md ={6} xsOffset={1}>
-                        <Row> 
-                            <font size="5"  face = "Verdana" color="black" >¡Utiliza el editor para programar!:</font> 
-                        </Row>
-                        <Row>
-                            <Col md = {12}>
-                            <AceEditor
-                                mode="javascript"
-                                theme="monokai"
-                                name="blah2"
-                                onLoad={this.onLoad}
-                                onChange={this.handleCode}
-                                fontSize={14}
-                                showPrintMargin={true}
-                                showGutter={true}
-                                highlightActiveLine={true}
-                                value={this.state.solution.code}
-                                setOptions={{
-                                enableBasicAutocompletion: false,
-                                enableLiveAutocompletion: false,
-                                enableSnippets: false,
-                                showLineNumbers: true,
-                                tabSize: 2,
-                                }}/>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col  md={12}>
-                                <ButtonGroup justified>
-                                    <Button href="#">Guardar</Button>
-                                    <Button href="#" onClick={this.toCode}>Ejecutar</Button>
-                                    <Button href="#">Enviar</Button>
-                                </ButtonGroup>
-                            </Col>
+                            <Row>
+                                <Col  md={12}>
+                                    <ButtonGroup justified>
+                                        <Button href="#">Guardar</Button>
+                                        <Button href="#" onClick={this.toCode}>Ejecutar</Button>
+                                        <Button href="#">Enviar</Button>
+                                    </ButtonGroup>
+                                </Col>
+                            </Row>
+                            
+                        </Col>
+                                    
                         </Row>
                         
-                    </Col>
-                                
-                    </Row>
-                    
 
+                        
                     
-                
-            </Grid>
-        );
+                </Grid>
+            );
+        }
+
     }
-
-
-
-
 }
 
 

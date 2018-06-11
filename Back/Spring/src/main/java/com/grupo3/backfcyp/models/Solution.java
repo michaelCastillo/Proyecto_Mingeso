@@ -2,6 +2,7 @@ package com.grupo3.backfcyp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.grupo3.backfcyp.strategy.Results;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -40,7 +41,7 @@ public class Solution {
     private Problem problem;
 
     @OneToMany(mappedBy = "solution")
-    private List<SolutionLog> solutionLogs;
+    private List<Results> results;
 
     public Solution(){
 
@@ -60,12 +61,23 @@ public class Solution {
         this.problem = problem;
     }
 
-    public List<SolutionLog> getSolutionLogs() {
-        return solutionLogs;
+    public List<Results> getResults() {
+        return results;
     }
 
-    public void setSolutionLogs(List<SolutionLog> solutionLogs) {
-        this.solutionLogs = solutionLogs;
+    public void addSucc(){
+        this.successes++;
+    }
+    public void addFails(){
+        this.fails++;
+    }
+
+    public void setResults(List<Results> results) {
+        this.results = results;
+    }
+
+    public void addResult(Results results){
+        this.results.add(results);
     }
 
     public boolean isClosed() {
