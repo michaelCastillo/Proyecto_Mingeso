@@ -19,6 +19,8 @@ class CreateProblem extends Component{
             difficulty: 0,
             language: 'python',
             name:'',
+            parameters:[],
+            returns:[],
         };
         this.handleDifficulty = this.handleDifficulty.bind(this);
         this.handlerStatement = this.handlerStatement.bind(this);
@@ -28,22 +30,31 @@ class CreateProblem extends Component{
 
     post_create(event) {
 
+        //Se toman los parametros y retornos desde los componentes
+        this.setState({parameters : this.parameters.current.state.parameters,
+                        returns: this.returns.current.state.returns
+        });
+        
         event.preventDefault();
         const problem = {
             statement : this.state.statement,
             difficulty : this.state.difficulty,
             language: this.state.language, 
-            name: this.state.name
+            name: this.state.name,
+            parameters: this.parameters.current.state.parameters,
+            returns: this.returns.current.state.returns,
         };
-        const url = `http://46.101.81.136:8181/Backend/problems/1/createProblem`;
+        console.log(problem);
+        const url = `http://46.101.81.136:8181/Backend/problems/create/3`;
+
         axios.post(url,problem)
         .then(res => {
-            //Se toma la id del problema.
-            var id_problem = res.data.id;
-            //Se crean los parametros y se agregan al problema.
-            this.parameters.current.handleSubmit(id_problem);
-            //Se crean los retornos y se agregan al problema.
-            this.returns.current.post_returnsCreate(id_problem);
+              //Se toma la id del problema.
+              var id_problem = res.data.id;
+              //Se crean los parametros y se agregan al problema.
+              this.parameters.current.handleSubmit(id_problem);
+              //Se crean los retornos y se agregan al problema.
+             this.returns.current.post_returnsCreate(id_problem);
             alert("Se ha agregado el problema junto con sus parametros y retornos.");
             
         }).catch(error => {
@@ -115,7 +126,8 @@ class CreateProblem extends Component{
 
             <FormGroup>
                 <ControlLabel>Enunciado</ControlLabel>
-                <FormControl componentClass="textarea" placeholder="Ingrese el enunciado" />
+                <FormControl componentClass="textarea" placeholder="Ingrese el enunciado" value={this.state.statement} 
+                   onChange={this.handlerStatement} />
             </FormGroup>
             
             

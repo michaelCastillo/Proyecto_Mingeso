@@ -89,10 +89,12 @@ class AddParameter extends Component{
 
     }
 
+    
+
     render(){
         return(
             
-            <Form horizontal onSubmit={this.handleSubmit}>
+            <Form horizontal >
                 <FormGroup>
                     <Col md={11}>
                         <ControlLabel> Parámetros: </ControlLabel>

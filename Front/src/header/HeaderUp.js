@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap'
 import {  Link } from "react-router-dom";
 import imagen from './computer_77914.png';
-import './HeaderUp.css';
 
 class HeaderUp extends Component {
 
