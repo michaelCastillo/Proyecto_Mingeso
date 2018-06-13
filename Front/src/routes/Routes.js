@@ -7,19 +7,19 @@ import Login from '../login/login';
 import Teachers from '../teachers/teachers';
 import Students from '../students/students';
 
-
-
 class Routes extends Component{
 
 
     render(){
 
-        const extraProps = {color:'red'}    
         return(
 
 
             /* Se posicionan todas la rutas que tenga la web 
-            <Route path="/Profesores/:id" component={}/>*/ 
+            <Route path="/Profesores/:id" component={}/>
+            
+            <Route path="/login" component ={Login}/>
+            */ 
             <Router>
                 <div>
                 <Route path="/problems" render={props =>  
@@ -29,6 +29,7 @@ class Routes extends Component{
                 <Route path="/createProblem" component /> 
                 <Route path="/home" component ={Home}/>
                 <Route path="/login" component ={Login}/>
+        
                 <Route path="/Profesores" component ={Teachers}/>
                 <Route path="/alumnos" component ={Students}/>
 

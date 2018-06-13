@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap'
-import {  Link } from "react-router-dom";
 import imagen from './computer_77914.png';
+
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class HeaderUp extends Component {
 
 
     render() {
+     
+        
         return (
             <Navbar inverse collapseOnSelect  style={{ background:'#1D2D44', height: 90}}>
                 <Navbar.Header>

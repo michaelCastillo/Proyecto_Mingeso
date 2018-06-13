@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap';
 import HeaderUp from './header/HeaderUp';
 import Routes from './routes/Routes';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
   render() {

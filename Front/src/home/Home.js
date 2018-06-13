@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import { Grid, Row, Col, Label } from 'react-bootstrap';
 import Login from '../login/login'
 import imagen from '../images/homeImage.png';
-
 class Home extends Component{
 
     constructor(props){
@@ -45,6 +44,7 @@ class Home extends Component{
                 <Col md={3}>
                     <h1> Ingresar </h1>
                     <Login ref = {this.login}/> 
+                  
                 </Col>
             
         </Grid>
