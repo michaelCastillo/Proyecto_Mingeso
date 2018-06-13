@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel, Col, Panel} from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel, Col, Panel, Checkbox} from "react-bootstrap";
 import './register.css'
 import axios from 'axios';
 
@@ -14,31 +14,49 @@ class Register extends Component{
           confirmPassword: '',
           email: '',
           roles: [],
-          rol: {
-            id: 0,
-            role: '',
-          },
+          myRoles: [],
         };
         this.handleName = this.handleName.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
         this.handleConfirmPassword = this.handleConfirmPassword.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
-        this.handleRole = this.handleRole.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
+        this.handleCheckbox = this.handleCheckbox.bind(this);
       } 
       
-    handleRole = event => {
-      //this.setState({rol:event.target.value})
-      let rol = event.target.value.split(',');
-      this.state.rol.id = parseInt(rol[0]);
-      this.state.rol.role = rol[1];     
+    
+    handleCheckbox(event){
+      let item = event.target.value.split(",");
+      let aux= 0;
+      this.state.myRoles.forEach(function(rol, index, object){
+        if (rol.id == item[0]){
+          object.splice(index, 1);
+          aux = 1;
+        }
+      });
+      
+      if(aux == 0){
+        let rol = {
+          id : item[0],
+          role : item[1]
+        };
+        this.state.myRoles.push(rol);
+      }
+      
+      console.log(this.state.myRoles);
+      
     }
+
+
 
     createSelectOptions(){
       let items = [];
-      items.push(<option value = "" disabled="disabled" selected="true" > Seleccione rol </option>);
+      let aux = 0;
       this.state.roles.map((role) => {return (
-        items.push(<option value = {[role.id,role.role]}> {role.role} </option>)
+        items.push(<Checkbox
+          key={aux++}
+          value = {[role.id, role.role]}
+          onChange={this.handleCheckbox}> {role.role} </Checkbox>)
       )});
       return items;
     }
@@ -83,16 +101,13 @@ class Register extends Component{
           name:this.state.name,
           password:this.state.password,
           email:this.state.email,
-          roles:[this.state.rol]
+          roles:this.state.myRoles,
         };
-        console.log("User: ",user);
-        console.log("User.roles: ",user.roles);
-        console.log("User.roles(0): ", user.roles[0]);
         const url = 'http://46.101.81.136:8181/Backend/users/create';
         axios.post(url,user)
             .then(res => {
               let userResponse=res.data;
-              console.log(userResponse);
+              alert("Usuario agregado exitosamente!");
             }).catch(error => {
               alert("Error");
               console.log(error.response);
@@ -173,9 +188,8 @@ render(){
                 </FormGroup>
                 <FormGroup>
                   <ControlLabel> Rol </ControlLabel>
-                  <FormControl componentClass="select" onChange={this.handleRole}>
                     {this.createSelectOptions()}
-                  </FormControl>
+                
                 </FormGroup>
                 <Button             
                   type="success" onClick = {this.handleRegister}
