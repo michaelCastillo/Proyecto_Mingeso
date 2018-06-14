@@ -17,10 +17,27 @@ import ProblemRoutes from './problems/ProblemRoutes';
 import Login from './login/login';
 import Teachers from './teachers/teachers';
 import Students from './students/students';
+import { AUTHENTICATED , UNAUTHENTICATED } from './actions/actionSign';
+import requireAuth from './hoc/requireAuth';
+import noRequireAuth from './hoc/noRequireAuth';
+import Signout from './login/signOut';
+
 
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
+
+const user = localStorage.getItem('user');
+
+if(user) {
+  store.dispatch({ type: AUTHENTICATED });
+}
+
+if(!user) {
+  store.dispatch({ type: UNAUTHENTICATED });
+}
+
+
 
 ReactDOM.render(
 
@@ -31,13 +48,15 @@ ReactDOM.render(
                 <Route path="/problems" render={props =>  
                     <ProblemRoutes {...props}/>
                 } />
-                <Route path="/code/:id" component={Code}/>
+                <Route path="/code/:id" component={requireAuth(Code)}/>
                 <Route path="/createProblem" component /> 
-                <Route path="/home" component ={Home}/>
-                <Route path="/login" component ={Login}/>
-        
-                <Route path="/Profesores" component ={Teachers}/>
-                <Route path="/alumnos" component ={Students}/>
+                <Route path="/home" component ={noRequireAuth(Home)}/>
+                <Route path="/login" component ={noRequireAuth(Login)}/>
+                
+                <Route path="/signout" component ={requireAuth(Signout)}/>  
+
+                <Route path="/Profesores" component ={requireAuth(Teachers)}/>
+                <Route path="/alumnos" component ={requireAuth(Students)}/>
 
                 </div>
             </Router>

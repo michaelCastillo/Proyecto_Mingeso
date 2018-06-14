@@ -3,7 +3,6 @@ import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap'
 import imagen from './computer_77914.png';
 
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 class HeaderUp extends Component {
 
@@ -13,15 +12,7 @@ class HeaderUp extends Component {
     navbarLinks() {
         if (this.props.authenticated) {
           return [
-            <Navbar inverse collapseOnSelect  style={{ background:'#1D2D44', height: 90}}>
-            <Navbar.Header>
-            <Navbar.Brand>
-            <a  href="/home">
-            <img border="10" style={{marginLeft:-60 ,marginTop:-15, width: 80, height: 80}} src={imagen} alt=""/></a>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-            </Navbar.Header>
-            <Navbar.Collapse>
+            <div>
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
@@ -47,9 +38,11 @@ class HeaderUp extends Component {
                 <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
                 Ingresar
                 </NavItem>
+                <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
+                SignOut
+                </NavItem>
             </Nav>
-            </Navbar.Collapse>
-        </Navbar>
+           </div>
           ];
         }
 
@@ -73,11 +66,23 @@ class HeaderUp extends Component {
      
         
         return (
-
+            
             <div className="container">
-            
+            <Navbar inverse collapseOnSelect  style={{ background:'#1D2D44', height: 90}}>
+            <Navbar.Header>
+            <Navbar.Brand>
+            <a  href="/home">
+            <img border="10" style={{marginLeft:-60 ,marginTop:-15, width: 80, height: 80}} src={imagen} alt=""/></a>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse>
+            <ul>
+
               {this.navbarLinks()}
-            
+            </ul>  
+              </Navbar.Collapse>
+             </Navbar>
           </div>
 
         );
@@ -85,14 +90,6 @@ class HeaderUp extends Component {
 
 
 }
-
-
-
-
-
-
-
-
 
 
 
