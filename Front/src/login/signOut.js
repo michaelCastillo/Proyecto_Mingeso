@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import {signOutAction} from '../actions/signOutAction';
-import { Button } from "react-bootstrap";
+import { connect } from 'react-redux';
+
 
 class Signout extends Component {
 
-    submit = () => {
+    componentWillMount() {
         signOutAction();
-      }
-
+    }
 
 render(){
 
-    return(
-       <div> 
-        {this.submit}
-        
-       </div> 
+    return( 
+        <div className="content">Vuelve cuando quieras...</div>        
     );
 
 
@@ -24,4 +21,4 @@ render(){
 
 }    
 
-export default Signout;
+export default connect(null, {signOutAction})(Signout);

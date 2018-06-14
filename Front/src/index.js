@@ -29,13 +29,11 @@ const store = createStoreWithMiddleware(reducers);
 
 const user = localStorage.getItem('user');
 
-if(user) {
+if(user ) {
   store.dispatch({ type: AUTHENTICATED });
 }
 
-if(!user) {
-  store.dispatch({ type: UNAUTHENTICATED });
-}
+
 
 
 
