@@ -4,7 +4,7 @@ import axios from 'axios';
 import {trashO} from 'react-icons-kit/fa/trashO';
 import {edit} from 'react-icons-kit/fa/edit';
 import {publish} from 'react-icons-kit/entypo/publish';
-import './ShowUsers.css';
+import './ShowUsersList.css';
 
 
 import Icon from 'react-icons-kit';
@@ -12,7 +12,7 @@ import Icon from 'react-icons-kit';
 
 
 
-class ShowUsers extends Component{
+class ShowUsersList extends Component{
 
     constructor(props){
         super(props);
@@ -92,6 +92,9 @@ class ShowUsers extends Component{
                                                 </Col>
                                                 <Col md={1} sm={6} >
                                                     <Icon icon ={edit} size={25} />
+                                                    <Button href={`/users/${user.id}`} >
+                                                     Visualizar
+                                                    </Button>
                                                 </Col>
                                                 <Col md={1} sm={6}>
                                                     <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
@@ -133,4 +136,4 @@ class ShowUsers extends Component{
 
 }
 
-export default ShowUsers;
+export default ShowUsersList;

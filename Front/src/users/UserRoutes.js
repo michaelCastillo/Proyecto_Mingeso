@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router,Route } from 'react-router-dom';
 import {Button, Grid,Row} from 'react-bootstrap';
-import ShowUsers from './ShowUsers';
+import ShowUsersList from './ShowUsersList';
 
 
 class UserRoutes extends Component{
@@ -26,8 +26,8 @@ class UserRoutes extends Component{
                         <Grid >
                             
                             <Row className = "grid-show" >
-                            <Route path={`${this.props.match.path}/show`} render={props =>  
-                                <ShowUsers {...props}/>
+                            <Route path={`${this.props.match.path}/showList`} render={props =>  
+                                <ShowUsersList {...props}/>
                             } />
                             </Row >
                         </Grid >
