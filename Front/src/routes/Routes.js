@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Code from '../code/AddCode';
-import User from '../users/ShowUser';
+import UserProfile from '../users/UserProfile';
 import Home from '../home/Home';
 import ProblemRoutes from '../problems/ProblemRoutes';
 import UserRoutes from '../users/UserRoutes';
@@ -30,7 +30,7 @@ class Routes extends Component{
                     <UserRoutes {...props}/>
                 } />
                 <Route path="/code/:id" component={Code}/>
-                <Route path="/users/:id" component={User}/>
+                <Route path="/users/:id" component={UserProfile}/>
                 <Route path="/createProblem" component /> 
                 <Route path="/home" component ={Home}/>
                 <Route path="/login" component ={Login}/>
