@@ -40,6 +40,14 @@ public class UserService {
     public User getUserById(@PathVariable Long id){
         return this.userRepository.findUserById(id);   
     }
+    
+    
+    @CrossOrigin
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    @ResponseBody
+    public User updateUser(@Valid @RequestBody User user){
+        return this.userRepository.save(user);
+    }
 
     @CrossOrigin
     @RequestMapping(value = "/getByRoles", method = RequestMethod.POST)
