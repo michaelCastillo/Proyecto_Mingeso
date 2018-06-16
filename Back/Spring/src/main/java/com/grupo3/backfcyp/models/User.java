@@ -16,6 +16,7 @@ public class User {
     private String name;
     private String password;
     private String email;
+    private boolean bloqued;
 
     @ManyToMany(mappedBy = "users")
     private List<Role> roles;
