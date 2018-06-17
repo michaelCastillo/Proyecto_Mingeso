@@ -4,6 +4,7 @@ package com.grupo3.backfcyp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -92,16 +93,31 @@ public class Problem {
         this.teacher = teacher;
     }
 
-    public List<Parameter> getParameters() {
-        return parameters;
+    public ArrayList<String> getParameters() {
+        ArrayList<String> params = new ArrayList<>();
+        for(Parameter param: this.parameters){
+            params.add(param.getName());
+        }
+        return params;
     }
 
     public void setParameters(List<Parameter> parameters) {
         this.parameters = parameters;
     }
 
-    public List<Return> getReturns() {
+    public ArrayList<String> getReturns() {
+        ArrayList<String> returns = new ArrayList<>();
+        for(Return return_: this.returns){
+            returns.add(return_.getName());
+        }
         return returns;
+    }
+
+    public List<Parameter> getParametersObj(){
+        return this.parameters;
+    }
+    public List<Return> getReturnsObj(){
+        return this.returns;
     }
 
     public void setReturns(List<Return> returns) {

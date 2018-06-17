@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupo3.backfcyp.models.Solution;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,8 +34,16 @@ public class Results {
         this.timestamp = new Date();
     }
 
-    public String getComparison() {
-        return results_comparison;
+    public List<String> getComparison() {
+        String comparisons[] = this.results_comparison.split(" ");
+        ArrayList<String> comparisons_arr = new ArrayList<>();
+        for(String comp: comparisons){
+            if(comp.compareTo("") !=0) {
+                System.out.println("comparacion: " + comp);
+                comparisons_arr.add(comp);
+            }
+        }
+        return comparisons_arr;
     }
 
     public void setComparison(List<String> comparison) {

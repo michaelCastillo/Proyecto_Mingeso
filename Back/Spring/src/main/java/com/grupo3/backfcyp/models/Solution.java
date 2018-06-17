@@ -72,6 +72,8 @@ public class Solution {
         this.fails++;
     }
 
+
+
     public void setResults(List<Results> results) {
         this.results = results;
     }

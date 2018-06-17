@@ -60,6 +60,7 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+
     @CrossOrigin
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody

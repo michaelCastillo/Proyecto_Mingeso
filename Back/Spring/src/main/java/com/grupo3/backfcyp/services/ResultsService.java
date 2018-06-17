@@ -24,5 +24,19 @@ public class ResultsService {
         return this.resultsRepository.findAll();
     }
 
+    @CrossOrigin
+    @RequestMapping(value = "/{id}/delete",method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteResult(@PathVariable Long id){
+        this.resultsRepository.deleteById(id);
+        System.out.println("Se ha borrado.  ");
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/deleteAll",method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteAll(){
+        this.resultsRepository.deleteAll();
+    }
 
 }

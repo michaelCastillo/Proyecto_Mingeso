@@ -16,6 +16,7 @@ public class User {
     private String name;
     private String password;
     private String email;
+    private boolean bloqued;
 
     @ManyToMany(mappedBy = "users")
     private List<Role> roles;
@@ -33,6 +34,14 @@ public class User {
     @JsonIgnore
     @JoinColumn(name = "id_career")
     private Career career;
+
+    public boolean isBloqued() {
+        return bloqued;
+    }
+
+    public void setBloqued(boolean bloqued) {
+        this.bloqued = bloqued;
+    }
 
     public Long getId() {
         return id;
