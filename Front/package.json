@@ -15,6 +15,7 @@
     "react-bootstrap-select": "^0.14.0",
     "react-dom": "^16.3.2",
     "react-icons-kit": "^1.1.5",
+    "react-native": "^0.55.4",
     "react-native-elements": "^0.19.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",

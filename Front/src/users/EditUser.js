@@ -19,6 +19,7 @@ class EditUser extends Component {
         this.handleEditEmail = this.handleEditEmail.bind(this);
         this.handleEditName = this.handleEditName.bind(this);
         this.handleEditPassword = this.handleEditPassword.bind(this);
+        this.updateUser = this.updateUser.bind(this);
     }
     componentDidMount() {
         let id_user = this.props.id;
@@ -37,6 +38,27 @@ class EditUser extends Component {
                 console.log(error.response);
             });
     }
+    updateUser = (event) => {
+        event.preventDefault();        
+        const user = {
+            id:this.props.id,
+            name:this.state.name,
+            password:this.state.password,
+            email:this.state.email,
+          };
+        const url = 'http://46.101.81.136:8181/Backend/users/update';
+        axios.put(url,user)
+            .then(res => {
+              let userResponse=res.data;
+              alert("Usuario editado exitosamente!");
+            }).catch(error => {
+              alert("Error");
+              console.log(error.response);
+              console.log(error.request);
+              console.log(error.message);
+            });
+      }
+    
     handleEditName(event) {
         this.setState({name: event.target.value});
     }
@@ -98,6 +120,8 @@ class EditUser extends Component {
 
                                         /></h4>
                                     <br />
+                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="success" class="btn btn-primary">
+                                    Guardar</Button>
 
                                 </p>
 

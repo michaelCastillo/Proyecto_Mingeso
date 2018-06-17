@@ -50,8 +50,8 @@ class UserProfile extends Component{
             Editar</Button>;
         } else {
             item=
-            <Button bsSize="large" onClick={this.handleComponentChange} bsStyle="success" class="btn btn-primary">
-            Aceptar</Button>;
+            <Button bsSize="large" onClick={this.handleComponentChange} bsStyle="danger" class="btn btn-primary">
+            Finalizar</Button>;
         }
         return item;
     }
