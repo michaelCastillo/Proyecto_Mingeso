@@ -23,7 +23,8 @@ public class CodeService {
     @CrossOrigin()
     @RequestMapping(value = "/set", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> executeProgram(@RequestBody Code code){
+
+    public static Map<String,Object> executeProgram(@RequestBody Code code){
 
         //Se ejecuta y se envian los resultados de la ejecucion
         code.exec();

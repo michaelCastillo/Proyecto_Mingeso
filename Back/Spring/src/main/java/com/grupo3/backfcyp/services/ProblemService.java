@@ -64,11 +64,11 @@ public class ProblemService {
                 for(Role role : user.getRoles()){
                     if(role.getRole().compareTo("teacher") == 0){//Si es profesor
 
-                        for(Parameter parameter: problem.getParameters()){
+                        for(Parameter parameter: problem.getParametersObj()){
                             parameter.setProblem(problem);
                             //this.parameterReporitory.save(parameter);
                         }
-                        for(Return return_: problem.getReturns()){
+                        for(Return return_: problem.getReturnsObj()){
                             return_.setProblem(problem);
                             //this.returnRepository.save(return_);
                         }

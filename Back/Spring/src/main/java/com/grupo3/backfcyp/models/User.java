@@ -35,6 +35,14 @@ public class User {
     @JoinColumn(name = "id_career")
     private Career career;
 
+    public boolean isBloqued() {
+        return bloqued;
+    }
+
+    public void setBloqued(boolean bloqued) {
+        this.bloqued = bloqued;
+    }
+
     public Long getId() {
         return id;
     }
