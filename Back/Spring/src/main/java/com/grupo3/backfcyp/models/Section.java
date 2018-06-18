@@ -16,6 +16,7 @@ public class Section {
 
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "users_sections", joinColumns = @JoinColumn(name = "id_user"),inverseJoinColumns = @JoinColumn(name = "id_coordination"))
     private List<User> users;
 
