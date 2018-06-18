@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid, Row,FormControl, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar} from 'react-bootstrap';
+import { Grid, Row, FormControl, Col, Label, Panel, ListGroup, ListGroupItem, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
 import UserProfile from './UserProfile';
 
-class ShowUser extends Component{
+class ShowUser extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             editState: false,
             name: '',
-            email:'',
-            password:'',
+            email: '',
+            password: '',
+            state: '',
+            sections: [],
+            roles: [],
         };
-        
+        this.showSection = this.showSection.bind(this);
+        this.showRole = this.showRole.bind(this);
+
     }
     componentDidMount() {
         let id_user = this.props.id;
@@ -28,54 +33,88 @@ class ShowUser extends Component{
                 this.setState({
                     name: user.name,
                     email: user.email,
-                    password: user.password
+                    password: user.password,
+                    state: user.bloqued,
+                    sections: user.sections,
+                    roles: user.roles
                 });
             }).catch(error => {
                 console.log(error.response);
             });
     }
 
-    
-            
-    render(){
-        return(
+    showSection() {
+        let items = [];
+        this.state.sections.map((section) => {
+            items.push(<ListGroupItem bsStyle="info"> {section.code} </ListGroupItem>);
+        });
+        return items;
+    }
+    showRole() {
+        let items = [];
+        this.state.roles.map((role) => {
+            items.push(<ListGroupItem bsStyle="info"> {role.role} </ListGroupItem>);
+        });
+        return items;
+    }
+
+
+    render() {
+        return (
             <Grid>
                 <Row>
-                <div class="container">
-                <div class="row">
-                   
-                                <div class="col-sm-6 col-md-8">
-                                    <h3>
+                    <div class="container">
+                        <div class="row">
+                            <Col md={3} sm={6}>
+                                <h3>
                                     <Label bsStyle="info">Nombre</Label> </h3>
-                                        <br />
-                                        <h4>
-                                        {this.state.name}</h4>
-                                        <br />
-                                        <br />
-                                    <p>
-                                        <h3>
+                                <br />
+                                <h4>
+                                    {this.state.name}</h4>
+                                <br />
+                                <p>
+                                    <h3>
                                         <Label bsStyle="info">E-mail</Label></h3>
-                                        <br />
-                                        <h4>
+                                    <br />
+                                    <h4>
                                         {this.state.email}
-                                        </h4>
-                                        <br />
-                                        <br />
-                                        <h3>
+                                    </h4>
+                                    <br />
+                                    <h3>
                                         <Label bsStyle="info">Contraseña</Label></h3>
-                                        <br />
-                                        <h4>
+                                    <br />
+                                    <h4>
                                         {this.state.password}</h4>
-                                        <br />
-                                        
-                                        </p>
-                                    
-                                    
-                                </div>
-                            </div>
+                                    <br />
+
+                                </p>
+
+                            </Col>
+                            <Col md={3} sm={6}>
+                                <h3>
+                                    <Label bsStyle="info">Secciones</Label></h3>
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.showSection()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+                                <h3>
+                                    <Label bsStyle="info">Roles</Label></h3>
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.showRole()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+                            </Col>
+
                         </div>
-            </Row>
-                    
+                    </div>
+                </Row>
+
             </Grid>
         );
     }

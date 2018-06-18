@@ -120,9 +120,20 @@ class EditUser extends Component {
 
                                         /></h4>
                                     <br />
+                                    <Col md={6} xs={2}>
                                     <Button bsSize="large" onClick={this.updateUser} bsStyle="success" class="btn btn-primary">
                                     Guardar</Button>
-
+                                    </Col>
+                                    <Col md={2} xs={2}>                                    
+                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="danger" class="btn btn-primary">
+                                    Bloquear</Button>
+                                    </Col>
+                                    <Col md={2} xs={2}>                                    
+                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="danger" class="btn btn-primary">
+                                    Eliminar</Button>
+                                    </Col>
+                                    <br />
+                                    <br />
                                 </p>
 
 

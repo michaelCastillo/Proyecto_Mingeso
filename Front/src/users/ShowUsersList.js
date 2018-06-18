@@ -293,24 +293,18 @@ class ShowUsersList extends Component {
                                             <Panel.Heading style={{ background: '#66B3DD' }}>
                                                 {/* Cabecera de cada panel */}
                                                 <Row>
-                                                    <Col md={7} ms={12} onClick={this.collapse(user.id)}>
+                                                    <Col md={9} ms={12} onClick={this.collapse(user.id)}>
                                                         <h3>
                                                             <Panel.Title componentClass="h3">{user.name}</Panel.Title>
                                                         </h3>
                                                     </Col>
 
-                                                    <Col md={1} sm={6} mdOffset={1}>
-                                                        <Icon icon={publish} size={25} />
-                                                    </Col>
+                                                    
                                                     <Col md={1} sm={6} >
-                                                        <Icon icon={edit} size={25} />
-                                                        <Button href={`/users/${user.id}`} >
-                                                            Visualizar
-                                                    </Button>
+                                                        <h1><a href={`/users/${user.id}`}><span class="glyphicon glyphicon-eye-open"></span></a>
+                                                        </h1>
                                                     </Col>
-                                                    <Col md={1} sm={6}>
-                                                        <Icon icon={trashO} size={25} style={{ color: '#f33' }} />
-                                                    </Col>
+                                                    
                                                 </Row>
                                             </Panel.Heading>
                                             <Panel.Body>

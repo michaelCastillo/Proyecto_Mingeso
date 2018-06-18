@@ -50,7 +50,7 @@ class UserProfile extends Component{
             Editar</Button>;
         } else {
             item=
-            <Button bsSize="large" onClick={this.handleComponentChange} bsStyle="danger" class="btn btn-primary">
+            <Button bsSize="large" onClick={this.handleComponentChange} bsStyle="warning" class="btn btn-primary">
             Finalizar</Button>;
         }
         return item;
@@ -62,11 +62,11 @@ class UserProfile extends Component{
                 <Row>
                 <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="well well-sm">
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
-                                    <img src="http://placehold.it/380x500" alt="" class="img-rounded img-responsive" />
+                                    <img src="https://picsum.photos/380/500/?random" alt="" class="img-rounded img-responsive" />
                                 </div>
                                 <div class="col-sm-6 col-md-8">
                                     {this.handleComponent()}
