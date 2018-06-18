@@ -15,6 +15,8 @@ class Register extends Component {
       email: '',
       roles: [],
       myRoles: [],
+      sections: [],
+      mySections: [],
     };
     this.handleName = this.handleName.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
@@ -22,6 +24,9 @@ class Register extends Component {
     this.handleRegister = this.handleRegister.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
+    this.handleCheckboxSections = this.handleCheckboxSections.bind(this);
+    this.createSelectOptions = this.createSelectOptions.bind(this);
+    this.createSelectOptionsSection = this.createSelectOptionsSection.bind(this);
   }
 
 
@@ -43,12 +48,44 @@ class Register extends Component {
       this.state.myRoles.push(rol);
     }
 
-    console.log(this.state.myRoles);
+
+  }
+  handleCheckboxSections(event) {
+    let item = event.target.value.split(",");
+    let aux = 0;
+    this.state.mySections.forEach(function (section, index, object) {
+      if (section.id == item[0]) {
+        object.splice(index, 1);
+        aux = 1;
+      }
+    });
+
+    if (aux == 0) {
+      let section = {
+        id: item[0],
+        code: item[1]
+      };
+      this.state.mySections.push(section);
+    }
+
 
   }
 
 
 
+  createSelectOptionsSection() {
+    let items = [];
+    let aux = 0;
+    this.state.sections.map((section) => {
+      return (
+        items.push(<Checkbox
+          key={aux++}
+          value={[section.id, section.code]}
+          onChange={this.handleCheckboxSections}> {section.code} </Checkbox>)
+      )
+    });
+    return items;
+  }
   createSelectOptions() {
     let items = [];
     let aux = 0;
@@ -94,6 +131,15 @@ class Register extends Component {
       }).catch(error => {
         console.log(error.response)
       });
+      axios.get(`http://46.101.81.136:8181/Backend/sections/`)
+      .then(res => {
+        const sections = res.data;
+        //Se asigna falso para opened, para el collapse
+        sections.map((section) => { section.opened = false });
+        this.setState({ sections });
+      }).catch(error => {
+        console.log(error.response)
+      });
   };
 
 
@@ -104,6 +150,7 @@ class Register extends Component {
       password: this.state.password,
       email: this.state.email,
       roles: this.state.myRoles,
+      sections: this.state.mySections,
     };
     const url = 'http://46.101.81.136:8181/Backend/users/create';
     axios.post(url, user)
@@ -153,7 +200,7 @@ class Register extends Component {
       <div className="Register"  >
         <row>
 
-
+          <h4>
           <form onSubmit={this.handleSubmit}>
             <FormGroup controlId="name" bsSize="large">
               <ControlLabel>Nombre</ControlLabel>
@@ -194,14 +241,19 @@ class Register extends Component {
               {this.createSelectOptions()}
 
             </FormGroup>
+            <FormGroup>
+              <ControlLabel> Seccion </ControlLabel>
+              {this.createSelectOptionsSection()}
+
+            </FormGroup>
             <Button
-              type="success" onClick={this.handleRegister}
+              bsStyle="success" bsSize="large" onClick={this.handleRegister}
             >
               Registrar
                 </Button>
 
           </form>
-
+          </h4>
         </row>
 
       </div>

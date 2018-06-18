@@ -22,12 +22,22 @@ class ShowUsersList extends Component {
             orderBy: "name",
             descending: true,
             users: [],
+            originalUsers: [],
+            usersSections: [],
+            usersRoles: [],
             opened: [],
+            sections: [],
+            roles: [],
         }
         this.collapse = this.collapse.bind(this);
         this.orderList = this.orderList.bind(this);
         this.handleCheckbox = this.handleCheckbox.bind(this);
         this.compare = this.compare.bind(this);
+        this.createSectionsOptions = this.createSectionsOptions.bind(this);
+        this.createRoleOptions = this.createRoleOptions.bind(this);
+        this.selectSection = this.selectSection.bind(this);
+        this.selectRole = this.selectRole.bind(this);
+        this.usersArray = this.usersArray.bind(this);
     }
 
     componentDidMount() {
@@ -37,102 +47,184 @@ class ShowUsersList extends Component {
                 const users = res.data;
                 //Se asigna falso para opened, para el collapse
                 users.map((user) => { user.opened = false });
+                users.sort(this.compare);
                 this.setState({ users });
+                this.setState({ originalUsers: this.state.users });
+                this.setState({ usersRoles: this.state.users });
+                this.setState({ usersSections: this.state.users });
+            }).catch(error => {
+                console.log(error.response)
+            });
+        axios.get(`http://46.101.81.136:8181/Backend/sections/`)
+            .then(res => {
+                const sections = res.data;
+                //Se asigna falso para opened, para el collapse
+                sections.map((section) => { section.opened = false });
+                this.setState({ sections });
+            }).catch(error => {
+                alert("Error con conexion a base de datos de secciones");
+                console.log(error.response)
+            });
+        axios.get(`http://46.101.81.136:8181/Backend/roles`)
+            .then(res => {
+                const roles = res.data;
+                //Se asigna falso para opened, para el collapse
+                roles.map((role) => { role.opened = false });
+                this.setState({ roles });
             }).catch(error => {
                 console.log(error.response)
             });
     };
 
     collapse = (id) => () => {
-        console.log("id: " + id);
         let users = this.state.users;
 
         users.map((user, i) => {
             if (user.id == id) {
-                console.log("Are Equals");
                 if (user.opened) { //Si es true
-                    console.log("And its opened");
                     user.opened = false;
                 } else {
                     user.opened = true;
                 }
             }
         });
-        users.sort(this.compare);
         this.setState({ users });
 
-    };
+    }
+
+    usersArray(){
+        let userAux = [];
+        console.log(this.state.usersSections.length);        
+        for(var i = 0; i<this.state.usersSections.length; i++){
+            for(var j = 0; j<this.state.usersRoles.length; j++){
+                if (this.state.usersSections[i].id == this.state.usersRoles[j].id){
+                    userAux.push(this.state.usersSections[i]);
+                    break;
+                }
+                
+            }
+        }
+        userAux.sort(this.compare);          
+        this.setState({users: userAux});
+    }
+
+    selectRole(event) {
+        let userAux = [];
+        this.state.originalUsers.map((user) => {
+            if (event.target.value != "all") {
+                user.roles.map((role) => {
+                    if(role.id == event.target.value){
+                        userAux.push(user);
+                    }
+                });
+                this.state.usersRoles=userAux;
+            } else {
+                this.state.usersRoles=this.state.originalUsers;
+            }
+        });
+        this.usersArray();
+    }
+    
+    selectSection(event) {
+        let userAux = [];
+        this.state.originalUsers.map((user) => {
+            if (event.target.value != "all") {
+                user.sections.map((section) => {
+                    if(section.id == event.target.value){
+                        userAux.push(user);
+                    }
+                });
+                this.state.usersSections=userAux;
+            } else {
+                this.state.usersSections=this.state.originalUsers;
+            }
+        });
+        this.usersArray();
+    }
+    createRoleOptions() {
+        let items = [];
+        let aux = 0;
+        this.state.roles.map((role) => {
+            return (
+                items.push(<option
+                    key={aux++}
+                    value={role.id}
+                    onChange={this.handleShowSections}> {role.role} </option>)
+            )
+        });
+        return items;
+    }
+
+    createSectionsOptions() {
+        let items = [];
+        let aux = 0;
+        this.state.sections.map((section) => {
+            return (
+                items.push(<option
+                    key={aux++}
+                    value={section.id}
+                    onChange={this.handleShowSections}> {section.code} </option>)
+            )
+        });
+        return items;
+    }
+
     compare(a, b) {
-        if(this.state.orderBy=="name"){
-            if(a.name.toLowerCase() < b.name.toLowerCase()){
-                if(this.state.descending==false){
+        if (this.state.orderBy == "name") {
+            if (this.state.descending == true) {
+                if (a.name.toLowerCase() < b.name.toLowerCase()) {
                     return -1;
                 } else {
                     return 1;
                 }
             } else {
-                if(this.state.descending==false){
+                if (a.name.toLowerCase() < b.name.toLowerCase()) {
                     return 1;
                 } else {
                     return -1;
                 }
             }
         }
-        if(this.state.orderBy=="section"){
-            if(a.sections.toLowerCase() < b.sections.toLowerCase()){
-                if(this.state.descending==false){
+        if (this.state.orderBy == "email") {
+            if (this.state.descending == true) {
+                if (a.email.toLowerCase() < b.email.toLowerCase()) {
                     return -1;
                 } else {
                     return 1;
                 }
             } else {
-                if(this.state.descending==false){
+                if (a.email.toLowerCase() < b.email.toLowerCase()) {
                     return 1;
                 } else {
                     return -1;
                 }
             }
         }
-        if(this.state.orderBy=="email"){
-            if(a.email.toLowerCase() < b.email.toLowerCase()){
-                if(this.state.descending==false){
+        if (this.state.orderBy == "timestamp") {
+            if (this.state.descending == true) {
+                if (a.id < b.id) {
                     return -1;
                 } else {
                     return 1;
                 }
             } else {
-                if(this.state.descending==false){
+                if (a.id < b.id) {
                     return 1;
                 } else {
                     return -1;
                 }
             }
         }
-        if(this.state.orderBy=="timestamp"){
-            if(a.id < b.id){
-                if(this.state.descending==false){
-                    return -1;
-                } else {
-                    return 1;
-                }
-            } else {
-                if(this.state.descending==false){
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        }
-        
+
         return 0;
     }
     orderList(event) {
-        this.setState({orderBy:event.target.value});
-        this.setState({users:this.state.users.sort(this.compare)});
+        this.state.orderBy=event.target.value;
+        this.setState({ users: this.state.users.sort(this.compare) });
     }
-    handleCheckbox(){
-        this.setState({descending:!this.state.descending});
-        this.setState({users:this.state.users.sort(this.compare)});
+    handleCheckbox() {
+        this.state.descending=!this.state.descending;
+        this.setState({ users: this.state.users.sort(this.compare) });
     }
 
 
@@ -150,16 +242,41 @@ class ShowUsersList extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={12} xs={2}>
-                            <ControlLabel>Ordenar por: </ControlLabel>
-                            <FormControl componentClass="select" placeholder="select" onChange={this.orderList}>
-                                <option value="name">Nombre</option>
-                                <option value="email">E-Mail</option>
-                                <option value="timestamp">Fecha de Ingreso</option>
-                            </FormControl>
-                            <Checkbox onChange={this.handleCheckbox}> Descendente </Checkbox>
+                        <Col md={4} xs={4}>
+                            <h3>
+                                <ControlLabel>Ordenar por: </ControlLabel>
+                                <FormControl componentClass="select" placeholder="select" onChange={this.orderList}>
+                                    <option value="name">Nombre</option>
+                                    <option value="email">E-Mail</option>
+                                    <option value="timestamp">Fecha de Ingreso</option>
+                                </FormControl>
+                            </h3>
+                            <h4>
+                                <Checkbox onChange={this.handleCheckbox}> Descendente </Checkbox>
+                            </h4>
                         </Col>
+                        <Col md={4} xs={4}>
+                            <h3>
+                                <ControlLabel>Seccion: </ControlLabel>
+                                <FormControl componentClass="select" placeholder="select" onChange={this.selectSection}>
+                                    <option selected="true" value="all">Todas</option>
+                                    {this.createSectionsOptions()}
+                                </FormControl>
+                            </h3>
+                        </Col>
+                        <Col md={4} xs={4}>
+                            <h3>
+                                <ControlLabel>Rol: </ControlLabel>
+                                <FormControl componentClass="select" placeholder="select" onChange={this.selectRole}>
+                                    <option selected="true" value="all">Cualquiera</option>
+                                    {this.createRoleOptions()}
+                                </FormControl>
+                            </h3>
+                        </Col>
+                        
                     </Row>
+                    <ControlLabel>Mostrando {this.state.users.length} usuario/s</ControlLabel>
+                    
                     <br />
                     <br />
                     <br />
@@ -177,7 +294,9 @@ class ShowUsersList extends Component {
                                                 {/* Cabecera de cada panel */}
                                                 <Row>
                                                     <Col md={7} ms={12} onClick={this.collapse(user.id)}>
-                                                        <Panel.Title componentClass="h3">{user.name}</Panel.Title>
+                                                        <h3>
+                                                            <Panel.Title componentClass="h3">{user.name}</Panel.Title>
+                                                        </h3>
                                                     </Col>
 
                                                     <Col md={1} sm={6} mdOffset={1}>
@@ -195,7 +314,6 @@ class ShowUsersList extends Component {
                                                 </Row>
                                             </Panel.Heading>
                                             <Panel.Body>
-                                                {console.log("desde: " + user.opened)}
                                                 <Collapse in={user.opened}>
                                                     <div>
                                                         <Well>
