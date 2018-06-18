@@ -43,7 +43,7 @@ ReactDOM.render(
        <Router>
                 <div>
                 <HeaderUp/>
-                <Route path="/problems" render={props =>  
+                <Route path="/problems" render={ props =>  
                     <ProblemRoutes {...props}/>
                 } />
                 <Route path="/code/:id" component={requireAuth(Code)}/>
@@ -55,6 +55,10 @@ ReactDOM.render(
 
                 <Route path="/Profesores" component ={requireAuth(Teachers)}/>
                 <Route path="/alumnos" component ={requireAuth(Students)}/>
+
+                 <Route   path="/problems/create" component={requireAuth(ProblemRoutes)}/>
+                 <Route   path="/problems/show" component={requireAuth(ProblemRoutes)}/>
+
 
                 </div>
             </Router>
