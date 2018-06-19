@@ -20,6 +20,7 @@ class ShowUser extends Component {
         };
         this.showSection = this.showSection.bind(this);
         this.showRole = this.showRole.bind(this);
+        this.handleState = this.handleState.bind(this);
 
     }
     componentDidMount() {
@@ -57,6 +58,15 @@ class ShowUser extends Component {
         });
         return items;
     }
+    handleState(){
+        let item;
+        if(this.state.state == false){
+            item = <Label > Activo </Label>;
+        } else {
+            item = <Label > Bloqueado </Label>;            
+        }
+        return item;
+    }
 
 
     render() {
@@ -79,6 +89,14 @@ class ShowUser extends Component {
                                     <h4>
                                         {this.state.email}
                                     </h4>
+                                    <h3>
+                                    <Label bsStyle="info">Estado</Label></h3>
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.handleState()}
+                                    </ListGroup>
+                                </h4>
                                     <br />
                                     <h3>
                                         <Label bsStyle="info">Contraseña</Label></h3>
@@ -91,6 +109,7 @@ class ShowUser extends Component {
 
                             </Col>
                             <Col md={3} sm={6}>
+                                
                                 <h3>
                                     <Label bsStyle="info">Secciones</Label></h3>
                                 <br />

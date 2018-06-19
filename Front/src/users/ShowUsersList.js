@@ -294,9 +294,9 @@ class ShowUsersList extends Component {
                                                 {/* Cabecera de cada panel */}
                                                 <Row>
                                                     <Col md={9} ms={12} onClick={this.collapse(user.id)}>
-                                                        <h3>
-                                                            <Panel.Title componentClass="h3">{user.name}</Panel.Title>
-                                                        </h3>
+                                                        <img src={"https://api.adorable.io/avatars/30/"+user.name+"@adorable.png"} alt="" class="img-rounded img-responsive" />
+                                                            
+                                                            <Panel.Title  componentClass="h1">{user.name}</Panel.Title>
                                                     </Col>
 
                                                     

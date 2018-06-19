@@ -22,7 +22,23 @@ class UserProfile extends Component{
         this.handleComponentChange = this.handleComponentChange.bind(this);
         this.handleComponent = this.handleComponent.bind(this);
     }
-
+    componentDidMount() {
+        let id_user = this.state.idUser;
+        //Por ahora es la id 6, cuando este el login bien se cambia por aquel que
+        //esté logueado.
+        let global_url = `http://46.101.81.136:8181/Backend`;
+        let user = axios.get(global_url + `/users/` + id_user)
+            .then(res => {
+                const user = res.data;
+                this.setState({
+                    name: user.name,
+                    email: user.email,
+                    password: user.password,
+                });
+            }).catch(error => {
+                console.log(error.response);
+            });
+    }
     handleComponent(){
         let item;
         if(this.state.componentState){            
@@ -66,7 +82,7 @@ class UserProfile extends Component{
                         <div class="well well-sm">
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
-                                    <img src="https://picsum.photos/380/500/?random" alt="" class="img-rounded img-responsive" />
+                                    <img src={"https://api.adorable.io/avatars/485/"+this.state.name+"@adorable.png"} alt="" class="img-rounded img-responsive" />
                                 </div>
                                 <div class="col-sm-6 col-md-8">
                                     {this.handleComponent()}

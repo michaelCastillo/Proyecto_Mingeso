@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid, Row, FormControl, Col, Label, Panel, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
+import { Grid, Row, FormControl, Col, Label, Panel, ListGroup, ListGroupItem, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
 import UserProfile from './UserProfile';
 
 class EditUser extends Component {
@@ -14,12 +14,17 @@ class EditUser extends Component {
             name: '',
             email: '',
             password: '',
+            state: '',
+            sections: [],
+            roles: [],
         };
 
         this.handleEditEmail = this.handleEditEmail.bind(this);
         this.handleEditName = this.handleEditName.bind(this);
         this.handleEditPassword = this.handleEditPassword.bind(this);
         this.updateUser = this.updateUser.bind(this);
+        this.handleSection = this.handleSection.bind(this);
+        this.handleRole = this.handleRole.bind(this);
     }
     componentDidMount() {
         let id_user = this.props.id;
@@ -32,42 +37,51 @@ class EditUser extends Component {
                 this.setState({
                     name: user.name,
                     email: user.email,
-                    password: user.password
+                    password: user.password,
+                    state: user.bloqued,
+                    sections: user.sections,
+                    roles: user.roles
                 });
             }).catch(error => {
                 console.log(error.response);
             });
     }
     updateUser = (event) => {
-        event.preventDefault();        
+        event.preventDefault();
         const user = {
-            id:this.props.id,
-            name:this.state.name,
-            password:this.state.password,
-            email:this.state.email,
-          };
+            id: this.props.id,
+            name: this.state.name,
+            password: this.state.password,
+            email: this.state.email,
+        };
         const url = 'http://46.101.81.136:8181/Backend/users/update';
-        axios.put(url,user)
+        axios.put(url, user)
             .then(res => {
-              let userResponse=res.data;
-              alert("Usuario editado exitosamente!");
+                let userResponse = res.data;
+                alert("Usuario editado exitosamente!");
             }).catch(error => {
-              alert("Error");
-              console.log(error.response);
-              console.log(error.request);
-              console.log(error.message);
+                alert("Error");
+                console.log(error.response);
+                console.log(error.request);
+                console.log(error.message);
             });
-      }
-    
+    }
+
     handleEditName(event) {
-        this.setState({name: event.target.value});
+        this.setState({ name: event.target.value });
     }
     handleEditEmail(event) {
-        this.setState({email: event.target.value});
-        
+        this.setState({ email: event.target.value });
+
     }
     handleEditPassword(event) {
-        this.setState({password: event.target.value});
+        this.setState({ password: event.target.value });
+    }
+    handleSection(event){
+
+    }
+    handleRole(event){
+
     }
 
 
@@ -80,7 +94,7 @@ class EditUser extends Component {
                     <div class="container">
                         <div class="row">
 
-                            <div class="col-sm-6 col-md-8">
+                            <Col md={3} sm={6}>
                                 <h3>
                                     <Label bsStyle="danger">Nombre</Label> </h3>
                                 <br />
@@ -121,23 +135,46 @@ class EditUser extends Component {
                                         /></h4>
                                     <br />
                                     <Col md={6} xs={2}>
-                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="success" class="btn btn-primary">
-                                    Guardar</Button>
+                                        <Button bsSize="large" onClick={this.updateUser} bsStyle="success" class="btn btn-primary">
+                                            Guardar</Button>
                                     </Col>
-                                    <Col md={2} xs={2}>                                    
-                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="danger" class="btn btn-primary">
-                                    Bloquear</Button>
-                                    </Col>
-                                    <Col md={2} xs={2}>                                    
-                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="danger" class="btn btn-primary">
-                                    Eliminar</Button>
-                                    </Col>
+
                                     <br />
                                     <br />
                                 </p>
+                            </Col>
+                            <Col md={3} sm={6}>
+                                <h3>
+                                    <Label bsStyle="info">Secciones</Label></h3>
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.handleSection()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+                                <h3>
+                                    <Label bsStyle="info">Roles</Label></h3>
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.handleRole()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+                                <Col md={6} xs={2}>
+                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="danger" class="btn btn-primary">
+                                        Bloquear</Button>
+                                </Col>
+                                <Col md={6} xs={2}>
+                                    <Button bsSize="large" onClick={this.updateUser} bsStyle="danger" class="btn btn-primary">
+                                        Eliminar</Button>
+                                </Col>
+                                <br />
+                                <br />
+                            </Col>
 
 
-                            </div>
                         </div>
                     </div>
                 </Row>
