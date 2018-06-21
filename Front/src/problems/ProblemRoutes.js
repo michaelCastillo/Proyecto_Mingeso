@@ -40,17 +40,16 @@ class ProblemRoutes extends Component{
                         <Grid >
                             <Row className = "grid-show" >
                             
-                             <Route path={`${this.props.match.path}/create`} render={props =>  
-                                <CreateProblem {...props}/>
-                            }/>
+                            <Route path="/problems/create" component ={perm1(CreateProblem)}/>
+
 
 
                             </Row >
                             <Row className = "grid-show" >
 
-                            <Route path={`${this.props.match.path}/show`} render={props =>  
-                               <ShowProblems {...props}/>
-                            } />
+                            <Route path="/problems/show" component ={requireAuth(ShowProblems)}/>
+
+                           
                             </Row >
 
                         </Grid >

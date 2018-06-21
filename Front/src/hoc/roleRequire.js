@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -19,7 +18,7 @@ export default function Authorization(allowedRoles) {
         return <h1> No tiene permiso de ingresar a esta página! {role} 
                 <br/>
                 <br/>
-                <Link to='/problems/show' > volver </Link> 
+                <Link to='/' > Salir </Link> 
                 </h1>; // Redirect actually
       };
       function mapStateToProps(state) {
