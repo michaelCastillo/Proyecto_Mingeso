@@ -20,7 +20,14 @@ import Students from './students/students';
 import { AUTHENTICATED , UNAUTHENTICATED } from './actions/actionSign';
 import requireAuth from './hoc/requireAuth';
 import noRequireAuth from './hoc/noRequireAuth';
+import Authorization from './hoc/roleRequire';
+
 import Signout from './login/signOut';
+
+const perm = Authorization(['coordination', 'admin']);
+const perm1 = Authorization(['teacher', 'coordination', 'admin']);
+const perm2 = Authorization(['student', 'admin']);
+
 
 
 
@@ -46,18 +53,17 @@ ReactDOM.render(
                 <Route path="/problems" render={ props =>  
                     <ProblemRoutes {...props}/>
                 } />
-                <Route path="/code/:id" component={requireAuth(Code)}/>
-                <Route path="/createProblem" component /> 
+                <Route path="/code/:id" component={perm2(Code)}/>
                 <Route path="/home" component ={noRequireAuth(Home)}/>
                 <Route path="/login" component ={noRequireAuth(Login)}/>
                 
                 <Route path="/signout" component ={requireAuth(Signout)}/>  
 
-                <Route path="/Profesores" component ={requireAuth(Teachers)}/>
-                <Route path="/alumnos" component ={requireAuth(Students)}/>
+                <Route path="/Profesores" component ={perm(Teachers)}/>
+                <Route path="/alumnos" component ={perm1(Students)}/>
 
-                 <Route   path="/problems/create" component={requireAuth(ProblemRoutes)}/>
-                 <Route   path="/problems/show" component={requireAuth(ProblemRoutes)}/>
+              
+
 
 
                 </div>

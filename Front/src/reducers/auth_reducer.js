@@ -1,4 +1,4 @@
-import { AUTHENTICATED, UNAUTHENTICATED, AUTHENTICATION_ERROR } from '../actions/actionSign';
+import { AUTHENTICATED, UNAUTHENTICATED, AUTHENTICATION_ERROR,LOGIN_PERMISSION } from '../actions/actionSign';
 
 
 export default function(state={}, action) {
@@ -9,6 +9,10 @@ export default function(state={}, action) {
       return { ...state, authenticated: false };
     case AUTHENTICATION_ERROR:
       return { ...state, error: action.payload };
+    case LOGIN_PERMISSION:
+      const role = localStorage.getItem('role');
+      return { ...state, permission: role };
+
   }
   return state;
 }

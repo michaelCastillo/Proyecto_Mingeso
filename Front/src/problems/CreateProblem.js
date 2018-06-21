@@ -45,7 +45,7 @@ class CreateProblem extends Component{
             returns: this.returns.current.state.returns,
         };
         console.log(problem);
-        const url = `http://46.101.81.136:8181/Backend/problems/create/3`;
+        const url = `http://46.101.81.136:8181/Backend/problems/create/2`;
 
         axios.post(url,problem)
         .then(res => {
