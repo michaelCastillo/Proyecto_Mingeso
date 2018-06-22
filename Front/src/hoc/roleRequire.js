@@ -12,10 +12,11 @@ export default function Authorization(allowedRoles) {
     return (WrappedComponent) => {
       const WithAuthorization = (props) => {
         const role = localStorage.getItem('role');
+        const id = localStorage.getItem('userId');
         if (allowedRoles.includes(role)) {
           return <WrappedComponent {...props} />;
         }
-        return <h1> No tiene permiso de ingresar a esta página! {role} 
+        return <h1> No tiene permiso de ingresar a esta página! {role} {id}
                 <br/>
                 <br/>
                 <Link to='/' > Salir </Link> 

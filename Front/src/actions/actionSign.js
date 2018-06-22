@@ -17,7 +17,8 @@ export function signInAction( {email, password} , history) {
 
       dispatch({ type: AUTHENTICATED });
       
-      localStorage.setItem('user', res.data.token);      
+      localStorage.setItem('user', res.data.token);    
+      localStorage.setItem('userId', res.data.user.id);      
       console.log(res.data);
       saveRol(res.data.roles);
     } else {
