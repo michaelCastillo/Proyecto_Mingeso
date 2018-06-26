@@ -4,6 +4,7 @@ package com.grupo3.backfcyp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,39 +20,29 @@ public class Problem {
     private String statement;
     private String language;
     private int difficulty;
+    private boolean publish;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "id_user",nullable = false)
-    private User user;
+    @JoinColumn(name = "id_teacher",nullable = false)
+    private User teacher;
 
     //Obtener los los parametros
-    @OneToMany(mappedBy = "problem")
-
+    @OneToMany(mappedBy = "problem",cascade = CascadeType.ALL)
     private List<Parameter> parameters;
 
-    @OneToMany(mappedBy = "problem")
+    @OneToMany(mappedBy = "problem",cascade = CascadeType.ALL)
     private List<Return> returns;
 
-    public void addParameter(Parameter parameter){
-        this.parameters.add(parameter);
+    @OneToMany(mappedBy = "problem")
+    private List<Solution> solutions;
+
+    public boolean isPublish() {
+        return publish;
     }
 
-
-    public List<Parameter> getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(List<Parameter> parameters) {
-        this.parameters = parameters;
-    }
-
-    public List<Return> getReturns() {
-        return returns;
-    }
-
-    public void setReturns(List<Return> returns) {
-        this.returns = returns;
+    public void setPublish(boolean publish) {
+        this.publish = publish;
     }
 
     public Long getId() {
@@ -60,6 +51,14 @@ public class Problem {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStatement() {
@@ -86,19 +85,50 @@ public class Problem {
         this.difficulty = difficulty;
     }
 
-    public User getUser() {
-        return user;
+    public User getTeacher() {
+        return teacher;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
     }
 
-    public String getName() {
-        return name;
+    public ArrayList<String> getParameters() {
+        ArrayList<String> params = new ArrayList<>();
+        for(Parameter param: this.parameters){
+            params.add(param.getName());
+        }
+        return params;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setParameters(List<Parameter> parameters) {
+        this.parameters = parameters;
+    }
+
+    public ArrayList<String> getReturns() {
+        ArrayList<String> returns = new ArrayList<>();
+        for(Return return_: this.returns){
+            returns.add(return_.getName());
+        }
+        return returns;
+    }
+
+    public List<Parameter> getParametersObj(){
+        return this.parameters;
+    }
+    public List<Return> getReturnsObj(){
+        return this.returns;
+    }
+
+    public void setReturns(List<Return> returns) {
+        this.returns = returns;
+    }
+
+    public List<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(List<Solution> solutions) {
+        this.solutions = solutions;
     }
 }

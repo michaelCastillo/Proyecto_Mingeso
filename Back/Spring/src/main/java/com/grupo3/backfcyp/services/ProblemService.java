@@ -1,9 +1,10 @@
 package com.grupo3.backfcyp.services;
 
 
-import com.grupo3.backfcyp.models.Problem;
-import com.grupo3.backfcyp.models.User;
+import com.grupo3.backfcyp.models.*;
+import com.grupo3.backfcyp.repositories.ParameterReporitory;
 import com.grupo3.backfcyp.repositories.ProblemRepository;
+import com.grupo3.backfcyp.repositories.ReturnRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,50 +19,121 @@ public class ProblemService {
 
     @Autowired
     private ProblemRepository problemRepository;
-
     @Autowired
     private UserRepository userRepository;
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
+    @Autowired
+    private ParameterReporitory parameterReporitory;
+    @Autowired
+    private ReturnRepository returnRepository;
+
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public List<Problem> getProblems(){
 
         return this.problemRepository.findAll();
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
+    @CrossOrigin()
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Problem getProblemById(@PathVariable Long id){
         return this.problemRepository.findProblemById(id);
     }
 
+
+
     //Servicio para obtener el usuario relacionado a un problema, según la ID.
-    @CrossOrigin(origins = {"http://localhost:3000"})
+    @CrossOrigin
     @RequestMapping(value = "/{id}/getUser", method = RequestMethod.GET)
     @ResponseBody
     public String getUser(@PathVariable Long id){
 
-        return this.problemRepository.findProblemById(id).getUser().getName();
+        return this.problemRepository.findProblemById(id).getTeacher().getName();
     }
 
+
+
+    @CrossOrigin()
+    @RequestMapping(value = "/create/{id}")
+    @ResponseBody
+    public Problem createProblem(@PathVariable Long id, @Valid @RequestBody Problem problem){
+        User user = this.userRepository.findUserById(id);
+        if(user != null){ //Si el usuario existe.
+            if(!user.getRoles().isEmpty()){ //Si tiene roles asignados.
+                for(Role role : user.getRoles()){
+                    if(role.getRole().compareTo("teacher") == 0){//Si es profesor
+
+                        for(Parameter parameter: problem.getParametersObj()){
+                            parameter.setProblem(problem);
+                            //this.parameterReporitory.save(parameter);
+                        }
+                        for(Return return_: problem.getReturnsObj()){
+                            return_.setProblem(problem);
+                            //this.returnRepository.save(return_);
+                        }
+                        problem.setTeacher(user);
+                        this.problemRepository.save(problem);
+
+                        List<Problem> problems = user.getProblems();
+                        problems.add(problem);
+                        user.setProblems(problems);
+                        return problem;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+/*
     //Se agrega un problema asociado a un usuario
-    @CrossOrigin(origins = {"http://localhost:3000"})
-    @RequestMapping(value = "/{id}/createProblem",method = RequestMethod.POST)
+    @CrossOrigin
+    @RequestMapping(value = "/createProblem/{id}",method = RequestMethod.POST)
     @ResponseBody
     public Problem createProblem(@PathVariable Long id, @RequestBody Problem problem ){
 
-        //Si el usuario existe.
-        if(userRepository.findUserById(id) != null){
 
-            problem.setUser(userRepository.findUserById(id));
-            return this.problemRepository.save(problem);
+        //Si el usuario existe.
+        if(teacherRepository.findTeacherById(id) != null){
+
+            List<Problem> problems = teacher.getProblems();
+            problems.add(problem);
+            teacher.setProblems(problems);
+            System.out.println(problem.getParameters());
+            problem.setTeacher(teacherRepository.findTeacherById(id));
+            List<Parameter> parameters = problem.getParameters();
+            List<Return> returns = problem.getReturns();
+            //problem.setParameters(null);
+            //problem.setReturns(null);
+
+
+            for(Parameter parameter: problem.getParameters()){
+                parameter.setProblem(problem);
+                //this.parameterReporitory.save(parameter);
+            }
+            for(Return return_: problem.getReturns()){
+                return_.setProblem(problem);
+                //this.returnRepository.save(return_);
+            }
+            this.problemRepository.save(problem);
+            //problem.setReturns(returns);
+            //problem.setParameters(parameters);
+
+            return problem;
         }else{
             //Se debe imprimir por la página
             System.out.printf("El usuario no existe!\n");
             return null;
         }
     }
+    */
+    @CrossOrigin()
+    @PutMapping(value = "/createProblem/{id}/put")
+    @ResponseBody
+    public Problem updateProblem(@PathVariable Long id, @Valid @RequestBody Problem problem){
+        return this.problemRepository.save(problem);
+    }
+
     /*
     @PostMapping("/{userId}/problems")
     @ResponseBody

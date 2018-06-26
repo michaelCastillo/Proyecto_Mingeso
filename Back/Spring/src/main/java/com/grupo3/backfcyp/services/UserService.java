@@ -1,106 +1,118 @@
 package com.grupo3.backfcyp.services;
 
 
-import com.grupo3.backfcyp.models.Problem;
+import com.grupo3.backfcyp.models.Role;
+import com.grupo3.backfcyp.models.Section;
 import com.grupo3.backfcyp.models.User;
+import com.grupo3.backfcyp.repositories.RoleRepository;
+import com.grupo3.backfcyp.repositories.SectionRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserService {
 
-
     @Autowired
-    private UserRepository userRepository;
+    public UserRepository userRepository;
+    @Autowired
+    public RoleRepository roleRepository;
+    @Autowired
+    public SectionRepository sectionRepository;
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<User> getAllUsers(){
+    public List<User> getUsers(){
         return this.userRepository.findAll();
     }
-
-    @CrossOrigin(origins = {"http://localhost:3000"})
+    
+    @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public User getUser(@PathVariable Long id)
-    {
-        return userRepository.findUserById(id);
+    public User getUserById(@PathVariable Long id){
+        return this.userRepository.findUserById(id);   
+    }
+    
+    
+    @CrossOrigin
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    @ResponseBody
+    public User updateUser(@Valid @RequestBody User user){
+        return this.userRepository.save(user);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/getByRoles", method = RequestMethod.POST)
+    @ResponseBody
+    public List<User> getUsersByRole(@RequestBody @Valid Role role){
+        return this.roleRepository.findRoleByRole(role.getRole()).getUsers();
     }
 
 
-    @CrossOrigin()
-    @RequestMapping(value="/login",method = RequestMethod.POST)
+
+
+    //Creacion de un usuario de cualquier tipo a partir de roles ya creados.
+    @CrossOrigin
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public User login(@RequestBody User user){
-        //se valida si se encuentra el usuario en la base de datos.
-        if(user != null){
-            if( userExist(user) != null ){
-                System.out.println("Existe el usuario");
-                return user;
-            }else{
-                System.out.println("No existe el usuario");
-                return null;
+    public User createUser(@Valid @RequestBody User user){
+        List<Role> roleList;
+        if(!(roleList = user.getRoles()).isEmpty()){
+            for(Role role: roleList){
+                Role role_exist = roleRepository.findRoleByRole(role.getRole());
+                if(role_exist != null){//Si el rol existe
+                    role_exist.getUsers().add(user);
+                }
             }
         }
-        return null;
-
-    }
-
-    private User userExist(User user){
-        List<User> users = this.userRepository.findAll();
-
-        for (User userFromList:
-             users) {
-            if( (user.getName().compareTo(userFromList.getName()) == 0) && (user.getPassword().compareTo(userFromList.getPassword()) == 0)){
-                return user;
+        List<Section> sectionList;
+        if((sectionList =  user.getSections() ) != null){
+            for(Section section: sectionList){
+                Section section_exist = this.sectionRepository.findSectionByCode(section.getCode());
+                if(section_exist != null){
+                    section_exist.getUsers().add(user);
+                }
             }
         }
-        return null;
+        return this.userRepository.save(user);
     }
 
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
-    @RequestMapping(value = "/getProblems/{id}",method = RequestMethod.GET)
+    @CrossOrigin
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public List<Problem> getProblems(@PathVariable Long id) {
-        return this.userRepository.findUserById(id).getProblems();
+    public Map<String,Object> login(@RequestBody User user){
+        Map<String,String> user_data = new HashMap<String,String>();
+        System.out.println("Usuario:   " + user.getEmail() + "  " + user.getPassword());
+        Map<String,Object> response = new HashMap<String,Object>();
+        User userFronRepo = this.userRepository.findUserByEmailAndPasswordIgnoreCase(user.getEmail(),user.getPassword().toString());
+        if(userFronRepo != null){
+            user_data.put("logged","in");
+            user_data.put("id",userFronRepo.getId().toString());
+            user_data.put("name",userFronRepo.getName());
+            user_data.put("email",userFronRepo.getEmail());
+            response.put("user",user_data);
+            response.put("roles",userFronRepo.getRoles());
+        }else{
+            user_data.put("logged","out");
+            user_data.put("id","");
+            user_data.put("name","");
+            user_data.put("email","");
+            response.put("user",user_data);
+            response.put("roles",null);
+        }
+        return response;
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
-    //Se guarda un usuario (Sin problemas asociados)
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public User createUser(@RequestBody User user){
 
-        return userRepository.save(user);
-
-    }
-
-    @CrossOrigin()
-    @RequestMapping(value = "/put/{id}", method = RequestMethod.PUT)
-    @ResponseBody
-    public User updateUser(@PathVariable Long id ,@Valid @RequestBody User user){
-        User userFromRepo = this.userRepository.findUserById(id);
-        userFromRepo.setName(user.getName());
-        userFromRepo.setPassword(user.getPassword());
-        return user;
-    }
-
-    @CrossOrigin()
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseEntity<?> deleteUser(@PathVariable Long id){
-        this.userRepository.deleteById(id);
-
-        return ResponseEntity.ok().build();
-    }
 
 
 

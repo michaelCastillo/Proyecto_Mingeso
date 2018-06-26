@@ -33,6 +33,7 @@ public class ParameterService {
 
     }
     //Agregar un parametro con un problema asociado
+    /*
     @CrossOrigin(origins = {"http://localhost:3000"})
     @RequestMapping(value = "/{id_problem}/createParameter",method = RequestMethod.POST)
     @ResponseBody
@@ -44,7 +45,7 @@ public class ParameterService {
         parameterReporitory.save(parameter);
         return parameter;
     }
-
+*/
 
     /* Hay que enviarle un Json como este
 

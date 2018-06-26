@@ -1,16 +1,41 @@
 import React, {Component} from 'react'
-import { Grid, Row, Col, Label } from 'react-bootstrap';
+import { Grid, Row, Col, Label, Button } from 'react-bootstrap';
 import Login from '../login/login'
+import Register from '../register/register'
 import imagen from '../images/homeImage.png';
+
 class Home extends Component{
 
     constructor(props){
         
         super(props);
+        this.state ={
+            loginComponent: true
+        };
         this.login = React.createRef();
+        this.register = React.createRef();
+        this.changeComponentStatus = this.changeComponentStatus.bind(this);
     }
+    changeComponentStatus(event){
+        
+        if (this.state.loginComponent){
+            this.setState({loginComponent:false});
+        } else {
+            this.setState({loginComponent:true});
+        }
+    }
+   
 
     render(){
+        let component = null;
+        let buttonText = "";        
+        if (this.state.loginComponent){
+            buttonText = "Registrarse";
+            component = <Login ref = {this.login}/> ;
+        } else {
+            buttonText = "Ingresar";
+            component = <Register ref = {this.register}/> ; 
+        }
         return(
             
         <Grid class="pt-2">
@@ -42,9 +67,12 @@ class Home extends Component{
                 
                 </Col>
                 <Col md={3}>
-                    <h1> Ingresar </h1>
-                    <Login ref = {this.login}/> 
-                  
+                <Button             
+                  type="button" bsStyle="info" onClick = {this.changeComponentStatus}>
+                  {buttonText}
+                </Button>
+                    {component}
+                    
                 </Col>
             
         </Grid>

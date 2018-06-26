@@ -1,31 +1,46 @@
 package com.grupo3.backfcyp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Inheritance
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Long id;
 
     private String name;
-    private String tipo;
     private String password;
+    private String email;
+    private boolean bloqued;
 
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "users")
+    private List<Role> roles;
+
+    @OneToMany(mappedBy = "student")
+    private List<Solution> solutions;
+
+    @OneToMany(mappedBy = "teacher")
     private List<Problem> problems;
 
-    public List<Problem> getProblems() {
-        return problems;
+    @ManyToMany(mappedBy = "users")
+    private List<Section> sections;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "id_career")
+    private Career career;
+
+    public boolean isBloqued() {
+        return bloqued;
     }
 
-    public void setProblems(List<Problem> problems) {
-        this.problems = problems;
+    public void setBloqued(boolean bloqued) {
+        this.bloqued = bloqued;
     }
 
     public Long getId() {
@@ -44,14 +59,6 @@ public class User {
         this.name = name;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -59,6 +66,52 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-//Aqui hay que poner la relacion OneToMany con los problemas.
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(List<Solution> solutions) {
+        this.solutions = solutions;
+    }
+
+    public List<Problem> getProblems() {
+        return problems;
+    }
+
+    public void setProblems(List<Problem> problems) {
+        this.problems = problems;
+    }
+
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+
+    public Career getCareer() {
+        return career;
+    }
+
+    public void setCareer(Career career) {
+        this.career = career;
+    }
 }
