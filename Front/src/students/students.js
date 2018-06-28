@@ -19,7 +19,7 @@ class Students extends Component{
         let user = {
           role:"student"
         };
-        axios.post(`http://46.101.81.136:8181/Backend/users/getByRoles`,user)
+        axios.post(`http://35.226.163.50:8080/Backend/users/getByRoles`,user)
             .then(res => {
                 const students=res.data;
                 this.setState({ students });

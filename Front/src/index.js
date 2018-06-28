@@ -24,9 +24,9 @@ import Authorization from './hoc/roleRequire';
 
 import Signout from './login/signOut';
 
-const perm = Authorization(['coordination', 'admin']);
-const perm1 = Authorization(['teacher', 'coordination', 'admin']);
-const perm2 = Authorization(['student', 'admin']);
+const perm = Authorization(['coordination', 'su']);
+const perm1 = Authorization(['teacher', 'coordination', 'su']);
+const perm2 = Authorization(['student', 'su']);
 
 
 

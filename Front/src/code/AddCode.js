@@ -56,7 +56,7 @@ class Code extends Component{
                 //Por ahora es la id 6, cuando este el login bien se cambia por aquel que
                 //esté logueado.
                 let id_user = 6;
-                let global_url = `http://46.101.81.136:8181/Backend`;
+                let global_url = `http://35.226.163.50:8080/Backend`;
                 let local_url = `http://localhost:1313`;
                 let problem =  axios.get(global_url+`/problems/get/`+id_problem)
                 .then(res => {
@@ -126,7 +126,7 @@ class Code extends Component{
                     id_problem:id_problem
                     
                 };
-                const global_url = `http://46.101.81.136:8181/Backend/solutions/execute`;
+                const global_url = `http://35.226.163.50:8080/Backend/solutions/execute`;
                 const url = `http://localhost:1313/solutions/execute`;
 
                 axios.post(url,post_code)

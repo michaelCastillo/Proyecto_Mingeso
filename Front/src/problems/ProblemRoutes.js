@@ -8,7 +8,7 @@ import CreateProblem from './CreateProblem';
 import Authorization from '../hoc/roleRequire';
 import requireAuth from '../hoc/requireAuth';
 
-const perm1 = Authorization(['teacher', 'coordination', 'admin']);
+const perm1 = Authorization(['teacher', 'coordination', 'su']);
 
 
 // <Route path={`${this.props.match.path}/create`} render={props =>  

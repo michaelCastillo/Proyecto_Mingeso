@@ -71,7 +71,7 @@ class AddParameter extends Component{
     handleSubmit = (id) => {
         
         alert(this.state.parameters);
-        const url = `http://46.101.81.136:8181/Backend/parameters/`+id+`/createParameters`;
+        const url = `http://35.226.163.50:8080/Backend/parameters/`+id+`/createParameters`;
         console.log("URL => ");
         console.log(url);
         alert(url);
