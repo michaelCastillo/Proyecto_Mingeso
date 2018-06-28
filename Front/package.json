@@ -16,14 +16,19 @@
     "react-icons-kit": "^1.1.5",
     "react-loading": "^2.0.2",
     "react-native-elements": "^0.19.1",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
-    "react-scrollbar": "^0.5.4"
+    "react-scrollbar": "^0.5.4",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "react-admin": "^2.0.2"
   }
 }

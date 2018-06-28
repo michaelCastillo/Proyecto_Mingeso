@@ -35,7 +35,7 @@ class AddReturn extends Component {
     //Se hace la petición Post
     post_returnsCreate = (id_problem) =>{
 
-        const url = `http://46.101.81.136:8181/Backend/returns/`+id_problem+`/saveReturns`;
+        const url = `http://35.226.163.50:8080/Backend/returns/`+id_problem+`/saveReturns`;
         axios.post(url,this.state.returns)
         .then(res => {
             console.log(res.data);

@@ -83,7 +83,7 @@ class Register extends Component{
       };
 
       componentDidMount() {
-        axios.get(`http://46.101.81.136:8181/Backend/roles/`)
+        axios.get(`http://35.226.163.50:8080/Backend/roles/`)
                 .then(res => {
                     const roles = res.data;
                     //Se asigna falso para opened, para el collapse
@@ -103,7 +103,7 @@ class Register extends Component{
           email:this.state.email,
           roles:this.state.myRoles,
         };
-        const url = 'http://46.101.81.136:8181/Backend/users/create';
+        const url = 'http://35.226.163.50:8080/Backend/users/create';
         axios.post(url,user)
             .then(res => {
               let userResponse=res.data;

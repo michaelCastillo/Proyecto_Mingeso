@@ -35,7 +35,7 @@ class CreateProblem extends Component{
             language: this.state.language, 
             name: this.state.name
         };
-        const url = `http://46.101.81.136:8181/Backend/problems/createProblem/1`;
+        const url = `http://35.226.163.50:8080/Backend/problems/createProblem/1`;
         axios.post(url,problem)
         .then(res => {
             //Se toma la id del problema.
