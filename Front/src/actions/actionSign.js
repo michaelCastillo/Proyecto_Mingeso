@@ -8,7 +8,7 @@ export const LOGIN_PERMISSION = 'permision_user';
 
 
 
-const URL = 'http://46.101.81.136:8181/Backend/users';
+const URL = 'http://35.226.163.50:8080/Backend/users';
 
 export function signInAction( {email, password} , history) {
   return async (dispatch) => {

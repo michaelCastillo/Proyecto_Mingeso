@@ -53,7 +53,6 @@ class CreateProblem extends Component{
             //Se toma la id del problema.
             var id_problem = res.data.id;
             alert("Se ha agregado el problema junto con sus parametros y retornos.");
-            
         }).catch(error => {
             alert("Error");
             console.log(error.response);
