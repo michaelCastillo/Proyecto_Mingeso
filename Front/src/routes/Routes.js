@@ -4,6 +4,7 @@ import Code from '../code/AddCode';
 import Home from '../home/Home';
 import ProblemRoutes from '../problems/ProblemRoutes';
 import Login from '../login/login'
+import Profile from '../Profile/profile';
 
 
 
@@ -27,7 +28,7 @@ class Routes extends Component{
                 <Route path="/createProblem" component /> 
                 <Route path="/home" component ={Home}/>
                 <Route path="/login" component ={Login}/>
-
+                <Route path="/profile/:id" component={Profile}/>
                 </div>
             </Router>
             

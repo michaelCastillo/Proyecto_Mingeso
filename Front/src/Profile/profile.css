@@ -1,0 +1,27 @@
+/*
+section#opciontesIzq{
+    margin-top: 36px;
+    padding-bottom: 36px;
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    width: 500px;
+}
+*/
+
+section#cuadroDatos{
+    margin-top: 20px;
+    padding-bottom: 36px;
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    width: 500px;
+    position: relative;
+    left: 125px;
+}
+
+p#informacion
+{
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
