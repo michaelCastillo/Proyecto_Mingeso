@@ -15,7 +15,7 @@ public class Career {
     private String code;
 
     @OneToMany(mappedBy = "career")
-    private List<User> user;
+    private List<User> users;
 
     public Long getId() {
         return id;
@@ -42,10 +42,10 @@ public class Career {
     }
 
     public List<User> getUser() {
-        return user;
+        return users;
     }
 
     public void setUser(List<User> user) {
-        this.user = user;
+        this.users = user;
     }
 }

@@ -21,6 +21,9 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "users")
+    private List<User> users;
+
     @OneToMany(mappedBy = "student")
     private List<Solution> solutions;
 
