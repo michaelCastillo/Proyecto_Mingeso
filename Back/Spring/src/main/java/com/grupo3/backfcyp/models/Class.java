@@ -19,18 +19,16 @@ public class Class {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "id_user")
-    private List<User> users;
+    @JoinColumn(name = "id_teacher",nullable = false)
+    private User students;
 
 
-
-
-    public List<User> getUsers() {
-        return users;
+    public User getStudents() {
+        return students;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setStudents(User students) {
+        this.students = students;
     }
 
     public Long getId() {
