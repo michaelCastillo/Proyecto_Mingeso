@@ -2,7 +2,7 @@ import ScrollArea from 'react-scrollbar';
 import React, { Component } from 'react';
 import {Button, Form,Grid, Row, Col, Label ,FormControl,FormGroup,InputGroup,DropdownButton,MenuItem, ControlLabel} from 'react-bootstrap';
 import axios from 'axios';
-import './addproblem.css';
+//import './addproblem.css';
 
 class AddParameter extends Component{
 
@@ -13,8 +13,7 @@ class AddParameter extends Component{
         this.state = {
 
             parameters:[{
-                name: '',
-                type: 'string'
+                name: ''
             }]
         };
         this.handleRemoveinput = this.handleRemoveinput.bind(this);
@@ -112,14 +111,8 @@ class AddParameter extends Component{
                             {this.state.parameters.map((parameters, idx) => (
                                 
                                     <FormGroup>
-                                        <Col md={3}>
-                                            <FormControl componentClass="select" value = {this.state.type} onChange = {this.handleType(idx)} > 
-                                                <option value = "string"> String </option>
-                                                <option value="int"> Int </option>
-                                            </FormControl>
-
-                                        </Col>
-                                        <Col md={9}>
+                                        
+                                        <Col md={12}>
                                             <InputGroup>
                                                 <FormControl 
                                                     type="text"

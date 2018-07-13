@@ -39,7 +39,7 @@ public class Results {
         ArrayList<String> comparisons_arr = new ArrayList<>();
         for(String comp: comparisons){
             if(comp.compareTo("") !=0) {
-                System.out.println("comparacion: " + comp);
+                //System.out.println("comparacion: " + comp);
                 comparisons_arr.add(comp);
             }
         }

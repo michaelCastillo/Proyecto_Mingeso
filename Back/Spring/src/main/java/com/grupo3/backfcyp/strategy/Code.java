@@ -65,13 +65,15 @@ public class Code {
         int numCorrects = 0;
         if(results.getError().equals("")){
             String[] stdout_s = results.getStdout().split("\n");
-            System.out.println("  Glot: "+stdout_s[0]+"  Front: " + this.o_outputs.get(0));
-            if(stdout_s[0].equals(this.o_outputs.get(0))){
-                System.out.println("Las salidas son iguales");
-                numCorrects++;
-                result_compare.add("Correcto");
-            }else{
-                result_compare.add("Incorrecto");
+            if(!this.o_outputs.isEmpty()){
+                System.out.println("  Glot: "+stdout_s[0]+"  Front: " + this.o_outputs.get(0));
+                if(stdout_s[0].equals(this.o_outputs.get(0))){
+                    System.out.println("Las salidas son iguales");
+                    numCorrects++;
+                    result_compare.add("Correcto");
+                }else{
+                    result_compare.add("Incorrecto");
+                }
             }
         }
         if(numCorrects == result_compare.size()){

@@ -113,13 +113,20 @@ public class SolutionService {
         //Code
 
         String codeFromFront = jsonIn.get("code").toString();
-        Results results;
-        Code code = execute(codeFromFront,problem,solution);
-        ArrayList<String> results_compare = code.compareResults(); //Se comparan los resultados
+        Results results = null;
 
+        List<Results> old_results = solution.getResults();
+        for(Results res: old_results){
+            if(res.getCode().compareTo(codeFromFront) == 0){
+                results = res;
+                break;
+            }
+        }
 
-        if((results = this.resultsRepository.findResultsByCodeAndSolution(codeFromFront,solution)) == null){
-
+        if(results == null){
+            System.out.println("results es nulo, no hay codigo repetido");
+            Code code = execute(codeFromFront,problem,solution);
+            ArrayList<String> results_compare = code.compareResults(); //Se comparan los resultados
             results= code.getResults();
             results.setCode(code.getCode());
             //Se almacenan los resultados obtenidos de la ejecución.
@@ -145,8 +152,6 @@ public class SolutionService {
         }else{
             System.out.println("El codigo ya existe");
             //Se cambian ciertos parametros de solution con los actuales
-
-
             //El codigo ya existe por lo tanto solo se actualiza su fecha.
             results.setTimestamp(new Date());
             this.resultsRepository.save(results);
@@ -229,6 +234,13 @@ public class SolutionService {
     @ResponseBody
     public List<Results> getResults(@PathVariable Long id){
         return this.solutionRepository.findSolutionById(id).getResults();
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/deleteAll",method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteAll(){
+        this.solutionRepository.deleteAll();
     }
 
     @CrossOrigin

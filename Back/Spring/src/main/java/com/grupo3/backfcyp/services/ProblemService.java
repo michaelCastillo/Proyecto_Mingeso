@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/problems")
@@ -57,18 +59,18 @@ public class ProblemService {
     @CrossOrigin()
     @RequestMapping(value = "/create/{id}")
     @ResponseBody
-    public Problem createProblem(@PathVariable Long id, @Valid @RequestBody Problem problem){
+    public Map<String,Object> createProblem(@PathVariable Long id, @Valid @RequestBody Problem problem){
         User user = this.userRepository.findUserById(id);
+        Map<String,Object> response = new HashMap<String,Object>();
         if(user != null){ //Si el usuario existe.
             if(!user.getRoles().isEmpty()){ //Si tiene roles asignados.
                 for(Role role : user.getRoles()){
-                    if(role.getRole().compareTo("teacher") == 0){//Si es profesor
-
-                        for(Parameter parameter: problem.getParametersObj()){
+                    if((role.getRole().compareTo("teacher") == 0) || (role.getRole().compareTo("su") == 0)){//Si es profesor
+                        for(Parameter parameter: problem.obtenerParametersObj()){
                             parameter.setProblem(problem);
                             //this.parameterReporitory.save(parameter);
                         }
-                        for(Return return_: problem.getReturnsObj()){
+                        for(Return return_: problem.obtenerReturnsObj()){
                             return_.setProblem(problem);
                             //this.returnRepository.save(return_);
                         }
@@ -78,12 +80,16 @@ public class ProblemService {
                         List<Problem> problems = user.getProblems();
                         problems.add(problem);
                         user.setProblems(problems);
-                        return problem;
+                        response.put("status","added");
+                        response.put("problem",problem);
+                        return response;
                     }
                 }
             }
         }
-        return null;
+        response.put("status","error");
+        response.put("problem",null);
+        return response;
     }
 /*
     //Se agrega un problema asociado a un usuario

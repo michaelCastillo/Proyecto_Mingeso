@@ -52,6 +52,7 @@ public class StrategyPython implements Strategy {
 
 
             System.out.println("Output from JDoodle .... \n");
+            int i = 0;
             while ((output = bufferedReader.readLine()) != null) {
                 results = parseResults(output,code);
                 outputs.add(output);

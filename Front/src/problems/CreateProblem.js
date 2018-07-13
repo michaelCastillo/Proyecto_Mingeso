@@ -1,17 +1,18 @@
 
 import React, { Component } from 'react';
-import { ControlLabel,Grid, Row, Col, Label, FormGroup,FormControl,MenuItem,DropdownButton,Form } from 'react-bootstrap';
+import { ControlLabel,Grid, Row, Col, Label,Button, FormGroup,FormControl,MenuItem,DropdownButton,Form } from 'react-bootstrap';
 import axios from 'axios';
-import AddReturn from './AddReturn';
-import AddParameter from './AddParameter';
+//import AddReturn from './AddReturn';
+//import AddParameter from './AddParameter';
+import Tests from './tests/Tests';
 
 class CreateProblem extends Component{
 
 
     constructor(props){
         super(props);
-        this.parameters = React.createRef();
-        this.returns = React.createRef();
+        this.tests = React.createRef();
+        
 
         this.state = {
 
@@ -30,9 +31,13 @@ class CreateProblem extends Component{
 
     post_create(event) {
 
-        //Se toman los parametros y retornos desde los componentes
-        this.setState({parameters : this.parameters.current.state.parameters,
-                        returns: this.returns.current.state.returns
+        //Se toman las tuplas de las pruebas
+        var tuples =this.tests.current.state.tuples;
+        var parameters =[];
+        var returns =[];
+        tuples.map((tuple) =>{
+            parameters.push({name:tuple.current.state.in});
+            returns.push({name:tuple.current.state.out});
         });
         
         event.preventDefault();
@@ -41,13 +46,16 @@ class CreateProblem extends Component{
             difficulty : this.state.difficulty,
             language: this.state.language, 
             name: this.state.name,
-            parameters: this.parameters.current.state.parameters,
-            returns: this.returns.current.state.returns,
+            parameters: parameters,
+            returns: returns,
         };
         console.log(problem);
         //1const url = `http://46.101.81.136:8181/Backend/problems/1/createProblem`;
-        const url = `http://35.226.163.50:8080/Backend/problems/create/2`;
 
+        const gc = `http://35.226.163.50:8080/Backend`;
+        const local = `http://localhost:1313`
+        const url = local+`/problems/create/`+localStorage.getItem('userId');
+        console.log(url);
         axios.post(url,problem)
         .then(res => {
             //Se toma la id del problema.
@@ -59,6 +67,7 @@ class CreateProblem extends Component{
             alert(error.response);
             return -1;
         });
+        
     }
 
     handleDifficulty(event){
@@ -126,20 +135,18 @@ class CreateProblem extends Component{
                    onChange={this.handlerStatement} />
             </FormGroup>
             
-            
-                
-                    <AddParameter ref = {this.parameters}/>
-                
-                
-                
-                    <AddReturn ref = {this.returns}/>           
-                
-            
-         
-          <button type="submit"> Agregar</button> 
+            <Tests ref ={this.tests}/>
+
+            <Button onClick={this.post_create.bind(this)}>post</Button>
         </Form>
         );
     }
 }
 
 export default CreateProblem;
+/*
+    <AddParameter ref = {this.parameters}/>
+
+
+
+    <AddReturn ref = {this.returns}/>           */
