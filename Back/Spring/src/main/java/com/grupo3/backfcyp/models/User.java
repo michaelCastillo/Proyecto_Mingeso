@@ -42,6 +42,14 @@ public class User {
         return bloqued;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     public void setBloqued(boolean bloqued) {
         this.bloqued = bloqued;
     }
