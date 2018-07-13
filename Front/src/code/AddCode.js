@@ -19,6 +19,14 @@ import 'brace/mode/python';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
 
+//Components1
+
+import Correction from './Correction.js';
+
+
+
+
+
 
 
 
@@ -38,6 +46,7 @@ class Code extends Component{
             comparison:[],
             solution:[],
             ide:"",
+            simplCode:[],
             
 
 
@@ -55,7 +64,7 @@ class Code extends Component{
                 let id_problem = this.props.match.params.id;
                 //Por ahora es la id 6, cuando este el login bien se cambia por aquel que
                 //esté logueado.
-                let id_user = 6;
+                let id_user = localStorage.getItem('userId');
                 let global_url = `http://35.226.163.50:8080/Backend`;
                 let local_url = `http://localhost:1313`;
                 let problem =  axios.get(global_url+`/problems/get/`+id_problem)
@@ -174,6 +183,9 @@ class Code extends Component{
                 //this.setState({code:code});
                 //console.log("code");
                 //console.log(this.state.solution.code);
+
+                //Accion del cambio del panel de sugerencias
+                this.handleRedaction(this.state.solution.code);
               }
               handleAce(newValue) {
                 console.log('change',newValue);
@@ -240,6 +252,31 @@ class Code extends Component{
                 // });
             }
 
+            handleRedaction(varCode)
+            {
+                /*
+                var lineas = varCode.split("\n");
+
+                var i;
+                for (i = 0; i < lineas.length; i++) { 
+                    console.log(lineas[i]);
+                }
+                */
+
+                if(varCode == "mira")
+                {
+                    this.state.simplCode = ["MIRA"];
+                }
+                else if(varCode == "  ")
+                {
+                    this.state.simplCode = ["TAB"];
+                }
+                else
+                {
+                    this.state.simplCode = [];
+                }
+            }
+
               
 
     render(){
@@ -302,6 +339,9 @@ class Code extends Component{
                                     <Col md ={6}>
                                         <Label>Cerrado: {this.isClosed()} </Label>
                                     </Col>
+                                </Row>
+                                <Row>
+                                    <Correction data={this.state.simplCode} />
                                 </Row>
                             
                         </Col>
