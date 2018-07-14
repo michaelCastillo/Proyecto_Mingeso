@@ -33,7 +33,7 @@ class ShowProblems extends Component{
 
     componentDidMount() {
             
-            axios.get(`http://46.101.81.136:8181/Backend/problems/`)
+            axios.get(`http://35.226.163.50:8080/Backend/problems/`)
                 .then(res => {
                     const problems = res.data;
                     //Se asigna falso para opened, para el collapse

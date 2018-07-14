@@ -46,14 +46,13 @@ class CreateProblem extends Component{
         };
         console.log(problem);
         //1const url = `http://46.101.81.136:8181/Backend/problems/1/createProblem`;
-        const url = `http://localhost:1313/problems/create/2`;
+        const url = `http://35.226.163.50:8080/Backend/problems/create/2`;
 
         axios.post(url,problem)
         .then(res => {
             //Se toma la id del problema.
             var id_problem = res.data.id;
             alert("Se ha agregado el problema junto con sus parametros y retornos.");
-            
         }).catch(error => {
             alert("Error");
             console.log(error.response);
@@ -123,7 +122,8 @@ class CreateProblem extends Component{
 
             <FormGroup>
                 <ControlLabel>Enunciado</ControlLabel>
-                <FormControl componentClass="textarea" placeholder="Ingrese el enunciado" />
+                <FormControl componentClass="textarea" placeholder="Ingrese el enunciado" value={this.state.statement} 
+                   onChange={this.handlerStatement} />
             </FormGroup>
             
             

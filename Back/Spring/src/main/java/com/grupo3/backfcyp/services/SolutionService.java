@@ -1,12 +1,9 @@
 package com.grupo3.backfcyp.services;
 
 import com.google.gson.JsonObject;
-import com.grupo3.backfcyp.models.Problem;
-import com.grupo3.backfcyp.models.Solution;
-import com.grupo3.backfcyp.models.SolutionLog;
-import com.grupo3.backfcyp.models.User;
+import com.grupo3.backfcyp.models.*;
 import com.grupo3.backfcyp.repositories.ProblemRepository;
-import com.grupo3.backfcyp.repositories.SolutionLongRepository;
+import com.grupo3.backfcyp.repositories.ResultsRepository;
 import com.grupo3.backfcyp.repositories.SolutionRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
 import com.grupo3.backfcyp.strategy.Code;
@@ -15,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/solutions")
@@ -31,7 +25,8 @@ public class SolutionService {
     @Autowired
     private ProblemRepository problemRepository;
     @Autowired
-    private SolutionLongRepository solutionLongRepository;
+    private ResultsRepository resultsRepository;
+
 
 
     /* Getter */
@@ -97,35 +92,160 @@ public class SolutionService {
 
     }
 
+
+
     @CrossOrigin
     @RequestMapping(value = "/execute",method = RequestMethod.POST)
     @ResponseBody
-    public Results executeCode(@RequestBody Map<String,Object> jsonIn){
+    public Map<String,Object> executeCode(@RequestBody Map<String,Object> jsonIn){
         System.out.println(jsonIn);
+        //Se extraen los valores del post.
+        //Solution
         Long id_solution = Long.parseLong(jsonIn.get("id_solution").toString());
         Solution solution = this.solutionRepository.findSolutionById(id_solution);
-        List<SolutionLog> solutionLogs = solution.getSolutionLogs();
-        SolutionLog newSolutionLog = new SolutionLog();
+        //Problem
+        Problem problem = solution.getProblem();
 
-        //Ejecuto el codigo
-        Code code = new Code();
-        code.setCode(jsonIn.get("code").toString());
-        //code.setO_inputs(jsonIn.get("o_outputs"));
-        ArrayList<Date> dates = new ArrayList<>();
-        Date currentDate = new Date();
-        int actualVal = currentDate.compareTo(solutionLogs.get(0).getDate());
-        SolutionLog lastSolLog;
-        for(SolutionLog solutionLog: solutionLogs){
-            if(currentDate.compareTo(solutionLog.getDate()) < actualVal ){
-                System.out.println("Es menor");
-                lastSolLog = solutionLog;
-                actualVal = currentDate.compareTo(solutionLog.getDate());
-            }
+        //SolutionLog
+        //time
+        int time = Integer.parseInt(jsonIn.get("time").toString());
+        solution.setTime(time);
+        //Code
+
+        String codeFromFront = jsonIn.get("code").toString();
+        Results results;
+        Code code = execute(codeFromFront,problem,solution);
+        ArrayList<String> results_compare = code.compareResults(); //Se comparan los resultados
+
+
+        if((results = this.resultsRepository.findResultsByCodeAndSolution(codeFromFront,solution)) == null){
+
+            results= code.getResults();
+            results.setCode(code.getCode());
+            //Se almacenan los resultados obtenidos de la ejecución.
+            //Se comparan los resultados.
+
+            results.setComparison(results_compare);
+            System.out.println(results);
+            results.setSolution(solution);
+            solution.addResult(results);
+            //Se guarda el codigo de la solución.
+            this.resultsRepository.save(results);
+
+            //Se genera un objeto para retornar al front.
+            Map<String,Object> return_to_front = new HashMap<String,Object>();
+            return_to_front.put("time",time);
+
+            return_to_front.put("solution",solution);
+            return_to_front.put("results",results);
+            return_to_front.put("comparison",results_compare);
+            System.out.println(return_to_front);
+            this.solutionRepository.save(solution);
+            return return_to_front;
+        }else{
+            System.out.println("El codigo ya existe");
+            //Se cambian ciertos parametros de solution con los actuales
+
+
+            //El codigo ya existe por lo tanto solo se actualiza su fecha.
+            results.setTimestamp(new Date());
+            this.resultsRepository.save(results);
+
+            //Se genera un objeto para retornar al front.
+            Map<String,Object> return_to_front = new HashMap<String,Object>();
+            return_to_front.put("time",time);
+            return_to_front.put("solution",solution);
+            return_to_front.put("results",results);
+            return_to_front.put("comparison",results.getComparison());
+            System.out.println(return_to_front);
+            this.solutionRepository.save(solution);
+            return return_to_front;
         }
-
-
-        return null;
     }
+
+    private Code execute(String code_in, Problem problem, Solution solution){
+        System.out.println("EXECUTE! ");
+        System.out.println("Problem: "+problem.getReturns().get(0));
+        ArrayList<String> params = problem.getParameters();
+        ArrayList<String> returns = problem.getReturns();
+        Code code = new Code(code_in,params);
+        code.setLanguage(problem.getLanguage());
+        code.setO_outputs(returns);
+        //Se ejecuta el codigo
+        code.exec();
+        code.compareResults();
+        //Si esta correcto
+        boolean isCorrect ;
+        //Se aumenta el valor del numero de exitosos o fallidos segun corresponda.
+        if(isCorrect = code.isCorrect()){
+            System.out.println("Es correcto");
+            solution.addSucc();
+            solution.setSuccess(true);
+            this.solutionRepository.save(solution);
+
+        }else{
+            System.out.println("Es incorrecto");
+            solution.addFails();
+            solution.setSuccess(false);
+            this.solutionRepository.save(solution);
+        }
+        solution.setCode(code.getCode());
+
+        return code;
+    }
+
+
+
+    @CrossOrigin
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> saveSolution(@RequestBody Map<String,String> jsonIn){
+        Map<String,String> response = new HashMap<>();
+        try{
+
+            Long idSol = Long.parseLong(jsonIn.get("id_solution"));
+            Solution solution = this.solutionRepository.findSolutionById(idSol);
+            if(solution.getSuccess()){
+                solution.setClosed(true);
+                this.solutionRepository.save(solution);
+                response.put("status","closed");
+                System.out.println("Cerrada");
+            }else{
+                //No hay cambios y la solucion aun no se cierra.
+                response.put("status","not success, not closed");
+                System.out.println("No cerrada");
+            }
+
+        }catch (Exception error){
+            response.put("status",error.toString());
+        }
+        return response;
+    }
+
+
+
+    @CrossOrigin
+    @RequestMapping(value = "/{id_solution}/getLog",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Results> getResults(@PathVariable Long id){
+        return this.solutionRepository.findSolutionById(id).getResults();
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{id}/getTime")
+    @ResponseBody
+    public int getTime(@PathVariable Long id){
+        return this.solutionRepository.findSolutionById(id).getTime();
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    public void test(){
+        System.out.println("Test!");
+    }
+
+
 
 
 

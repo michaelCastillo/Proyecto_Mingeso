@@ -5,7 +5,19 @@ import Code from '../code/AddCode';
 import {Button, Grid,Row} from 'react-bootstrap';
 import ShowProblems from './ShowProblems';
 import CreateProblem from './CreateProblem';
+import Authorization from '../hoc/roleRequire';
+import requireAuth from '../hoc/requireAuth';
 
+const perm1 = Authorization(['teacher', 'coordination', 'su']);
+
+
+// <Route path={`${this.props.match.path}/create`} render={props =>  
+//<CreateProblem {...props}/>
+//}/>
+
+//<Route path={`${this.props.match.path}/show`} render={props =>  
+ //   <ShowProblems {...props}/>
+//} />
 
 class ProblemRoutes extends Component{
 
@@ -27,15 +39,19 @@ class ProblemRoutes extends Component{
                     <div>
                         <Grid >
                             <Row className = "grid-show" >
-                            <Route path={`${this.props.match.path}/create`} render={props =>  
-                                <CreateProblem {...props}/>
-                            } />
+                            
+                            <Route path="/problems/create" component ={perm1(CreateProblem)}/>
+
+
+
                             </Row >
                             <Row className = "grid-show" >
-                            <Route path={`${this.props.match.path}/show`} render={props =>  
-                                <ShowProblems {...props}/>
-                            } />
+
+                            <Route path="/problems/show" component ={requireAuth(ShowProblems)}/>
+
+                           
                             </Row >
+
                         </Grid >
                     </div>
                 </Router>
