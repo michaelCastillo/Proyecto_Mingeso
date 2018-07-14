@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel, Col, Panel, Checkbox} from "react-bootstrap";
 import './register.css'
@@ -209,5 +210,6 @@ render(){
   
    }    
 }
+
 
 export default Register;
