@@ -42,7 +42,7 @@ class ShowUsersList extends Component {
 
     componentDidMount() {
 
-        axios.get(`http://46.101.81.136:8181/Backend/users`)
+        axios.get(`http://35.226.163.50:8080/Backend/users`)
             .then(res => {
                 const users = res.data;
                 //Se asigna falso para opened, para el collapse
@@ -55,7 +55,7 @@ class ShowUsersList extends Component {
             }).catch(error => {
                 console.log(error.response)
             });
-        axios.get(`http://46.101.81.136:8181/Backend/sections/`)
+        axios.get(`http://35.226.163.50:8080/Backend/sections/`)
             .then(res => {
                 const sections = res.data;
                 //Se asigna falso para opened, para el collapse
@@ -65,7 +65,7 @@ class ShowUsersList extends Component {
                 alert("Error con conexion a base de datos de secciones");
                 console.log(error.response)
             });
-        axios.get(`http://46.101.81.136:8181/Backend/roles`)
+        axios.get(`http://35.226.163.50:8080/Backend/roles`)
             .then(res => {
                 const roles = res.data;
                 //Se asigna falso para opened, para el collapse
@@ -129,12 +129,15 @@ class ShowUsersList extends Component {
         let userAux = [];
         this.state.originalUsers.map((user) => {
             if (event.target.value != "all") {
-                user.sections.map((section) => {
-                    if(section.id == event.target.value){
-                        userAux.push(user);
-                    }
-                });
-                this.state.usersSections=userAux;
+                if(user.sections){
+                    user.sections.map((section) => {
+                        if(section.id == event.target.value){
+                            userAux.push(user);
+                        }
+                    });
+                    this.state.usersSections=userAux;
+                }
+                
             } else {
                 this.state.usersSections=this.state.originalUsers;
             }
@@ -158,14 +161,17 @@ class ShowUsersList extends Component {
     createSectionsOptions() {
         let items = [];
         let aux = 0;
-        this.state.sections.map((section) => {
-            return (
-                items.push(<option
-                    key={aux++}
-                    value={section.id}
-                    onChange={this.handleShowSections}> {section.code} </option>)
-            )
-        });
+        if(this.state.sections){
+            this.state.sections.map((section) => {
+                return (
+                    items.push(<option
+                        key={aux++}
+                        value={section.id}
+                        onChange={this.handleShowSections}> {section.code} </option>)
+                )
+            });
+        }
+        
         return items;
     }
 

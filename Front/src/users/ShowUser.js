@@ -27,7 +27,7 @@ class ShowUser extends Component {
         let id_user = this.props.id;
         //Por ahora es la id 6, cuando este el login bien se cambia por aquel que
         //esté logueado.
-        let global_url = `http://46.101.81.136:8181/Backend`;
+        let global_url = `http://35.226.163.50:8080/Backend`;
         let user = axios.get(global_url + `/users/` + id_user)
             .then(res => {
                 const user = res.data;
@@ -46,9 +46,12 @@ class ShowUser extends Component {
 
     showSection() {
         let items = [];
-        this.state.sections.map((section) => {
-            items.push(<ListGroupItem bsStyle="info"> {section.code} </ListGroupItem>);
-        });
+        if(this.state.sections){
+            this.state.sections.map((section) => {
+                items.push(<ListGroupItem bsStyle="info"> {section.code} </ListGroupItem>);
+            });
+        }
+        
         return items;
     }
     showRole() {
