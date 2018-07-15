@@ -160,32 +160,35 @@ class EditUser extends Component {
         let items = [];
         let aux = 0;
         let flag = 0;
-        this.state.allSections.map((section) => {
-            this.state.sections.map((mySection) => {
-                if (mySection.id == section.id) {
-                    flag = 1;
+        if((this.state.allSections)&&(this.state.sections)){
+            this.state.allSections.map((section) => {
+                this.state.sections.map((mySection) => {
+                    if (mySection.id == section.id) {
+                        flag = 1;
+                    }
+                });
+                if (flag == 1) {
+                    let sectionAux = {
+                        id: section.id,
+                        code: section.code
+                    };
+                    this.state.newSections.push(sectionAux);
+                    items.push(<Checkbox
+                        key={aux++}
+                        defaultChecked
+                        value={[section.id, section.code]}
+                        onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
+                } else {
+                    items.push(<Checkbox
+                        key={aux++}
+                        value={[section.id, section.code]}
+                        onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
                 }
+                flag = 0;
+    
             });
-            if (flag == 1) {
-                let sectionAux = {
-                    id: section.id,
-                    code: section.code
-                };
-                this.state.newSections.push(sectionAux);
-                items.push(<Checkbox
-                    key={aux++}
-                    defaultChecked
-                    value={[section.id, section.code]}
-                    onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
-            } else {
-                items.push(<Checkbox
-                    key={aux++}
-                    value={[section.id, section.code]}
-                    onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
-            }
-            flag = 0;
-
-        });
+        }
+        
         return items;
     }
     handleCheckboxSections(event) {
