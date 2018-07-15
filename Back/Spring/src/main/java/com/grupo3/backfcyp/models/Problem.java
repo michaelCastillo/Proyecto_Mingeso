@@ -113,10 +113,10 @@ public class Problem {
         return returns;
     }
 
-    public List<Parameter> getParametersObj(){
+    public List<Parameter> obtenerParametersObj(){
         return this.parameters;
     }
-    public List<Return> getReturnsObj(){
+    public List<Return> obtenerReturnsObj(){
         return this.returns;
     }
 

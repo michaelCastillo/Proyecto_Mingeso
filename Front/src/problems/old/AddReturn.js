@@ -11,7 +11,7 @@ class AddReturn extends Component {
         super(props);
         this.state = {
             returns:[{
-                name:'', type:'string'
+                name:''
             }]
         }
 
@@ -93,14 +93,7 @@ class AddReturn extends Component {
                     >
                         {this.state.returns.map((returns, idx) => (
                                 <FormGroup>
-                                    <Col md={3}>
-                                        <FormControl componentClass="select"value = {this.state.type} id="tipo" onChange = {this.handlereturns(idx)} > 
-                                            <option value = "string"> String </option>
-                                            <option value="int"> Int </option>
-                                        </FormControl>
-
-                                    </Col>
-                                    <Col md={9}>
+                                    <Col md={12}>
                                         <InputGroup>
                                             <FormControl 
                                                 type="text"

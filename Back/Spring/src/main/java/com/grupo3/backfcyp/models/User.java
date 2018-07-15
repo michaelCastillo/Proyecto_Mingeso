@@ -17,26 +17,58 @@ public class User {
     private String password;
     private String email;
     private boolean bloqued;
+    private String career;
 
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<User> users;
+
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Solution> solutions;
 
     @OneToMany(mappedBy = "teacher")
+    @JsonIgnore
     private List<Problem> problems;
 
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private List<Section> sections;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "students")
     @JsonIgnore
-    @JoinColumn(name = "id_career")
-    private Career career;
+    private List<Class> classUser;
+
+    public List<Class> getClassUser() {
+        return classUser;
+    }
+
+    public void setClassUser(List<Class> classUser) {
+        this.classUser = classUser;
+    }
+
+    public String getCareer() {
+        return career;
+    }
+
+    public void setCareer(String career) {
+        this.career = career;
+    }
 
     public boolean isBloqued() {
         return bloqued;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public void setBloqued(boolean bloqued) {
@@ -107,11 +139,4 @@ public class User {
         this.sections = sections;
     }
 
-    public Career getCareer() {
-        return career;
-    }
-
-    public void setCareer(Career career) {
-        this.career = career;
-    }
 }

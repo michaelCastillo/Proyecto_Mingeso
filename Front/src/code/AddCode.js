@@ -55,10 +55,10 @@ class Code extends Component{
                 let id_problem = this.props.match.params.id;
                 //Por ahora es la id 6, cuando este el login bien se cambia por aquel que
                 //esté logueado.
-                let id_user = 6;
+                let id_user =localStorage.getItem('userId');
                 let global_url = `http://35.226.163.50:8080/Backend`;
                 let local_url = `http://localhost:1313`;
-                let problem =  axios.get(global_url+`/problems/get/`+id_problem)
+                let problem =  axios.get(local_url+`/problems/get/`+id_problem)
                 .then(res => {
                     const problem = res.data;
                     this.setState({
@@ -72,7 +72,6 @@ class Code extends Component{
                 //Se crea una solución vacía.
                 let solution = {
                     title:"",
-                    code:"",
                     fails:0,
                     successes:0,
                     time:0,
@@ -82,13 +81,13 @@ class Code extends Component{
                     id_problem:id_problem,
                     id_user:id_user
                 };
-                let sol_resp = axios.post(global_url+`/solutions/create`,solution).
+                let sol_resp = axios.post(local_url+`/solutions/create`,solution).
                 then(res => {
                     console.log("resultado");
                     console.log(res);
-                    var solution = res.data;
-                    var codeDeformed = this.deformCode(solution.code);
-                    solution.code = codeDeformed;
+                    var solution = res.data.solution;
+                    var codeDeformed = this.deformCode(res.data.code);
+                    this.setState({code:codeDeformed});
                     this.setState({solution:solution});
                     this.setState({ready:true});
                 }).catch(error => {
@@ -115,12 +114,12 @@ class Code extends Component{
             toCode = (save) =>{
                 
                 let id_problem = this.props.match.params.id;
-                var codeFormat = this.state.solution.code.replace('\\',"\\\\");
+                var codeFormat = this.state.code.replace('\\',"\\\\");
                 codeFormat = codeFormat.replace(/"/gi, "\\\"");
                 var time = this.timer.current.state.time;
                 let post_code ={ 
                     
-                    code:codeFormat,
+                    code:codeFormat, 
                     time:time,
                     id_solution:this.state.solution.id,
                     id_problem:id_problem
@@ -133,8 +132,9 @@ class Code extends Component{
                 .then(res => {
                     let solution = res.data.solution;
                     let local_url = `http://localhost:1313/solutions/save`;
-                    solution.code = this.deformCode(solution.code);
+                    let code = this.deformCode(res.data.code);
                     this.setState({
+                        code:code,
                         results:res.data.results,
                         comparison:res.data.comparison,
                         solution:solution,
@@ -162,10 +162,8 @@ class Code extends Component{
               }
 
               handleCode(newValue){
-                let solution = this.state.solution;
-                solution.code = newValue;
-                this.setState({solution:solution});
-                console.log("Code: ",this.state.solution.code);
+                this.setState({code:newValue});
+                console.log("Code: ",this.state.code);
                 console.log("solution ",this.state.solution);
                 //var code = this.state.solution.code.concat(newValue);
                 //console.log(code);
@@ -181,27 +179,46 @@ class Code extends Component{
               onLoad(editor) {
                 console.log("i've loaded");
               }
-              onComparison(comparison){
-                console.log(comparison);
-                if(comparison == "Correcto"){
-                    return(
-                        <th style={{color:'#2D882D'}}> {comparison}</th>
-                    );
-                }else{
-                    return(
-                        <th style={{color:'#f44242'}}> {comparison}</th>
-                    );
-                }
+              onComparison(index){
+                  if(this.state.solution.test != null){
+
+                      if( index < this.state.solution.test.results.length){
+                        console.log("index => "+index);
+                        console.log(this.state.solution.test.results[index].result);
+    
+                        if(this.state.solution.test.results[index].result){
+                            return(
+                                <th style={{color:'#2D882D'}}>Correcto</th>
+                            );
+                        }else{
+                            return(
+                                <th style={{color:'#f44242'}}>Incorrecto</th>
+                            );
+                        }
+                    }else{
+                        return(
+                            <th style={{color:'#f44242'}} > Error </th>
+                        );
+                    }
+                  }else{
+                    return(<th style={{color:'#f44242'}} > - </th>);
+                  }
               }
               isSucsess(){
                   console.log("fui exec");
-                  if(this.state.solution.success){
-                      return(
-                          <Label> SI </Label>
-                        );
+                  if(this.state.solution.test != null){
+                      
+                      if(this.state.solution.test.correct){
+                          return(
+                              <Label> SI </Label>
+                            );
+                        }else{
+                            return(<Label> NO </Label>);
+                            
+                        }
                     }else{
-                        return(<Label> NO </Label>);
                         
+                        return(<Label> - </Label>);
                   }
               }
               isClosed(){
@@ -240,9 +257,40 @@ class Code extends Component{
                 // });
             }
 
-              
+            getResult(index){
+                if(this.state.solution.test != null){
+                    return(<th>{this.state.solution.test.results[index].stdout}</th>);
+                }else{
+                    return(<th> - </th>);
+                }
+            }
+
+        setResults(){
+
+            if(this.state.solution.test != null){
+                this.state.o_outputs.map((out,index)=>{return(
+                    <tr>
+                        <th> {out} </th>
+                        <th>{this.state.solution.test.results[index].stdout}</th>
+                        <th> {this.onComparison(index)} </th>
+                    </tr>
+                );
+                })
+            }else{
+                this.state.o_outputs.map((out,index)=>{return(
+                    <tr>
+                        <th> {out} </th>
+                        <th> - </th>
+                        <th> - </th>
+                    </tr>
+                );
+                })
+            }
+
+        }
 
     render(){
+    
         
         console.log(this.props);
         if(!this.state.ready){
@@ -259,6 +307,7 @@ class Code extends Component{
                                     <thead>
                                         <tr>
                                         
+                                        <th>Salida esperada</th>
                                         <th>Salida</th>
                                         <th>Comparación</th>
                                         
@@ -266,6 +315,18 @@ class Code extends Component{
                                     </thead>
                                     <tbody>
                                         {
+                                            this.state.o_outputs.map((out,index)=>{return(
+                                                <tr>
+                                                    <th> {out} </th>
+                                                    <th>{this.getResult(index)}</th>
+                                                    <th> {this.onComparison(index)} </th>
+                                                </tr>
+                                            );
+                                            })
+                                        }
+                                        
+
+                                        {/*
                                             this.state.comparison.map((comparison) => {return (
                                                 <tr> 
                                                     <th> {this.state.results.stdout} </th>
@@ -273,7 +334,7 @@ class Code extends Component{
                                                 </tr>
                                             
                                             );})
-                                        
+                                        */
                                         }
                                         
                                         
@@ -287,9 +348,6 @@ class Code extends Component{
                                 <Row>
                                     <Col md={4}> 
                                         <Label>Time: {this.state.solution.time}</Label>
-                                    </Col>
-                                    <Col md={4}> 
-                                        <Label>Error: {this.state.results.error}</Label>
                                     </Col>
                                     <Col md={4}> 
                                         {this.isSucsess()}
@@ -331,7 +389,7 @@ class Code extends Component{
                                     showPrintMargin={true}
                                     showGutter={true}
                                     highlightActiveLine={true}
-                                    value={this.state.solution.code}
+                                    value={this.state.code}
                                     setOptions={{
                                     enableBasicAutocompletion: false,
                                     enableLiveAutocompletion: false,
