@@ -17,11 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tests")
-public class Test implements Comparable<Test> {
-
-
-
-
+public class Test {
 
 
     @GeneratedValue(strategy = GenerationType.AUTO)
