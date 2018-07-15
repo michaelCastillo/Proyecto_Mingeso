@@ -5,12 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupo3.backfcyp.models.Solution;
 import com.grupo3.backfcyp.models.mongoModels.Code;
 import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
-import com.sun.javafx.beans.IDProperty;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -176,5 +171,5 @@ public class Test {
         }
     }
 
-    
+
 }
