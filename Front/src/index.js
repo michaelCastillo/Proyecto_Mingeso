@@ -13,6 +13,7 @@ import HeaderUp from './header/HeaderUp';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Code from './code/AddCode';
 import Home from './home/Home';
+import UserRoutes from './users/UserRoutes';
 import ProblemRoutes from './problems/ProblemRoutes';
 import Login from './login/login';
 import Teachers from './teachers/teachers';
@@ -52,6 +53,9 @@ ReactDOM.render(
                 <HeaderUp/>
                 <Route path="/problems" render={ props =>  
                     <ProblemRoutes {...props}/>
+                } />
+                <Route path="/users" render={props =>  
+                    <UserRoutes {...props}/>
                 } />
                 <Route path="/code/:id" component={perm2(Code)}/>
                 <Route path="/home" component ={noRequireAuth(Home)}/>
