@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ResultsRepository extends JpaRepository<Results, Long> {
-     public Results findResultsByCodeAndSolution(String code, Solution solution);
-     public List<Results> findAllBySolution(Solution solution);
+     public Results findResultsById(Long id);
 }

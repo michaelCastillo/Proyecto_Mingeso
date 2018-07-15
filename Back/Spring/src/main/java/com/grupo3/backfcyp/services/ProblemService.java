@@ -75,6 +75,7 @@ public class ProblemService {
                             //this.returnRepository.save(return_);
                         }
                         problem.setTeacher(user);
+                        //Aqui se hace la consulta a mongo para guardar el statement
                         this.problemRepository.save(problem);
 
                         List<Problem> problems = user.getProblems();

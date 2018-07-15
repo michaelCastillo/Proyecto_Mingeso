@@ -20,21 +20,27 @@ public class User {
     private String career;
 
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private List<Role> roles;
 
     @OneToMany(mappedBy = "users")
+    @JsonIgnore
     private List<User> users;
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Solution> solutions;
 
     @OneToMany(mappedBy = "teacher")
+    @JsonIgnore
     private List<Problem> problems;
 
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private List<Section> sections;
 
     @OneToMany(mappedBy = "students")
+    @JsonIgnore
     private List<Class> classUser;
 
     public List<Class> getClassUser() {

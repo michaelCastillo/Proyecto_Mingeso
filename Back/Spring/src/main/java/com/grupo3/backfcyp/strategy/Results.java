@@ -16,62 +16,16 @@ public class Results {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
-    private Date timestamp;
-    private String code;
     private String stdout;
     private String stderr;
     private String error;
-    private String results_comparison;
+    private boolean result;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "id_solution")
-    private Solution solution;
+    @JoinColumn(name = "id_test")
+    private Test test;
 
-    public Results(){
-        //Se fija la fecha en la que se crea el resultado.
-        this.timestamp = new Date();
-    }
-
-    public List<String> getComparison() {
-        String comparisons[] = this.results_comparison.split(" ");
-        ArrayList<String> comparisons_arr = new ArrayList<>();
-        for(String comp: comparisons){
-            if(comp.compareTo("") !=0) {
-                //System.out.println("comparacion: " + comp);
-                comparisons_arr.add(comp);
-            }
-        }
-        return comparisons_arr;
-    }
-
-    public void setComparison(List<String> comparison) {
-        String comparisonFormated = "";
-        for(String comp: comparison){
-            comparisonFormated += " ";
-            comparisonFormated += comp;
-        }
-
-        System.out.println("salida!!!!:" + comparisonFormated);
-        this.results_comparison = comparisonFormated;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public Long getId() {
         return id;
@@ -105,11 +59,19 @@ public class Results {
         this.error = error;
     }
 
-    public Solution getSolution() {
-        return solution;
+    public boolean isResult() {
+        return result;
     }
 
-    public void setSolution(Solution solution) {
-        this.solution = solution;
+    public void setResult(boolean result) {
+        this.result = result;
+    }
+
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
     }
 }
