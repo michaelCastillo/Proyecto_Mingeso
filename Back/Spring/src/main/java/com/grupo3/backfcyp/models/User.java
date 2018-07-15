@@ -20,7 +20,6 @@ public class User {
     private String career;
 
     @ManyToMany(mappedBy = "users")
-    @JsonIgnore
     private List<Role> roles;
 
     @OneToMany(mappedBy = "users")
