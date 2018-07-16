@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Panel} from 'react-bootstrap';
+import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 import './Correction.css';
 
 class Correction extends Component
@@ -22,13 +22,33 @@ class Correction extends Component
         var finalList = [];
         for(i = 0; i < list.length; i++)
         {
-            if(list[i] == "MIRA")
+            if(list[i] == "TAB")
             {
-                finalList.push("Es un mira");
+                finalList.push("Tabulacion");
             }
-            else if(list[i] == "TAB")
+            else if(list[i] == "COMMENTD")
             {
-                finalList.push("Soy una Tabulacion");
+                finalList.push("Comentario descriptivo");
+            }
+            else if(list[i] == "COMMENTR")
+            {
+                finalList.push("Comentario con Retorno");
+            }
+            else if(list[i] == "COMMENTE")
+            {
+                finalList.push("Comentario con Entrada");
+            }
+            else if(list[i] == "COMMENT")
+            {
+                finalList.push("Comentario");
+            }
+            else if(list[i] == "FUNCTION")
+            {
+                finalList.push("Funcion");
+            }
+            else if(list[i] == "CODE")
+            {
+                finalList.push("Codigo");
             }
         }
         return finalList;
@@ -44,7 +64,11 @@ class Correction extends Component
                     <Panel.Heading>
                         <Panel.Title>Sugerencias para el código</Panel.Title>
                     </Panel.Heading>
-                    <Panel.Body>{this.handleProblems(this.props.data).map((data) => {return (<p>{data}</p>);})}</Panel.Body>
+                    <Panel.Body>
+                        <ListGroup>
+                            {this.handleProblems(this.props.data).map((data) => {return (<ListGroupItem>{data}</ListGroupItem>);})}
+                        </ListGroup>
+                    </Panel.Body>
                 </Panel>
             </section>
         );

@@ -45,7 +45,7 @@ class Code extends Component{
             results:[],
             comparison:[],
             solution:[],
-            ide:"",
+            ide:"python",
             simplCode:[],
             
 
@@ -114,9 +114,9 @@ class Code extends Component{
             handleIde(event){
                 if(event.target.value == "C"){
                     this.setState({ide:"c"});
-                }else if(event.target.value == "Java"){
+                }else if(event.target.value == "java"){
                     this.setState({ide:"java"});
-                }else if(event.target.value == "Python"){
+                }else if(event.target.value == "python"){
                     this.setState({ide:"python"});
                 }
             }
@@ -185,6 +185,7 @@ class Code extends Component{
                 //console.log(this.state.solution.code);
 
                 //Accion del cambio del panel de sugerencias
+                this.state.simplCode = [];
                 this.handleRedaction(this.state.solution.code);
               }
               handleAce(newValue) {
@@ -252,30 +253,276 @@ class Code extends Component{
                 // });
             }
 
+            isInArray(VarList, data)
+            {
+                var i;
+                for(i=0; i < VarList.length; i++)
+                {
+                    if(data == VarList[i])
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            handleFindComment(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+                    var actualLetter;
+                    actualLetter = VarLine.charAt(0);
+
+                    if(actualLetter == '#')
+                    {
+                        return true;
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+
+            handleFindCommentD(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+                    var actualLetter;
+                    actualLetter = VarLine.charAt(0);
+
+                    if(actualLetter == '#')
+                    {
+                        if(VarLine.includes("Descripción") || VarLine.includes("Descripcion") || VarLine.includes("descripción") || VarLine.includes("descripcion"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            handleFindCommentR(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+                    var actualLetter;
+                    actualLetter = VarLine.charAt(0);
+
+                    if(actualLetter == '#')
+                    {
+                        if(VarLine.includes("Retorno") || VarLine.includes("retorno") || VarLine.includes("Return") || VarLine.includes("return") || VarLine.includes("Salida") || VarLine.includes("salida") || VarLine.includes("Salidas") || VarLine.includes("salidas"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            handleFindCommentE(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+                    var actualLetter;
+                    actualLetter = VarLine.charAt(0);
+
+                    if(actualLetter == '#')
+                    {
+                        if(VarLine.includes("Entrada") || VarLine.includes("entrada") || VarLine.includes("Entradas") || VarLine.includes("entradas"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            /*
+            Funcion que recibe un String y calcula cuantas tabulaciones (2 espacios) 
+            hay al inicio de esta, ignorando las tabulaciones y espacios que no son seguidas 
+            por algun caracter distinto (ejemplo: "          as" en este caso se calculan 
+            sus tabulaciones, en este caso "           ", no).
+
+            Se retorna una lista la cual contiene la linea resultante sin las tabulaciones 
+            ni espacios al inicio como primer termino y la cantidad de tabulaciones como segundo termino.
+            */
+            handleFindTab(VarLine)
+            {
+                var listReturn = [];
+                if(this.state.ide == "python")
+                {
+                    var i=0;
+                    var num = 0;
+                    var flag = true;
+                    //Se cuentan cuantos espacios hay al inicio antes de un caracter distinto
+                    while(i < VarLine.length)
+                    {
+                        if(VarLine.charAt(i) == ' ' && flag)
+                        {
+                            num++;
+                        }
+                        else
+                        {
+                            flag = false;
+                        }
+                        i++;
+                    }
+
+                    //Si no hubo caracter distinto se ignoran las tabulaciones
+                    if(flag)
+                    {
+                        num = 0;
+                    }
+                    //Si hay caracteres distintos, se calculan las tabulaciones, de haber un numero impar
+                    //de espacios, se resta un espacio del contador y se cuentan las tabulaciones existentes.
+                    else
+                    {
+                        VarLine = VarLine.slice(num);
+                        if(num%2 != 0 &&  0 < num)
+                        {
+                            num = num -1;
+
+                        }
+                        num = num/2;
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                listReturn = [VarLine, num];
+                return listReturn;
+            }
+
+            handleFindFunction(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+
+                    if(VarLine.length >= 3)
+                    {
+                        if(VarLine.charAt(0) == 'd' || VarLine.charAt(1) == 'e' || VarLine.charAt(1) == 'f')
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
             handleRedaction(varCode)
             {
-                /*
                 var lineas = varCode.split("\n");
 
                 var i;
-                for (i = 0; i < lineas.length; i++) { 
-                    console.log(lineas[i]);
-                }
-                */
-
-                if(varCode == "mira")
+                var j = 0;
+                var booleanFound = false;
+                var actualList = [];
+                for (i = 0; i < lineas.length; i++)
                 {
-                    this.state.simplCode = ["MIRA"];
-                }
-                else if(varCode == "  ")
-                {
-                    this.state.simplCode = ["TAB"];
-                }
-                else
-                {
-                    this.state.simplCode = [];
+                    
+                    actualList = this.handleFindTab(lineas[i])
+                    lineas[i] = actualList[0];
+                    //encontrar tabulaciones
+                    if(actualList[1] != 0)
+                    {
+                        while(j < actualList[1])
+                        {
+                            this.state.simplCode.push("TAB");
+                            j++;
+                        }
+                        j=0;
+                    }
+                    //Encontrar comentarios con la palabra descripcion
+                    if(this.handleFindCommentD(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push("COMMENTD");
+                        booleanFound = true;
+                    }
+                    // Encontrar comentarios con la palabra entrada
+                    else if(this.handleFindCommentE(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push("COMMENTE");
+                        booleanFound = true;
+                    }
+                    //Encontrar comentarios con la palabra retorno, return o salida en ella
+                    else if(this.handleFindCommentR(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push("COMMENTR");
+                        booleanFound = true;
+                    }
+                    // encontrar un simple comentario si es que no encontro ningun otro tipo de comentario
+                    else if(this.handleFindComment(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push("COMMENT");
+                        booleanFound = true;
+                    }
+                    else if(this.handleFindFunction(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push("FUNCTION");
+                        booleanFound = true;
+                    }
+                    else
+                    {
+                        if(actualList[1] != 0)
+                        {
+                            this.state.simplCode.push("CODE");
+                        }
+                    }
+                    booleanFound = false;
                 }
             }
+
+            
 
               
 
