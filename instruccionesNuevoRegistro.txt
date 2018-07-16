@@ -1,0 +1,99 @@
+obtienes:
+
+GET:
+	/coordinations 
+	/classes 
+	/roles 
+	/careers
+
+En el front tienes que filtrar segun el rol para el registro
+
+1) Si elige COORDINADOR se muestran solo las coordinaciones y puede elegir varias de ellas ya que sería como el "jefe de la coordinacion".
+2) Si es PROFESOR se muestran todas las clases para que pueda elegir cuales va a impartir.
+3) Si es alumno se muestran primero, todas las coordinaciones y luego todas las clases, en las cuales podrá elegir más de una también, pensando que algunas son lab o cosas así.
+	Se supone que la clase a lo que entiendo es como una "seccion" entonces el ramo tiene varias coordinaciones y cada coordinacion tiene varias clases/secciones.
+
+
+ejemplos de usuarios y sus estructuras:
+
+Profesor:
+
+{
+	"name":"profesor 1",
+	"password" :"mingeso",
+	"email":"profesor@usach.cl",
+	"roles":[
+		{
+			"id": 104,
+			"role": "teacher"
+			}
+	],
+	classes_teachers:[
+		  {
+			"id": 111,
+			"classRoom": "501|203",
+			"code": "02"
+			},
+			  {
+			"id": 112,
+			"classRoom": "505|lab_2",
+			"code": "01"
+			}
+	]
+}
+
+
+Alumno:
+
+{
+	"name":"profesor 1",
+	"password" :"mingeso",
+	"email":"profesor@usach.cl",
+	"roles":[
+		 {
+			"id": 105,
+			"role": "student"
+			}
+	],
+	"classes_students":[
+		{
+			"id": 112,
+			"classRoom": "505|lab_2",
+			"code": "01"
+			}
+	],
+	"careers":[
+	  {
+		"id": 107,
+		"name": "ingeniería Informática",
+		"code": "02"
+		}
+	]
+}
+
+
+Coordinador:
+
+{
+	"name":"profesor 1",
+	"password" :"mingeso",
+	"email":"profesor@usach.cl",
+	"roles":[
+		{
+		"id": 103,
+		"role": "coordination"
+		}
+	],
+	"coordCoordinations":[
+		 {
+		"id": 1,
+		"code": "1234"
+		},
+		  {
+		"id": 113,
+		"code": "as-123"
+		}
+	]
+
+
+}

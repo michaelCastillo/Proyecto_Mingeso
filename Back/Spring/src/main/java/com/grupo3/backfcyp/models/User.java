@@ -3,6 +3,7 @@ package com.grupo3.backfcyp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,58 +18,86 @@ public class User {
     private String password;
     private String email;
     private boolean bloqued;
-    private String career;
+
 
     @ManyToMany(mappedBy = "users")
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "users")
-    @JsonIgnore
-    private List<User> users;
+    @ManyToMany(mappedBy = "users")
+    private List<Career> careers;
 
+    /* El alumno tiene soluciones */
     @OneToMany(mappedBy = "student")
     @JsonIgnore
     private List<Solution> solutions;
 
+    /* El profesor tiene problemas */
     @OneToMany(mappedBy = "teacher")
     @JsonIgnore
     private List<Problem> problems;
 
-    @ManyToMany(mappedBy = "users")
-    @JsonIgnore
-    private List<Section> sections;
+    /* El coordinador tiene coordinaciones que manda */
 
-    @OneToMany(mappedBy = "students")
-    @JsonIgnore
-    private List<Class> classUser;
+    @OneToMany(mappedBy = "coordinator")
+    private List<Coordination> coordCoordinations;
 
-    public List<Class> getClassUser() {
-        return classUser;
+    /* El alumno está en varias clases y las clases tienen varios alumnos.  */
+    /* Para el caso del profesor */
+    @ManyToMany(mappedBy = "students")
+    private List<Class> classes_students;
+
+    @ManyToMany(mappedBy = "teachers")
+    private List<Class> classes_teachers;
+
+
+    public User(){
+        this.coordCoordinations = new ArrayList<>();
     }
 
-    public void setClassUser(List<Class> classUser) {
-        this.classUser = classUser;
+
+    public List<Coordination> getCoordCoordinations() {
+        return coordCoordinations;
     }
 
-    public String getCareer() {
-        return career;
+    public void setCoordCoordinations(List<Coordination> coordCoordinations) {
+        this.coordCoordinations = coordCoordinations;
     }
 
-    public void setCareer(String career) {
-        this.career = career;
+    public List<Class> getClasses_students() {
+        return classes_students;
+    }
+
+    public void addClasse_student(Class classs){
+        this.classes_students.add(classs);
+    }
+
+    public List<Class> getClasses_teachers() {
+        return classes_teachers;
+    }
+    public void addClasse_teacher(Class classs){
+        this.classes_teachers.add(classs);
+    }
+
+    public void setClasses_teachers(List<Class> classes_teachers) {
+        this.classes_teachers = classes_teachers;
+    }
+
+    public void setClasses_students(List<Class> classes_students) {
+        this.classes_students = classes_students;
+    }
+
+    public List<Career> getCareers() {
+        return careers;
+    }
+
+    public void setCareers(List<Career> careers) {
+        this.careers = careers;
     }
 
     public boolean isBloqued() {
         return bloqued;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 
     public void setBloqued(boolean bloqued) {
         this.bloqued = bloqued;
@@ -130,12 +159,6 @@ public class User {
         this.problems = problems;
     }
 
-    public List<Section> getSections() {
-        return sections;
-    }
 
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
-    }
 
 }
