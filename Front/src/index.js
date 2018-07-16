@@ -14,6 +14,7 @@ import HeaderUp from './header/HeaderUp';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Code from './code/AddCode';
 import Home from './home/Home';
+import Redirect from './home/redirect';
 import UserRoutes from './users/UserRoutes';
 import ProblemRoutes from './problems/ProblemRoutes';
 import Login from './login/login';
@@ -65,11 +66,7 @@ ReactDOM.render(
                 <Route path="/signout" component ={requireAuth(Signout)}/>  
 
                 <Route path="/Profesores" component ={perm(Teachers)}/>
-                
-
-              
-
-
+                <Route path="/redirect" component ={requireAuth(Redirect)}/>
 
                 </div>
             </Router>
