@@ -30,7 +30,7 @@ const perm = Authorization(['coordination', 'su']);
 const perm1 = Authorization(['teacher', 'coordination', 'su']);
 const perm2 = Authorization(['student', 'su']);
 
-
+//<Route path="/alumnos" component ={perm1(Students)}/>
 
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
@@ -65,7 +65,7 @@ ReactDOM.render(
                 <Route path="/signout" component ={requireAuth(Signout)}/>  
 
                 <Route path="/Profesores" component ={perm(Teachers)}/>
-                <Route path="/alumnos" component ={perm1(Students)}/>
+                
 
               
 

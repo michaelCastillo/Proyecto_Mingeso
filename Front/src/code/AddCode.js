@@ -58,7 +58,7 @@ class Code extends Component{
                 let id_user =localStorage.getItem('userId');
                 let global_url = `http://35.226.163.50:8080/Backend`;
                 let local_url = `http://localhost:1313`;
-                let problem =  axios.get(local_url+`/problems/get/`+id_problem)
+                let problem =  axios.get(global_url+`/problems/get/`+id_problem)
                 .then(res => {
                     const problem = res.data;
                     this.setState({
@@ -81,7 +81,7 @@ class Code extends Component{
                     id_problem:id_problem,
                     id_user:id_user
                 };
-                let sol_resp = axios.post(local_url+`/solutions/create`,solution).
+                let sol_resp = axios.post(global_url+`/solutions/create`,solution).
                 then(res => {
                     console.log("resultado");
                     console.log(res);
@@ -128,7 +128,7 @@ class Code extends Component{
                 const global_url = `http://35.226.163.50:8080/Backend/solutions/execute`;
                 const url = `http://localhost:1313/solutions/execute`;
 
-                axios.post(url,post_code)
+                axios.post(global_url,post_code)
                 .then(res => {
                     let solution = res.data.solution;
                     let local_url = `http://localhost:1313/solutions/save`;

@@ -32,15 +32,15 @@ class ShowProblems extends Component{
     }
 
     componentDidMount() {
-            let local = `http://localhost:1313/problems/` ;
             let global = `http://35.226.163.50:8080/Backend/problems/`;
-            axios.get(local)
+            axios.get(global)
                 .then(res => {
                     const problems = res.data;
                     //Se asigna falso para opened, para el collapse
                     problems.map( (problem) => {problem.opened = false});
                     this.setState({problems});
                 }).catch(error => {
+                    console.log("hola")
                     console.log(error.response)
                 });
         };
