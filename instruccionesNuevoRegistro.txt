@@ -24,18 +24,18 @@ Profesor:
 	"email":"profesor@usach.cl",
 	"roles":[
 		{
-			"id": 104,
+			"id": 3,
 			"role": "teacher"
 			}
 	],
 	classes_teachers:[
 		  {
-			"id": 111,
+			"id": 7,
 			"classRoom": "501|203",
 			"code": "02"
 			},
 			  {
-			"id": 112,
+			"id": 8,
 			"classRoom": "505|lab_2",
 			"code": "01"
 			}
@@ -51,20 +51,20 @@ Alumno:
 	"email":"profesor@usach.cl",
 	"roles":[
 		 {
-			"id": 105,
+			"id": 4,
 			"role": "student"
 			}
 	],
 	"classes_students":[
 		{
-			"id": 112,
+			"id": 8,
 			"classRoom": "505|lab_2",
 			"code": "01"
 			}
 	],
 	"careers":[
 	  {
-		"id": 107,
+		"id": 10,
 		"name": "ingeniería Informática",
 		"code": "02"
 		}
@@ -86,11 +86,11 @@ Coordinador:
 	],
 	"coordCoordinations":[
 		 {
-		"id": 1,
+		"id": 5,
 		"code": "1234"
 		},
 		  {
-		"id": 113,
+		"id": 6,
 		"code": "as-123"
 		}
 	]

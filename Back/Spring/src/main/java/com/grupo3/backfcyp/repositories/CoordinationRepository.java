@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CoordinationRepository extends JpaRepository<Coordination,Long> {
-    public Coordination findSectionById(Long id);
-    public Coordination findSectionByCode(String code);
+    public Coordination findCoordinationById(Long id);
+    public Coordination findCoordinationByCode(String code);
 
 }

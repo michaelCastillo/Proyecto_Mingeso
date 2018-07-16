@@ -98,7 +98,7 @@ public class UserService {
             List<Coordination> coordinations = user.getCoordCoordinations();
             for(Coordination coordination: coordinations){
                 //Se establece el usuario que lidera esta coordinación.
-                this.coordinationRepository.findSectionById(coordination.getId()).setCoordinator(user);
+                this.coordinationRepository.findCoordinationById(coordination.getId()).setCoordinator(user);
             }
         }
         //Si es profesor
