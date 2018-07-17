@@ -28,7 +28,7 @@ public class User {
 
     /* El alumno tiene soluciones */
     @OneToMany(mappedBy = "student")
-    @JsonIgnore
+
     private List<Solution> solutions;
 
     /* El profesor tiene problemas */

@@ -47,6 +47,24 @@ public class ClassService {
     public List<User> getTeachers(@PathVariable Long id){
         return this.classRepository.findClassById(id).getTeachers();
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{id}/students",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> getStudents(@PathVariable Long id){
+        Class classToFront;
+        Map<String,Object> response = new HashMap<>();
+        if((classToFront = this.classRepository.findClassById(id)) != null){
+            response.put("status","class exist");
+            response.put("students",classToFront.getStudents());
+        }else{
+            response.put("status","class doesn't exist");
+            response.put("students",null);
+        }
+        return response;
+
+    }
+
     @CrossOrigin
     @RequestMapping(value = "/{id}/setTeacher",method = RequestMethod.PUT)
     @ResponseBody

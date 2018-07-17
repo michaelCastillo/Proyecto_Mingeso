@@ -143,6 +143,7 @@ public class SolutionService {
             testToFront = execute(code.getId(),problem,solution);
             testToFront.setSolution(solution);
             testToFront.codeIdSet(code.getId());
+            testToFront.setTime(time);//Se añade el tiempo parcial.
             //Se almacena el test.
             //this.testRepository.save(test);
 
@@ -160,7 +161,7 @@ public class SolutionService {
             //Se cambian ciertos parametros de solution con los actuales
             //El codigo ya existe por lo tanto solo se actualiza su fecha.
             testToFront.setCreated(new Date());
-
+            testToFront.setTime(time);
             this.testRepository.save(testToFront);
 
             //Se genera un objeto para retornar al front.

@@ -24,6 +24,7 @@ public class Test {
     private String codeId; //Deberia ser la id del codigo en mongo
     private boolean correct;
     private String language;
+    private int time;//se agrega el tiempo local.
     @Transient
     private Strategy strategy;
 
@@ -46,6 +47,23 @@ public class Test {
 
     public Test(){
         this.created = new Date();
+    }
+
+
+    public String getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public List<Results> exec(ArrayList<String> o_inputs, CodeRepository codeRepository){
