@@ -8,6 +8,7 @@ import com.grupo3.backfcyp.models.User;
 import com.grupo3.backfcyp.repositories.CareerRepository;
 import com.grupo3.backfcyp.repositories.ClassRepository;
 import com.grupo3.backfcyp.repositories.CoordinationRepository;
+import com.grupo3.backfcyp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,36 @@ public class StatsService {
     private CareerRepository careerRepository;
     @Autowired
     private CoordinationRepository coordinationRepository;
-
     @Autowired
     private ClassRepository classRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+
+    @CrossOrigin
+    @RequestMapping(value = "/users/{id}/totalTime")
+    @ResponseBody
+    public Map<String,Object> getTimeByUser(@PathVariable Long id){
+        Map<String,Object> response = new HashMap<>();
+        User student = this.userRepository.findUserById(id);
+        Long totalTime = new Long(0);
+        if(student != null){
+            List<Solution> solutions = student.getSolutions();
+            for(Solution solution: solutions){
+                totalTime += solution.getTime();
+            }
+            response.put("status",200);
+            response.put("message","Tiempo calculado correctamente");
+            response.put("time",totalTime);
+        }else{
+            response.put("status",204);
+            response.put("message","No hay un estudiante asociado a la id");
+            response.put("time",0);
+        }
+        return response;
+        
+    }
+
 
     @CrossOrigin
     @RequestMapping(value = "/classes/{id}/totalTime")
