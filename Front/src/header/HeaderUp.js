@@ -28,7 +28,7 @@ class HeaderUp extends Component {
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
                 </NavDropdown>
-                <NavItem eventKey={4} href="/users/showlist">
+                <NavItem eventKey={4} href="/alumnos">
                  Alumnos
                 </NavItem>
                 <NavItem eventKey={5} href="/Profesores">
@@ -39,7 +39,12 @@ class HeaderUp extends Component {
                 <MenuItem eventKey={6.1} href='/soluciones/enproceso'>En proceso</MenuItem>
                 <MenuItem eventKey={6.2} href='/soluciones/misSoluciones'> Mis soluciones</MenuItem>
                 </NavDropdown>
+                <NavItem eventKey={7} href="/users/showlist">
+                 Administrar usuarios
+                </NavItem>
             </Nav>
+
+            
             
             <Nav pullRight>
                 <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
@@ -94,7 +99,7 @@ class HeaderUp extends Component {
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
                 </NavDropdown>
-                <NavItem eventKey={4} href="/users/showlist">
+                <NavItem eventKey={4} href="/alumnos">
                  Alumnos
                 </NavItem>
                 
@@ -112,7 +117,42 @@ class HeaderUp extends Component {
           ];
         }
 
+        if (this.props.authenticated   && role == "coordination") {
+          
+          return [
+            
+            <div>
+                    
+            <Nav>
+                <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
+                <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
+                <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
+                <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
+                {/*<MenuItem divider />*/}
+                </NavDropdown>
+                <NavItem eventKey={4} href="/alumnos">
+                 Alumnos
+                </NavItem>
+                <NavItem eventKey={5} href="/Profesores">
+                 Profesores
+                </NavItem>
+                
+            </Nav>
+            
+            <Nav pullRight>
+                <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
+                Ingresar
+                </NavItem>
+                <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
+                SignOut
+                </NavItem>
+            </Nav>
+           </div>
+          ];
+        }
 
+        
         
         return [
           

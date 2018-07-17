@@ -64,7 +64,7 @@ ReactDOM.render(
                 <Route path="/login" component ={noRequireAuth(Login)}/>
                 <Route path="/users/:id" component={UserProfile}/>
                 <Route path="/signout" component ={requireAuth(Signout)}/>  
-
+                <Route path="/alumnos" component ={perm1(Students)}/>  
                 <Route path="/Profesores" component ={perm(Teachers)}/>
                 <Route path="/redirect" component ={requireAuth(Redirect)}/>
 
