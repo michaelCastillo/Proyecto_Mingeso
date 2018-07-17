@@ -13,7 +13,7 @@ class HeaderUp extends Component {
     navbarLinks() {
       const role = localStorage.getItem('role');
       
-        if (this.props.authenticated   && role == "su") {
+        if (this.props.authenticated   && role === "su") {
           
           return [
             
@@ -85,7 +85,7 @@ class HeaderUp extends Component {
           ];
         }
 
-        if (this.props.authenticated   && role == "teacher") {
+        if (this.props.authenticated   && role === "teacher") {
           console.log(role);
           return [
             <div>
@@ -116,7 +116,7 @@ class HeaderUp extends Component {
           ];
         }
 
-        if (this.props.authenticated   && role == "coordination") {
+        if (this.props.authenticated   && role === "coordination") {
           
           return [
             
