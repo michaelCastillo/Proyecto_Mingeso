@@ -34,6 +34,8 @@ public class StatsService {
     private UserRepository userRepository;
 
 
+    /*** Estadisticas de tiempo total invertido para resolver un problema. ***/
+
     @CrossOrigin
     @RequestMapping(value = "/users/{id}/totalTime")
     @ResponseBody
@@ -157,6 +159,26 @@ public class StatsService {
             response.put("status",204);
             response.put("message","La carrera no tiene estudiantes.");
             response.put("totalTime",0);
+        }
+        return response;
+    }
+
+    /*** Estadisticas del numero de problemas resueltos por dia ***/
+
+    @CrossOrigin
+    @RequestMapping(value = "/student/{id}/problemsSolved")
+    @ResponseBody
+    public Map<String,Object> getProblemsSolvedByStudent(@PathVariable Long id){
+        Map<String,Object> response = new HashMap<>();
+        User student = this.userRepository.findUserById(id);
+
+        List<Solution> solutions = student.getSolutions();
+        if(!solutions.isEmpty()){ //Si el estudiante tiene soluciones asociadas
+
+        }else{
+            response.put("status",204);
+            response.put("message","No se encuentran soluciones en las que haya trabajado el estudiante");
+            response.put("solutions",null);
         }
         return response;
     }
