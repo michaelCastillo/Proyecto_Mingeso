@@ -37,7 +37,7 @@ class EditUser extends Component {
         let id_user = this.props.id;
         //Por ahora es la id 6, cuando este el login bien se cambia por aquel que
         //esté logueado.
-        let global_url = `http://46.101.81.136:8181/Backend`;
+        let global_url = `http://35.226.163.50:8080/Backend`;
         let user = axios.get(global_url + `/users/` + id_user)
             .then(res => {
                 const user = res.data;
@@ -52,7 +52,7 @@ class EditUser extends Component {
             }).catch(error => {
                 console.log(error.response);
             });
-        axios.get(`http://46.101.81.136:8181/Backend/roles/`)
+        axios.get(`http://35.226.163.50:8080/Backend/roles/`)
             .then(res => {
                 const roles = res.data;
                 //Se asigna falso para opened, para el collapse
@@ -60,7 +60,7 @@ class EditUser extends Component {
             }).catch(error => {
                 console.log(error.response)
             });
-        axios.get(`http://46.101.81.136:8181/Backend/sections/`)
+        axios.get(`http://35.226.163.50:8080/Backend/sections/`)
             .then(res => {
                 const sections = res.data;
                 //Se asigna falso para opened, para el collapse
@@ -81,7 +81,7 @@ class EditUser extends Component {
         };
         console.log(user);
 
-        const url = 'http://46.101.81.136:8181/Backend/users/update';
+        const url = 'http://35.226.163.50:8080/Backend/users/update';
         axios.put(url, user)
             .then(res => {
                 let userResponse = res.data;
@@ -160,32 +160,35 @@ class EditUser extends Component {
         let items = [];
         let aux = 0;
         let flag = 0;
-        this.state.allSections.map((section) => {
-            this.state.sections.map((mySection) => {
-                if (mySection.id == section.id) {
-                    flag = 1;
+        if((this.state.allSections)&&(this.state.sections)){
+            this.state.allSections.map((section) => {
+                this.state.sections.map((mySection) => {
+                    if (mySection.id == section.id) {
+                        flag = 1;
+                    }
+                });
+                if (flag == 1) {
+                    let sectionAux = {
+                        id: section.id,
+                        code: section.code
+                    };
+                    this.state.newSections.push(sectionAux);
+                    items.push(<Checkbox
+                        key={aux++}
+                        defaultChecked
+                        value={[section.id, section.code]}
+                        onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
+                } else {
+                    items.push(<Checkbox
+                        key={aux++}
+                        value={[section.id, section.code]}
+                        onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
                 }
+                flag = 0;
+    
             });
-            if (flag == 1) {
-                let sectionAux = {
-                    id: section.id,
-                    code: section.code
-                };
-                this.state.newSections.push(sectionAux);
-                items.push(<Checkbox
-                    key={aux++}
-                    defaultChecked
-                    value={[section.id, section.code]}
-                    onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
-            } else {
-                items.push(<Checkbox
-                    key={aux++}
-                    value={[section.id, section.code]}
-                    onChange={this.handleCheckboxSections}> {section.code} </Checkbox>);
-            }
-            flag = 0;
-
-        });
+        }
+        
         return items;
     }
     handleCheckboxSections(event) {
@@ -218,7 +221,7 @@ class EditUser extends Component {
             bloqued: !this.state.bloqued
         };
 
-        const url = 'http://46.101.81.136:8181/Backend/users/update';
+        const url = 'http://35.226.163.50:8080/Backend/users/update';
         axios.put(url, user)
             .then(res => {
                 let userResponse = res.data;
@@ -330,8 +333,4 @@ class EditUser extends Component {
 
 
 }
-
-
-
-
 export default EditUser;                

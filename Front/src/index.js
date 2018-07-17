@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
+import UserProfile from './users/UserProfile';
 
 
 import reduxThunk from 'redux-thunk';
@@ -60,7 +61,7 @@ ReactDOM.render(
                 <Route path="/code/:id" component={perm2(Code)}/>
                 <Route path="/home" component ={noRequireAuth(Home)}/>
                 <Route path="/login" component ={noRequireAuth(Login)}/>
-                
+                <Route path="/users/:id" component={UserProfile}/>
                 <Route path="/signout" component ={requireAuth(Signout)}/>  
 
                 <Route path="/Profesores" component ={perm(Teachers)}/>
