@@ -4,7 +4,6 @@ import imagen from './computer_77914.png';
 
 import { connect } from 'react-redux';
 
-const role = localStorage.getItem('role');
 
 class HeaderUp extends Component {
 

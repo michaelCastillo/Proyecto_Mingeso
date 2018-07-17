@@ -30,6 +30,8 @@ import Signout from './login/signOut';
 const perm = Authorization(['coordination', 'su']);
 const perm1 = Authorization(['teacher', 'coordination', 'su']);
 const perm2 = Authorization(['student', 'su']);
+const su = Authorization([ 'su']);
+
 
 //<Route path="/alumnos" component ={perm1(Students)}/>
 
