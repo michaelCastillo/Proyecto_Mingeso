@@ -143,6 +143,7 @@ public class SolutionService {
             testToFront = execute(code.getId(),problem,solution);
             testToFront.setSolution(solution);
             testToFront.codeIdSet(code.getId());
+            testToFront.setTime(time);//Se añade el tiempo parcial.
             //Se almacena el test.
             //this.testRepository.save(test);
 
@@ -160,7 +161,7 @@ public class SolutionService {
             //Se cambian ciertos parametros de solution con los actuales
             //El codigo ya existe por lo tanto solo se actualiza su fecha.
             testToFront.setCreated(new Date());
-
+            testToFront.setTime(time);
             this.testRepository.save(testToFront);
 
             //Se genera un objeto para retornar al front.
@@ -191,7 +192,7 @@ public class SolutionService {
         //Si esta correcto
         boolean isCorrect ;
         //Se aumenta el valor del numero de exitosos o fallidos segun corresponda.
-        if(isCorrect = test.isCorrect()){
+        if(test.isCorrect()){
             System.out.println("Es correcto");
             solution.addSucc();
             solution.setSuccess(true);
@@ -211,8 +212,8 @@ public class SolutionService {
     @CrossOrigin
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> saveSolution(@RequestBody Map<String,String> jsonIn){
-        Map<String,String> response = new HashMap<>();
+    public Map<String, Object> saveSolution(@RequestBody Map<String,String> jsonIn){
+        Map<String,Object> response = new HashMap<>();
         try{
             Long idSol = Long.parseLong(jsonIn.get("id_solution"));
             Solution solution = this.solutionRepository.findSolutionById(idSol);
@@ -220,10 +221,12 @@ public class SolutionService {
                 solution.setClosed(true);
                 this.solutionRepository.save(solution);
                 response.put("status","closed");
+                response.put("closed",true);
                 System.out.println("Cerrada");
             }else{
                 //No hay cambios y la solucion aun no se cierra.
                 response.put("status","not success, not closed");
+                response.put("closed",false);
                 System.out.println("No cerrada");
             }
 

@@ -147,6 +147,9 @@ class Code extends Component{
                         }
                         axios.post(local_url,closeSol)
                         .then(res => {
+                            let solution = this.state.solution;
+                            solution.closed = res.data.closed;
+                            this.setState({solution:solution});
                             console.log("Se cerró exitosamente la solucion.",res);
                         }).catch(error => {
                             console.log("Error en el cerrado de la solución, inténtelo más tarde.",error);
@@ -224,11 +227,11 @@ class Code extends Component{
               isClosed(){
                   if(this.state.solution.closed){
                       return(
-                          <Label> Cerrada </Label>
+                          <Label> Si </Label>
                       );
                   }else{
                     return(
-                        <Label> No! Cerrada </Label>
+                        <Label> No </Label>
                     );
                   }
               }
