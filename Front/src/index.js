@@ -26,6 +26,9 @@ import noRequireAuth from './hoc/noRequireAuth';
 import Authorization from './hoc/roleRequire';
 
 import Signout from './login/signOut';
+import Chart from './estadisticas/charts';
+
+
 
 const perm = Authorization(['coordination', 'su']);
 const perm1 = Authorization(['teacher', 'coordination', 'su']);
@@ -69,6 +72,7 @@ ReactDOM.render(
                 <Route path="/alumnos" component ={perm1(Students)}/>  
                 <Route path="/Profesores" component ={perm(Teachers)}/>
                 <Route path="/redirect" component ={requireAuth(Redirect)}/>
+                <Route path="/estadistica" component ={Chart}/>
 
                 </div>
             </Router>
