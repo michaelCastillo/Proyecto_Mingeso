@@ -219,6 +219,7 @@ public class SolutionService {
             Solution solution = this.solutionRepository.findSolutionById(idSol);
             if(solution.isSuccess()){
                 solution.setClosed(true);
+                solution.setSolvedDate(new Date());
                 this.solutionRepository.save(solution);
                 response.put("status","closed");
                 response.put("closed",true);
@@ -246,7 +247,7 @@ public class SolutionService {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/deleteAll",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/all",method = RequestMethod.DELETE)
     @ResponseBody
     public void deleteAll(){
         this.solutionRepository.deleteAll();

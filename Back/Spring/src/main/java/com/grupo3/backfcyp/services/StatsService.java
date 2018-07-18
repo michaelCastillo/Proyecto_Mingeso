@@ -1,5 +1,7 @@
 package com.grupo3.backfcyp.services;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.Career;
 import com.grupo3.backfcyp.models.Class;
 import com.grupo3.backfcyp.models.Coordination;
@@ -9,15 +11,14 @@ import com.grupo3.backfcyp.repositories.CareerRepository;
 import com.grupo3.backfcyp.repositories.ClassRepository;
 import com.grupo3.backfcyp.repositories.CoordinationRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
+import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/stats")
@@ -166,20 +167,118 @@ public class StatsService {
     /*** Estadisticas del numero de problemas resueltos por dia ***/
 
     @CrossOrigin
-    @RequestMapping(value = "/student/{id}/problemsSolved")
+    @RequestMapping(value = "/student/{id}/problemsSolved",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> getProblemsSolvedByStudent(@PathVariable Long id){
+    public Map<String,Object> getProblemsSolvedByStudent(@PathVariable Long id, @RequestBody JsonObject jsonIn){
         Map<String,Object> response = new HashMap<>();
         User student = this.userRepository.findUserById(id);
 
         List<Solution> solutions = student.getSolutions();
         if(!solutions.isEmpty()){ //Si el estudiante tiene soluciones asociadas
-
+            Date dateLimit = new Date(new Long("1531852800000"));
+            System.out.println("limite Sin formateo => "+dateLimit.toString());
+            String dateLimitFormated = new SimpleDateFormat("yyyy-MM-dd").format(dateLimit);
+            System.out.println("date limit => "+dateLimitFormated);
+            solutions = sortDescAndFiltreByDate(solutions,dateLimit);
+            List<Map<String,Object>> results = getNumberProblemsByDate(solutions);
+            response.put("result",results);
+            response.put("status",200);
+            response.put("message","Numero se soluciones calculadas correctamente");
         }else{
             response.put("status",204);
             response.put("message","No se encuentran soluciones en las que haya trabajado el estudiante");
-            response.put("solutions",null);
+            response.put("result",null);
         }
         return response;
     }
+
+
+    private List<Map<String,Object>> getNumberProblemsByDate(List<Solution> solutions){
+        List<Map<String,Object>> result = new ArrayList<>();
+        if(!solutions.isEmpty()){
+
+            //Se toma la primera para iniciar las comparaciones
+            String dateLoop = new SimpleDateFormat("yyyy-MM-dd").format(solutions.get(0).getSolvedDate());
+            int indexPointer = 0;
+            int acum = 0;
+            int x = 0;
+            System.out.println("solutions size => "+solutions.size());
+            for(Solution solution: solutions){
+                x++;
+                String actualDateFormatted =  new SimpleDateFormat("yyyy-MM-dd").format(solution.getSolvedDate());
+                if(actualDateFormatted.compareTo(dateLoop) == 0){//Son iguales
+                    acum++;
+                    if(x == solutions.size()){//Si llegamos al ultimo
+
+                        result.add(new HashMap<>());
+                        result.get(indexPointer).put("date",dateLoop);
+                        result.get(indexPointer).put("numberSolved",acum);
+                    }
+                }else{
+                    //Se setean los valores anteriores
+                    result.add(new HashMap<>());
+                    result.get(indexPointer).put("date",dateLoop);
+                    result.get(indexPointer).put("numberSolved",acum);
+                    dateLoop = actualDateFormatted;//Se cambia la fecha a la nueva.
+                    indexPointer++; //Se cambia al siguiente valor del arreglo de respuesta.
+                    acum = 1;
+                    if(x == solutions.size()){//Si llegamos al ultimo
+
+                        result.add(new HashMap<>());
+                        result.get(indexPointer).put("date",dateLoop);
+                        result.get(indexPointer).put("numberSolved",acum);
+                    }
+                }
+            }
+            if(indexPointer == 0){ //Es decir que nunca hubo alguna de otra fecha.
+                result.get(indexPointer).put("date",dateLoop);
+                result.get(indexPointer).put("numberSolved",acum);
+            }
+            return result;
+        }
+        return result;
+    }
+
+    private List<Solution> sortDescAndFiltreByDate(List<Solution> solutions, Date dateLimit){
+        List<Solution> solutionsFinished = new ArrayList<>();
+        for(Solution solution: solutions){
+
+            if(solution.getSolvedDate() != null) {
+                System.out.println("solution id: "+solution.getId());
+                System.out.println("date sin format => "+solution.getSolvedDate());
+                System.out.println("fecha: "+new SimpleDateFormat("yyyy-MM-dd").format(solution.getSolvedDate()));
+                solutionsFinished.add(solution);
+            }
+        }
+        Collections.sort(solutionsFinished,new SolutionByDate());//se ordenan
+        System.out.println("primera solution=> "+new SimpleDateFormat("yyyy-MM-dd").format(solutionsFinished.get(0).getSolvedDate()));
+        System.out.println("primera solution=> "+new SimpleDateFormat("yyyy-MM-dd").format(solutionsFinished.get(1).getSolvedDate()));
+        List<Solution> validSolutions = new ArrayList<>();
+        System.out.println("time: "+solutionsFinished.get(0).getSolvedDate().getTime());
+        String formatted = new SimpleDateFormat("yyyy-MM-dd").format(dateLimit);
+        System.out.println("Formateada: "+formatted);
+        for(Solution solution: solutionsFinished){
+            //Es la primera aparicion de una solucion más antigua que el limite.
+            if(dateLimit.compareTo(solution.getSolvedDate()) < 0){
+                System.out.println("valida");
+                System.out.println("date => "+solution.getSolvedDate().toString());
+                validSolutions.add(solution);
+            }else{
+                System.out.println(solution.getSolvedDate().toString()+" Es más antigua que "+dateLimit.toString());
+            }
+        }
+        return validSolutions;
+    }
 }
+
+class SolutionByDate implements Comparator<Solution> {
+
+    @Override
+    public int compare(Solution o1, Solution o2) {
+
+        return -o1.getSolvedDate().compareTo(o2.getSolvedDate());
+
+    }
+}
+
+

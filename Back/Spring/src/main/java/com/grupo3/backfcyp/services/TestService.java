@@ -6,6 +6,7 @@ import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Column;
 import java.util.List;
 
 @RestController
@@ -26,5 +27,11 @@ public class TestService {
     @ResponseBody
     public List<Test> getTests(){
         return this.testRepository.findAll();
+    }
+
+    @Column
+    @RequestMapping(value = "/all",method = RequestMethod.DELETE)
+    public void deleteAll(){
+        this.testRepository.deleteAll();
     }
 }
