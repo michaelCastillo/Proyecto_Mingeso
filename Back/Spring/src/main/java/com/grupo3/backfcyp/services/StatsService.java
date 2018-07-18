@@ -12,11 +12,15 @@ import com.grupo3.backfcyp.repositories.ClassRepository;
 import com.grupo3.backfcyp.repositories.CoordinationRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
 import com.grupo3.backfcyp.strategy.Test;
+import com.sun.tracing.dtrace.ProviderAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.annotation.security.PermitAll;
 import java.math.BigInteger;
+import java.security.AlgorithmConstraints;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -169,13 +173,15 @@ public class StatsService {
     @CrossOrigin
     @RequestMapping(value = "/student/{id}/problemsSolved",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> getProblemsSolvedByStudent(@PathVariable Long id, @RequestBody JsonObject jsonIn){
+    public Map<String,Object> getProblemsSolvedByStudent(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
         Map<String,Object> response = new HashMap<>();
         User student = this.userRepository.findUserById(id);
 
         List<Solution> solutions = student.getSolutions();
         if(!solutions.isEmpty()){ //Si el estudiante tiene soluciones asociadas
-            Date dateLimit = new Date(new Long("1531852800000"));
+            //Date dateTest = new Date(jsonIn.get("dateLimit"));
+            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
             System.out.println("limite Sin formateo => "+dateLimit.toString());
             String dateLimitFormated = new SimpleDateFormat("yyyy-MM-dd").format(dateLimit);
             System.out.println("date limit => "+dateLimitFormated);
@@ -187,6 +193,99 @@ public class StatsService {
         }else{
             response.put("status",204);
             response.put("message","No se encuentran soluciones en las que haya trabajado el estudiante");
+            response.put("result",null);
+        }
+        return response;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/coordinations/{id}/problemsSolved")
+    @ResponseBody
+    public Map<String,Object> getNumberProblemsByCoordination(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
+        Coordination coordination = this.coordinationRepository.findCoordinationById(id);
+        Map<String,Object> response = new HashMap<>();
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
+        if(coordination != null){
+            List<Class> classes = coordination.getClasses();
+            if(classes != null){
+                List<User> students = new ArrayList<>();
+                for(Class classToStat: classes){
+                    students.addAll(classToStat.getStudents());
+                }
+                response = getResult(students,dateLimit);
+            }else{
+                response.put("status",204);
+                response.put("message","No existen clases asociada a la coordinacion");
+                response.put("result",null);
+            }
+        }else{
+            response.put("status",204);
+            response.put("message","No existe coordination asociada a la id");
+            response.put("result",null);
+        }
+        return response;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/careers/{id}/problemsSolved",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getNumberProblemsByCareer(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
+
+        Career career = this.careerRepository.findCareerById(id);
+        Map<String,Object> response = new HashMap<>();
+        List<Solution> solutions = new ArrayList<>();
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
+        if(career != null){
+            List<User> students = career.getUsers();
+            response = getResult(students,dateLimit);
+        }else{
+            response.put("status",204);
+            response.put("message","No existe clase asociada a la id");
+            response.put("result",null);
+        }
+        return response;
+    }
+
+    private Map<String,Object> getResult(List<User> students, Date dateLimit) throws ParseException {
+        Map<String,Object> response = new HashMap<>();
+        List<Solution> solutions = new ArrayList<>();
+
+        if(students != null){
+            for(User student: students){
+                solutions.addAll(student.getSolutions());//Se obtienen las soluciones.
+            }
+            solutions = sortDescAndFiltreByDate(solutions,dateLimit);
+            List<Map<String,Object>> results = getNumberProblemsByDate(solutions);
+            response.put("result",results);
+            response.put("status",200);
+            response.put("message","Numero se soluciones calculadas correctamente");
+
+        }else{
+            response.put("status",204);
+            response.put("message","No hay estudiantes asignados.");
+            response.put("result",null);
+        }
+        return response;
+    }
+
+
+
+    @CrossOrigin
+    @RequestMapping(value = "/classes/{id}/problemsSolved",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getNumberProblemsByClass(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
+        Class classToStats = this.classRepository.findClassById(id);
+        Map<String,Object> response = new HashMap<>();
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
+        if(classToStats != null){
+            List<User> students = classToStats.getStudents();
+            response = getResult(students,dateLimit);
+        }else{
+            response.put("status",204);
+            response.put("message","No existe clase asociada a la id");
             response.put("result",null);
         }
         return response;
@@ -239,7 +338,7 @@ public class StatsService {
         return result;
     }
 
-    private List<Solution> sortDescAndFiltreByDate(List<Solution> solutions, Date dateLimit){
+    private List<Solution> sortDescAndFiltreByDate(List<Solution> solutions, Date dateLimit) throws ParseException {
         List<Solution> solutionsFinished = new ArrayList<>();
         for(Solution solution: solutions){
 
@@ -250,21 +349,18 @@ public class StatsService {
                 solutionsFinished.add(solution);
             }
         }
-        Collections.sort(solutionsFinished,new SolutionByDate());//se ordenan
-        System.out.println("primera solution=> "+new SimpleDateFormat("yyyy-MM-dd").format(solutionsFinished.get(0).getSolvedDate()));
-        System.out.println("primera solution=> "+new SimpleDateFormat("yyyy-MM-dd").format(solutionsFinished.get(1).getSolvedDate()));
+        Collections.sort(solutionsFinished,new SolutionByDate());
         List<Solution> validSolutions = new ArrayList<>();
-        System.out.println("time: "+solutionsFinished.get(0).getSolvedDate().getTime());
-        String formatted = new SimpleDateFormat("yyyy-MM-dd").format(dateLimit);
-        System.out.println("Formateada: "+formatted);
+
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
         for(Solution solution: solutionsFinished){
             //Es la primera aparicion de una solucion más antigua que el limite.
-            if(dateLimit.compareTo(solution.getSolvedDate()) < 0){
-                System.out.println("valida");
-                System.out.println("date => "+solution.getSolvedDate().toString());
+            String dateDays = formater.format(solution.getSolvedDate());
+            Date actualDate = formater.parse(dateDays);
+            if(dateLimit.compareTo(actualDate) <= 0){
                 validSolutions.add(solution);
             }else{
-                System.out.println(solution.getSolvedDate().toString()+" Es más antigua que "+dateLimit.toString());
+                System.out.println(actualDate+" Es más antigua que "+dateLimit.toString());
             }
         }
         return validSolutions;
