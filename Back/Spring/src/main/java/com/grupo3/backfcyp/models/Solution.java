@@ -27,7 +27,7 @@ public class Solution {
     //closed. (the user clicked on Send and its success.)
     private int successes;
     private String errors;
-
+    private Date solvedDate;
     @Transient
     @Autowired
     private CodeRepository codeRepositoryMongo;
@@ -190,7 +190,17 @@ public class Solution {
         this.problem = problem;
     }
 
+    public Date getSolvedDate() {
+        return solvedDate;
+    }
 
+    public void setSolvedDate(Date solvedDate) {
+        this.solvedDate = solvedDate;
+    }
+
+    public List<Test> getTests() {
+        return tests;
+    }
 
     public void setTests(List<Test> tests) {
         this.tests = tests;

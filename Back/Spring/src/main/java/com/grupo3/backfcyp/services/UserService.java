@@ -77,6 +77,7 @@ public class UserService {
             response.put("user",null);
             return response;
         }
+        /* desde el front debe elegir si o si un rol*/
         if((roleList = user.getRoles()).isEmpty()) {
             response.put("status","El usuario no tiene roles seleccionados, vuelva a registrar uno valido");
             response.put("user",null);
@@ -96,31 +97,40 @@ public class UserService {
         if(roles[1]) {
             System.out.println("Soy coordinador");
             List<Coordination> coordinations = user.getCoordCoordinations();
-            for(Coordination coordination: coordinations){
-                //Se establece el usuario que lidera esta coordinación.
-                this.coordinationRepository.findCoordinationById(coordination.getId()).setCoordinator(user);
+            if(coordinations != null){
+                for(Coordination coordination: coordinations){
+                    //Se establece el usuario que lidera esta coordinación.
+                    this.coordinationRepository.findCoordinationById(coordination.getId()).setCoordinator(user);
+                }
             }
         }
         //Si es profesor
         if(roles[2]){
             System.out.println("Soy profesor");
             List<Class> classes = user.getClasses_teachers();
-            for(Class teacherClass: classes){
-                this.classRepository.findClassById(teacherClass.getId()).getTeachers().add(user);
+            if(classes != null){
+                for(Class teacherClass: classes){
+                    this.classRepository.findClassById(teacherClass.getId()).getTeachers().add(user);
+                }
+                //this.classRepository.saveAll(classes);
             }
-            //this.classRepository.saveAll(classes);
+
         }
         //Si es estudiante
         if(roles[3]){
             System.out.println("Soy alumno");
-            List<Career> careers = user.getCareers();
-            for(Career career: careers){
-                this.careerRepository.findCareerById(career.getId()).getUsers().add(user);
+            if(user.getCareers() != null){
+                List<Career> careers = user.getCareers();
+                for(Career career: careers){
+                    this.careerRepository.findCareerById(career.getId()).getUsers().add(user);
+                }
             }
             //this.careerRepository.saveAll(careers);
-            List<Class> classes = user.getClasses_students();
-            for(Class studentClass: classes){
-                this.classRepository.findClassById(studentClass.getId()).getStudents().add(user);
+            if(user.getClasses_students() != null){
+                List<Class> classes = user.getClasses_students();
+                for(Class studentClass: classes){
+                    this.classRepository.findClassById(studentClass.getId()).getStudents().add(user);
+                }
             }
             //this.classRepository.saveAll(classes);
         }
