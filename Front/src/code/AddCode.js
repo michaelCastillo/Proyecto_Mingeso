@@ -441,7 +441,7 @@ class Code extends Component{
 
                     if(VarLine.length >= 3)
                     {
-                        if(VarLine.charAt(0) == 'd' || VarLine.charAt(1) == 'e' || VarLine.charAt(1) == 'f')
+                        if(VarLine.charAt(0) == 'd' && VarLine.charAt(1) == 'e' && VarLine.charAt(2) == 'f')
                         {
                             return true;
                         }
@@ -459,6 +459,238 @@ class Code extends Component{
                 return false;
             }
 
+            handleFindIf(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+
+                    if(VarLine.length >= 2)
+                    {
+                        if(VarLine.charAt(0) == 'i' && VarLine.charAt(1) == 'f')
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            handleFindWhile(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+
+                    if(VarLine.length >= 5)
+                    {
+                        if(VarLine.charAt(0) == 'w' && VarLine.charAt(1) == 'h' && VarLine.charAt(2) == 'i' && VarLine.charAt(3) == 'l' && VarLine.charAt(4) == 'e')
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            handleFindElif(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+
+                    if(VarLine.length >= 4)
+                    {
+                        if(VarLine.charAt(0) == 'e' && VarLine.charAt(1) == 'l' && VarLine.charAt(2) == 'i' && VarLine.charAt(3) == 'f')
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            handleFindElse(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+
+                    if(VarLine.length >= 4)
+                    {
+                        if(VarLine.charAt(0) == 'e' && VarLine.charAt(1) == 'l' && VarLine.charAt(2) == 's' && VarLine.charAt(3) == 'e')
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            handleFindFor(VarLine)
+            {
+                if(this.state.ide == "python")
+                {
+
+                    if(VarLine.length >= 3)
+                    {
+                        if(VarLine.charAt(0) == 'f' && VarLine.charAt(1) == 'o' && VarLine.charAt(2) == 'r')
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+
+                }
+                else if(this.state.ide == "C")
+                {
+
+                }
+
+                return false;
+            }
+
+            handleFindCommentGlobal(varLine)
+            {
+                var i;
+                var listReturn;
+                var positionCommentD;
+                var positionCommentE;
+                var positionCommentR;
+
+                var actual;
+
+                var listD = ["Descripción", "Descripcion", "descripción", "descripcion"];
+                var listE = ["Entrada", "entrada", "Entradas", "entradas"];
+                var listR = ["Retorno", "retorno", "Return", "return", "Salida", "salida", "Salidas", "salidas"];
+
+                for(i=0; i < listD.length ; i++)
+                {
+                    actual = varLine.indexOf(listD[i]);
+                    if(i == 0)
+                    {
+                        positionCommentD = actual;
+                    }
+                    else
+                    {
+                        if(positionCommentD == -1)
+                        {
+                            positionCommentD = actual;
+                        }
+                        else if(actual < positionCommentD && actual != -1)
+                        {
+                            positionCommentD = actual;
+                        }
+                    }
+                }
+
+                for(i=0; i < listE.length ; i++)
+                {
+                    actual = varLine.indexOf(listE[i]);
+                    if(i == 0)
+                    {
+                        positionCommentE = actual;
+                    }
+                    else
+                    {
+                        if(positionCommentE == -1)
+                        {
+                            positionCommentE = actual;
+                        }
+                        else if(actual < positionCommentE && actual != -1)
+                        {
+                            positionCommentE = actual;
+                        }
+                    }
+                }
+
+                for(i=0; i < listR.length ; i++)
+                {
+                    actual = varLine.indexOf(listR[i]);
+                    if(i == 0)
+                    {
+                        positionCommentR = actual;
+                    }
+                    else
+                    {
+                        if(positionCommentR == -1)
+                        {
+                            positionCommentR = actual;
+                        }
+                        else if(actual < positionCommentR && actual != -1)
+                        {
+                            positionCommentR = actual;
+                        }
+                    }
+                }
+
+                if(positionCommentD == -1)
+                {
+                    positionCommentD = varLine.length +1;
+                }
+                if(positionCommentE == -1)
+                {
+                    positionCommentE = varLine.length +1;
+                }
+                if(positionCommentR == -1)
+                {
+                    positionCommentR = varLine.length +1;
+                }
+
+                if(positionCommentD < positionCommentE && positionCommentD < positionCommentR)
+                {
+                    listReturn = ["COMMENTD", this.handleFindCommentD(varLine)];
+                }
+                else if(positionCommentE < positionCommentD && positionCommentE < positionCommentR)
+                {
+                    listReturn = ["COMMENTE", this.handleFindCommentE(varLine)];
+                }
+                else if(positionCommentR < positionCommentE && positionCommentR < positionCommentD)
+                {
+                    listReturn = ["COMMENTR", this.handleFindCommentR(varLine)];
+                }
+                else
+                {
+                    listReturn = ["COMMENT", this.handleFindComment(varLine)];
+                }
+
+                return listReturn;
+            }
+
             handleRedaction(varCode)
             {
                 var lineas = varCode.split("\n");
@@ -467,55 +699,67 @@ class Code extends Component{
                 var j = 0;
                 var booleanFound = false;
                 var actualList = [];
+                var commentList = [];
                 for (i = 0; i < lineas.length; i++)
                 {
                     
                     actualList = this.handleFindTab(lineas[i])
                     lineas[i] = actualList[0];
-                    //encontrar tabulaciones
+                    //Encontrar tabulaciones
                     if(actualList[1] != 0)
                     {
                         while(j < actualList[1])
                         {
-                            this.state.simplCode.push("TAB");
+                            this.state.simplCode.push(["TAB", i+1]);
                             j++;
                         }
                         j=0;
-                    }
-                    //Encontrar comentarios con la palabra descripcion
-                    if(this.handleFindCommentD(lineas[i]) && booleanFound == false)
+                    }               
+                    //Encontrar comentarios
+                    commentList = this.handleFindCommentGlobal(lineas[i]);
+                    if(commentList[1] && booleanFound == false)
                     {
-                        this.state.simplCode.push("COMMENTD");
+                        this.state.simplCode.push([commentList[0], i+1]);
                         booleanFound = true;
                     }
-                    // Encontrar comentarios con la palabra entrada
-                    else if(this.handleFindCommentE(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push("COMMENTE");
-                        booleanFound = true;
-                    }
-                    //Encontrar comentarios con la palabra retorno, return o salida en ella
-                    else if(this.handleFindCommentR(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push("COMMENTR");
-                        booleanFound = true;
-                    }
-                    // encontrar un simple comentario si es que no encontro ningun otro tipo de comentario
-                    else if(this.handleFindComment(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push("COMMENT");
-                        booleanFound = true;
-                    }
+                    //Encontrar Funciones
                     else if(this.handleFindFunction(lineas[i]) && booleanFound == false)
                     {
-                        this.state.simplCode.push("FUNCTION");
+                        this.state.simplCode.push(["FUNCTION", i+1]);
+                        booleanFound = true;
+                    }
+                    //Encontrar If's
+                    else if(this.handleFindIf(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push(["IF", i+1]);
+                        booleanFound = true;
+                    }
+                    //Encontrar While's
+                    else if(this.handleFindWhile(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push(["WHILE", i+1]);
+                        booleanFound = true;
+                    }
+                    else if(this.handleFindElif(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push(["ELSEIF", i+1]);
+                        booleanFound = true;
+                    }
+                    else if(this.handleFindElse(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push(["ELSE", i+1]);
+                        booleanFound = true;
+                    }
+                    else if(this.handleFindFor(lineas[i]) && booleanFound == false)
+                    {
+                        this.state.simplCode.push(["FOR", i+1]);
                         booleanFound = true;
                     }
                     else
                     {
                         if(actualList[1] != 0)
                         {
-                            this.state.simplCode.push("CODE");
+                            this.state.simplCode.push(["CODE", i+1]);
                         }
                     }
                     booleanFound = false;
@@ -587,9 +831,6 @@ class Code extends Component{
                                         <Label>Cerrado: {this.isClosed()} </Label>
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Correction data={this.state.simplCode} />
-                                </Row>
                             
                         </Col>
                         
@@ -640,7 +881,10 @@ class Code extends Component{
                             
                         </Col>
                                     
-                        </Row>
+                    </Row>
+                    <Row>
+                        <Correction data={this.state.simplCode} />
+                    </Row>
                         
 
                         

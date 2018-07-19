@@ -19,36 +19,124 @@ class Correction extends Component
     handleProblems(list)
     {
         var i;
+        var j=0;
+        var qTab = 0;
+        if(list.length > 0)
+        {
+            var actLine = list[0][1];
+        }
         var finalList = [];
+
+        var flagD = false;
+        var flagE = false;
+        var flagR = false;
+
+
+
         for(i = 0; i < list.length; i++)
         {
-            if(list[i] == "TAB")
+            if(list[i][0] == "TAB")
             {
-                finalList.push("Tabulacion");
+                if(list[i][1] == actLine)
+                {
+                    j++;
+                }
+                else
+                {
+                    j = 1;
+                    actLine = list[i][1];
+                }
+
+                if(j > qTab)
+                {
+                    finalList.push("Se a colocado en la linea "+list[i][1]+" una tabulacion que podria ser innecesaria.");
+                }
+                
             }
-            else if(list[i] == "COMMENTD")
+            else if(list[i][0] == "COMMENTD")
             {
-                finalList.push("Comentario descriptivo");
+                flagD = true;
             }
-            else if(list[i] == "COMMENTR")
+            else if(list[i][0] == "COMMENTE")
             {
-                finalList.push("Comentario con Retorno");
+                flagE = true;
             }
-            else if(list[i] == "COMMENTE")
+            else if(list[i][0] == "COMMENTR")
             {
-                finalList.push("Comentario con Entrada");
+                flagR = true;
             }
-            else if(list[i] == "COMMENT")
+            else if(list[i][0] == "FUNCTION")
             {
-                finalList.push("Comentario");
+                qTab = j+1;
+
+                if(flagD && flagE && flagR)
+                {
+                    flagD = false;
+                    flagE = false;
+                    flagR = false;
+                }
+                else
+                {
+                    finalList.push("No se detecta una presentacion completa de la funcion en la linea "+list[i][1]+". Se recomienda la incorporacion de:");
+                    if(flagD == false)
+                    {
+                        finalList.push(" - Una descripción.");
+                    }
+                    if(flagE == false)
+                    {
+                        finalList.push(" - Mostrar las entradas.");
+                    }
+                    if(flagR == false)
+                    {
+                        finalList.push(" - Mostrar los retornos.");
+                    }
+                }
             }
-            else if(list[i] == "FUNCTION")
+            else if(list[i][0] == "IF")
             {
-                finalList.push("Funcion");
+                qTab = j+1;
+
+                flagD = false;
+                flagE = false;
+                flagR = false;
             }
-            else if(list[i] == "CODE")
+            else if(list[i][0] == "WHILE")
             {
-                finalList.push("Codigo");
+                qTab = j+1;
+
+                flagD = false;
+                flagE = false;
+                flagR = false;
+            }
+            else if(list[i][0] == "ELSEIF")
+            {
+                qTab = j+1;
+
+                flagD = false;
+                flagE = false;
+                flagR = false;
+            }
+            else if(list[i][0] == "ELSE")
+            {
+                qTab = j+1;
+
+                flagD = false;
+                flagE = false;
+                flagR = false;
+            }
+            else if(list[i][0] == "FOR")
+            {
+                qTab = j+1;
+
+                flagD = false;
+                flagE = false;
+                flagR = false;
+            }
+            else if(list[i][0] == "CODE")
+            {
+                flagD = false;
+                flagE = false;
+                flagR = false;
             }
         }
         return finalList;
@@ -64,11 +152,13 @@ class Correction extends Component
                     <Panel.Heading>
                         <Panel.Title>Sugerencias para el código</Panel.Title>
                     </Panel.Heading>
-                    <Panel.Body>
-                        <ListGroup>
-                            {this.handleProblems(this.props.data).map((data) => {return (<ListGroupItem>{data}</ListGroupItem>);})}
-                        </ListGroup>
-                    </Panel.Body>
+                    <section id="cuerpoPanelSugerencias">
+                        <Panel.Body>
+                            <ListGroup>
+                                {this.handleProblems(this.props.data).map((data) => {return (<ListGroupItem>{data}</ListGroupItem>);})}
+                            </ListGroup>
+                        </Panel.Body>
+                    </section>
                 </Panel>
             </section>
         );
