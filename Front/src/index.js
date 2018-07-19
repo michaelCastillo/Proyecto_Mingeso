@@ -14,6 +14,7 @@ import HeaderUp from './header/HeaderUp';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Code from './code/AddCode';
 import Home from './home/Home';
+import Register from './register/register';
 import UserRoutes from './users/UserRoutes';
 import ProblemRoutes from './problems/ProblemRoutes';
 import Login from './login/login';
@@ -63,7 +64,7 @@ ReactDOM.render(
                 <Route path="/login" component ={noRequireAuth(Login)}/>
                 <Route path="/users/:id" component={UserProfile}/>
                 <Route path="/signout" component ={requireAuth(Signout)}/>  
-
+                <Route path="/register" component ={Register}/>
                 <Route path="/Profesores" component ={perm(Teachers)}/>
                 <Route path="/alumnos" component ={perm1(Students)}/>
 
