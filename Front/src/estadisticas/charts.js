@@ -4,12 +4,14 @@ import {Line} from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import axios from 'axios';
 export default class Chart extends Component {
 
     constructor (props) {
         super(props)
         this.state = {
-          startDate: ""  
+          startDate: "",
+
         };
         this.handleChange = this.handleChange.bind(this);
       }
@@ -20,10 +22,43 @@ export default class Chart extends Component {
         });
       }
 
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
+
+      handleSubmit = event => {
+      
+        var date =  new Date(this.state.startDate); 
+        const date2 = date.toDateString();
+        const NewDate = this.formatDate(date2);
+       
+        axios.post(`https://35.226.163.50:8080/Backend/stats/student/11/problemsSolved`, NewDate)
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+          })
+      }  
+
+
+
+
+
+
     render() {
-        var darte =  new Date(this.state.startDate); 
+        var date =  new Date(this.state.startDate); 
+        const date2 = date.toDateString();
+        const NewDate = this.formatDate(date2);
+
         const data = {
-            labels: [darte,'January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: [NewDate,'January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [
               {
                 label: 'My First dataset',
@@ -59,6 +94,7 @@ export default class Chart extends Component {
                             dateFormat="DD/MM/YYYY"
                             todayButton={""}
                         />
+                        <button type="submit" onClick= {this.handleSubmit}>Aceptar</button>
                     </Col>    
                     <Col md={6} xs={6}>
                         <h2>Line Example</h2>
