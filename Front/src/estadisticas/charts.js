@@ -1,19 +1,32 @@
 import React, { Component } from 'react';
-import {Grid,Row,Col} from 'react-bootstrap';
 import {Line} from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
 import moment from 'moment';
 import axios from 'axios';
+
 export default class Chart extends Component {
 
     constructor (props) {
         super(props)
         this.state = {
           startDate:  moment(),
-
+          userList:[],
+          value: '',
+          name: ''
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleValue = this.handleValue.bind(this);
+        this.gets = this.gets.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+
+
+      }
+
+    handleValue = event => {
+        this.setState({ value: event.target.value });
+        {this.gets(this.state.value)}
       }
 
     handleChange(date) {
@@ -49,14 +62,63 @@ export default class Chart extends Component {
       }  
 
 
+      gets =(type) => {
+        axios.get(`http://35.226.163.50:8080/Backend/` + type)
+            .then(res => {
+                const userList=res.data;
+                this.setState({ userList });
+                console.log(res.data);
+                console.log(userList[0].code);
 
+                this.state.listItems = userList.map((userl) =>
+                <li key={userl.id}>
+                     {userl.code}
+               </li>
+                )                 
+            }).catch(error => {
+                console.log(error.response)
+            });
+      };
+    
 
+  
+
+      handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'radio' ? target.checked : target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
+        console.log(name)
+      }
 
 
     render() {
+      const listItems = this.state.userList.map((userl) =>
+
+          <div class="form-check">
+          <label key = {userl.id}>
+
+              {userl.code}
+
+            <input 
+                name= {userl.id}
+                type="radio"
+                value = {userl.id}
+                onChange={this.handleInputChange}
+              />
+         
+          </label>
+          </div>         
+              
+                ) 
+
         var date =  new Date(this.state.startDate); 
         const date2 = date.toDateString();
         const NewDate = this.formatDate(date2);
+
 
         const data = {
             labels: [NewDate,'January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -105,8 +167,25 @@ export default class Chart extends Component {
                         height = {400}  
                         />
                     </Col>
-                </Row>    
+
+                 
+                </Row> 
+                <Col md={6} xs={6}>
+                            
+                            <FormGroup controlId="formControlsSelect">
+                            <ControlLabel>Select</ControlLabel>
+                            <FormControl componentClass="select" placeholder="select" onClick={this.handleValue} 
+                              value={this.state.value}>
+                             <option value="careers">carrera(s)</option>
+                             <option value="coordinations ">coordinacion(s)</option>
+                            </FormControl>
+                            </FormGroup>
+                            {listItems}
+                            </Col>
+
+                   
               </div>
+
             );
           }
         }
