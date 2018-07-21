@@ -27,6 +27,8 @@ import Authorization from './hoc/roleRequire';
 
 import Signout from './login/signOut';
 import Chart from './estadisticas/charts';
+import ChartLine from './estadisticas/chartsLine';
+
 
 
 
@@ -73,6 +75,8 @@ ReactDOM.render(
                 <Route path="/Profesores" component ={perm(Teachers)}/>
                 <Route path="/redirect" component ={requireAuth(Redirect)}/>
                 <Route path="/estadistica" component ={Chart}/>
+                <Route path="/componente" component ={ChartLine}/>
+
 
                 </div>
             </Router>

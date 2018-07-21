@@ -5,6 +5,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
 import moment from 'moment';
 import axios from 'axios';
+import ChartLine from './chartsLine'
+
 
 export default class Chart extends Component {
 
@@ -14,8 +16,11 @@ export default class Chart extends Component {
           startDate:  moment(),
           userList:[],
           value: '',
-          name: ''
+          type: '',
+          chartcomponent : false
+
         };
+        this.chart =  React.createRef();
         this.handleChange = this.handleChange.bind(this);
         this.handleValue = this.handleValue.bind(this);
         this.gets = this.gets.bind(this);
@@ -23,6 +28,16 @@ export default class Chart extends Component {
 
 
       }
+
+      changeComponentStatus(event){
+        
+        if (this.state.chartcomponent){
+            this.setState({chartcomponent:false});
+        } else {
+            this.setState({chartcomponent:true});
+        }
+    }  
+
 
     handleValue = event => {
         this.setState({ value: event.target.value });
@@ -47,14 +62,14 @@ export default class Chart extends Component {
         return [year, month, day].join('-');
     }
 
-      handleSubmit = event => {
+      handleSubmit = (id) => {
       
         var dateLimit =  new Date(this.state.startDate); 
         const date2 = dateLimit.toDateString();
         var post = {dateLimit:this.formatDate(date2)};
         console.log(post);
        
-        axios.post(`http://35.226.163.50:8080/Backend/stats/student/11/problemsSolved`,post)
+        axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -69,7 +84,7 @@ export default class Chart extends Component {
                 this.setState({ userList });
                 console.log(res.data);
                 console.log(userList[0].code);
-
+                this.state.type = type;
                 this.state.listItems = userList.map((userl) =>
                 <li key={userl.id}>
                      {userl.code}
@@ -79,32 +94,74 @@ export default class Chart extends Component {
                 console.log(error.response)
             });
       };
+
+      getCarrerStudent =(id) => {
+        axios.get('http://35.226.163.50:8080/Backend/careers/' + id +'/getStudents/')
+            .then(res => {
+                const userList=res.data;
+                this.setState({ userList });
+                console.log(res.data);
+                this.state.listItems = userList.map((userl) =>
+                <li key={userl.id}>
+                     {userl.code}
+               </li>
+                ) 
+                
+                
+            }).catch(error => {
+                console.log(error.response)
+            });
+      };
     
 
+      
   
 
       handleInputChange(event) {
         const target = event.target;
-        const value = target.type === 'radio' ? target.checked : target.value;
+        var value = target.type === 'radio' ? target.checked : target.value;
         const name = target.name;
     
         this.setState({
           [name]: value
         });
-        console.log(name)
+        console.log(target.value);
+        
+        if(this.state.type === "careers"){
+          this.getCarrerStudent(target.value);
+          this.state.type = "student";
+          value = false;
+       
+        }
+        
+        if(value == true){
+          if(this.state.type === "student"){
+            this.handleSubmit(target.value);
+            this.state.type = "";
+            this.state.chartcomponent = true;
+          }
+        }  
       }
 
 
     render() {
+
+      let component = null;
+
+      if (this.state.chartcomponent){
+        component = <ChartLine ref = {this.chart} /> ;
+      } 
       const listItems = this.state.userList.map((userl) =>
 
           <div class="form-check">
           <label key = {userl.id}>
 
-              {userl.code}
+              {userl.code} - 
+
+              {userl.name}
 
             <input 
-                name= {userl.id}
+                name= "radioOption"
                 type="radio"
                 value = {userl.id}
                 onChange={this.handleInputChange}
@@ -150,40 +207,24 @@ export default class Chart extends Component {
         return (
             <div>
                 <Row > 
-                    <Col md={10} xs={10}>
-                        <DatePicker
-                            selected={this.state.startDate}
-                            onChange={this.handleChange}
-                            dateFormat="DD/MM/YYYY"
-                            todayButton={"today"}
-                            maxDate={moment()}
-                        />
-                        <button type="submit" onClick= {this.handleSubmit}>Aceptar</button>
-                    </Col>    
-                    <Col md={6} xs={6}>
-                        <h2>Gráfico problemas resueltos</h2>
-                        <Line data={data}
-                        width = {600}
-                        height = {400}  
-                        />
-                    </Col>
-
+                  
+                  {component}
                  
-                </Row> 
-                <Col md={6} xs={6}>
-                            
+                <Col md={6} smOffset={2} xs={6} >
                             <FormGroup controlId="formControlsSelect">
                             <ControlLabel>Select</ControlLabel>
                             <FormControl componentClass="select" placeholder="select" onClick={this.handleValue} 
                               value={this.state.value}>
-                             <option value="careers">carrera(s)</option>
-                             <option value="coordinations ">coordinacion(s)</option>
+                             <option value="careers">coordinacione(s)</option>
+                             <option value="coordinations">carrera(s)</option>
                             </FormControl>
                             </FormGroup>
                             {listItems}
+                            {this.state.type}
                             </Col>
 
-                   
+                 </Row> 
+
               </div>
 
             );
