@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import {Line} from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
-import moment from 'moment';
+import { Grid, Row, Col,Button,InputGroup } from 'react-bootstrap';
+import moment, { relativeTimeThreshold } from 'moment';
 import Chart from './charts'
 import axios from 'axios';
 
@@ -15,13 +15,15 @@ export default class ChartLine extends Component {
         super(props)
         this.state = {
           startDate:  moment(),
-          userID : 0
+          userID : 0,
+          dateList: [],
+          listItems:[],
+          listDate:[],
+          nameDate:""
         
         };
         this.handleChange = this.handleChange.bind(this);
-     
-
-
+        this.handleSubmit = this.handleSubmit.bind(this);
       }
 
       formatDate(date) {
@@ -37,10 +39,15 @@ export default class ChartLine extends Component {
     }
 
 
-      handleChange(date) {
+      handleChange = (date)=> {
+
         this.setState({
           startDate: date
         });
+
+        this.handleSubmit(this.props.userID);
+
+
       }
 
 
@@ -49,28 +56,33 @@ export default class ChartLine extends Component {
         var dateLimit =  new Date(this.state.startDate); 
         const date2 = dateLimit.toDateString();
         var post = {dateLimit:this.formatDate(date2)};
-        console.log(post);
+        this.state.nameDate = this.formatDate(date2);
        
         axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
           .then(res => {
             console.log(res);
             console.log(res.data);
+            const dateList=res.data.result;
+            this.setState({ dateList });
+            const listItems = dateList.map(date => date.date);
+            this.setState({listItems});
+            const listDate = dateList.map(date => date.numberSolved);
+            this.setState({listDate});
+
+
           })
       }  
 
       
       render() {
-          var date =  new Date(this.state.startDate); 
-          const date2 = date.toDateString();
-          const NewDate = this.formatDate(date2);
-             <Chart userID={this.state.userID}/>
+
+          <Chart userID={this.state.userID}/>
             
-             console.log(this.props.userID)
              const data = {
-              labels: [NewDate,'January', 'February', 'March', 'April', 'May', 'June', 'July'],
+              labels: this.state.listItems,
               datasets: [
                 {
-                  label: 'Problemas resueltos',
+                  label: "Problemas resueltos por fecha",
                   fill: false,
                   lineTension: 0.1,
                   backgroundColor: 'rgba(75,192,192,0.4)',
@@ -88,7 +100,7 @@ export default class ChartLine extends Component {
                   pointHoverBorderWidth: 2,
                   pointRadius: 1,
                   pointHitRadius: 10,
-                  data: [65, 59, 80, 81, 56, 55, 40]
+                  data: this.state.listDate
                 }
               ]
             };
@@ -100,25 +112,26 @@ export default class ChartLine extends Component {
                           <DatePicker
                               selected={this.state.startDate}
                               onChange={this.handleChange}
-                              dateFormat="DD/MM/YYYY"
+                              dateFormat="YYYY-MM-DD"
                               todayButton={"today"}
                               maxDate={moment()}
+                              onYearChange = {this.handleChange}
+                              
                           />
                           
+
                       </Col>    
                       <Col md={6} smOffset={2} xs={6}>
-                          <h2>Gráfico problemas resueltos</h2>
+                          <h2>Cantidad problemas resueltos desde: {this.state.nameDate}</h2>
                           <Line data={data}
                           width = {600}
                           height = {400}  
                           />
                       </Col>
-                      {this.handleSubmit(this.props.userID)}
+                      
   
                   
                   </Row> 
-                 
-                     
                 </div>
   
               );

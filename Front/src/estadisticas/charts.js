@@ -64,20 +64,7 @@ export default class Chart extends Component {
         return [year, month, day].join('-');
     }
 
-      handleSubmit = (id) => {
-      
-        var dateLimit =  new Date(this.state.startDate); 
-        const date2 = dateLimit.toDateString();
-        var post = {dateLimit:this.formatDate(date2)};
-        console.log(post);
-       
-        axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
-          .then(res => {
-            console.log(res);
-            console.log(res.data);
-          })
-      }  
-
+   
 
       gets =(type) => {
         axios.get(`http://35.226.163.50:8080/Backend/` + type)
@@ -161,7 +148,7 @@ export default class Chart extends Component {
           <div class="form-check">
           <label key = {userl.id}>
 
-              {userl.code} - 
+              {userl.code}  
 
               {userl.name}
 
@@ -187,7 +174,7 @@ export default class Chart extends Component {
                  
                 <Col md={6} smOffset={2} xs={6} >
                             <FormGroup controlId="formControlsSelect">
-                            <ControlLabel>Select</ControlLabel>
+                            <ControlLabel>Seleccione gráfico a mostrar</ControlLabel>
                             <FormControl componentClass="select" placeholder="select" onClick={this.handleValue} 
                               value={this.state.value}>
                              <option value="careers">coordinacione(s)</option>
@@ -195,8 +182,7 @@ export default class Chart extends Component {
                             </FormControl>
                             </FormGroup>
                             {listItems}
-                            {this.state.type}
-                            {this.props.startDate}
+                           
                             
                             </Col>
 
