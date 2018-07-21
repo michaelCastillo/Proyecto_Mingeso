@@ -10,7 +10,7 @@ export default class Chart extends Component {
     constructor (props) {
         super(props)
         this.state = {
-          startDate: "",
+          startDate:  moment(),
 
         };
         this.handleChange = this.handleChange.bind(this);
@@ -36,11 +36,12 @@ export default class Chart extends Component {
 
       handleSubmit = event => {
       
-        var date =  new Date(this.state.startDate); 
-        const date2 = date.toDateString();
-        const NewDate = this.formatDate(date2);
+        var dateLimit =  new Date(this.state.startDate); 
+        const date2 = dateLimit.toDateString();
+        var post = {dateLimit:this.formatDate(date2)};
+        console.log(post);
        
-        axios.post(`https://35.226.163.50:8080/Backend/stats/student/11/problemsSolved`, NewDate)
+        axios.post(`http://35.226.163.50:8080/Backend/stats/student/11/problemsSolved`,post)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -61,7 +62,7 @@ export default class Chart extends Component {
             labels: [NewDate,'January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [
               {
-                label: 'My First dataset',
+                label: 'Problemas resueltos',
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -92,12 +93,13 @@ export default class Chart extends Component {
                             selected={this.state.startDate}
                             onChange={this.handleChange}
                             dateFormat="DD/MM/YYYY"
-                            todayButton={""}
+                            todayButton={"today"}
+                            maxDate={moment()}
                         />
                         <button type="submit" onClick= {this.handleSubmit}>Aceptar</button>
                     </Col>    
                     <Col md={6} xs={6}>
-                        <h2>Line Example</h2>
+                        <h2>Gráfico problemas resueltos</h2>
                         <Line data={data}
                         width = {600}
                         height = {400}  
