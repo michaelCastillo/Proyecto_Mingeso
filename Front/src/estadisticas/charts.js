@@ -17,9 +17,11 @@ export default class Chart extends Component {
           userList:[],
           value: '',
           type: '',
-          chartcomponent : false
+          chartcomponent : false,
+          userID: 0
 
         };
+        this.startDate = React.createRef();
         this.chart =  React.createRef();
         this.handleChange = this.handleChange.bind(this);
         this.handleValue = this.handleValue.bind(this);
@@ -128,6 +130,7 @@ export default class Chart extends Component {
         console.log(target.value);
         
         if(this.state.type === "careers"){
+          this.state.chartcomponent = false;
           this.getCarrerStudent(target.value);
           this.state.type = "student";
           value = false;
@@ -136,9 +139,12 @@ export default class Chart extends Component {
         
         if(value == true){
           if(this.state.type === "student"){
-            this.handleSubmit(target.value);
+            this.state.userID = target.value;
             this.state.type = "";
             this.state.chartcomponent = true;
+
+           
+
           }
         }  
       }
@@ -148,11 +154,10 @@ export default class Chart extends Component {
 
       let component = null;
 
-      if (this.state.chartcomponent){
-        component = <ChartLine ref = {this.chart} /> ;
+     if (this.state.chartcomponent){
+        component = <ChartLine ref = {this.chart} userID = {this.state.userID} /> ;
       } 
       const listItems = this.state.userList.map((userl) =>
-
           <div class="form-check">
           <label key = {userl.id}>
 
@@ -172,37 +177,7 @@ export default class Chart extends Component {
               
                 ) 
 
-        var date =  new Date(this.state.startDate); 
-        const date2 = date.toDateString();
-        const NewDate = this.formatDate(date2);
-
-
-        const data = {
-            labels: [NewDate,'January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-              {
-                label: 'Problemas resueltos',
-                fill: false,
-                lineTension: 0.1,
-                backgroundColor: 'rgba(75,192,192,0.4)',
-                borderColor: 'rgba(75,192,192,1)',
-                borderCapStyle: 'butt',
-                borderDash: [],
-                borderDashOffset: 0.0,
-                borderJoinStyle: 'miter',
-                pointBorderColor: 'rgba(75,192,192,1)',
-                pointBackgroundColor: '#fff',
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                pointHoverBorderColor: 'rgba(220,220,220,1)',
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
-                data: [65, 59, 80, 81, 56, 55, 40]
-              }
-            ]
-          };
+        console.log(this.props.startDate);
 
         return (
             <div>
@@ -221,6 +196,8 @@ export default class Chart extends Component {
                             </FormGroup>
                             {listItems}
                             {this.state.type}
+                            {this.props.startDate}
+                            
                             </Col>
 
                  </Row> 

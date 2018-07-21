@@ -4,6 +4,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
 import moment from 'moment';
+import Chart from './charts'
+import axios from 'axios';
 
 
 
@@ -13,6 +15,7 @@ export default class ChartLine extends Component {
         super(props)
         this.state = {
           startDate:  moment(),
+          userID : 0
         
         };
         this.handleChange = this.handleChange.bind(this);
@@ -41,14 +44,29 @@ export default class ChartLine extends Component {
       }
 
 
+      handleSubmit = (id) => {
+      
+        var dateLimit =  new Date(this.state.startDate); 
+        const date2 = dateLimit.toDateString();
+        var post = {dateLimit:this.formatDate(date2)};
+        console.log(post);
+       
+        axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+          })
+      }  
+
       
       render() {
           var date =  new Date(this.state.startDate); 
           const date2 = date.toDateString();
           const NewDate = this.formatDate(date2);
-  
-  
-          const data = {
+             <Chart userID={this.state.userID}/>
+            
+             console.log(this.props.userID)
+             const data = {
               labels: [NewDate,'January', 'February', 'March', 'April', 'May', 'June', 'July'],
               datasets: [
                 {
@@ -95,8 +113,9 @@ export default class ChartLine extends Component {
                           height = {400}  
                           />
                       </Col>
+                      {this.handleSubmit(this.props.userID)}
   
-                   
+                  
                   </Row> 
                  
                      
