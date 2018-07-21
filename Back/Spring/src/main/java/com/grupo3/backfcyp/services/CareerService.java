@@ -2,10 +2,12 @@ package com.grupo3.backfcyp.services;
 
 
 import com.grupo3.backfcyp.models.Career;
+import com.grupo3.backfcyp.models.User;
 import com.grupo3.backfcyp.repositories.CareerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.ColumnResult;
 import java.util.List;
 
 @RestController
@@ -26,6 +28,13 @@ public class CareerService {
     @ResponseBody
     public Career getCareerById(@PathVariable Long id){
         return this.careerRepository.findCareerById(id);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{id}/getStudents")
+    @ResponseBody
+    public List<User> getStudents(@PathVariable Long id){
+        return this.careerRepository.findCareerById(id).getUsers();
     }
     @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT)

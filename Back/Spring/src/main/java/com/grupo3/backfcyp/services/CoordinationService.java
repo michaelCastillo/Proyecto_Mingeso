@@ -40,6 +40,13 @@ public class CoordinationService {
     public Coordination getSectionById(@PathVariable Long id){
         return this.coordinationRepository.findCoordinationById(id);
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{id}/getClasses",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Class> getClassesFromCoord(@PathVariable Long id){
+        return (this.coordinationRepository.findCoordinationById(id)).getClasses();
+    }
     @CrossOrigin
     @RequestMapping(value = "/{id}/classes", method = RequestMethod.GET)
     @ResponseBody
