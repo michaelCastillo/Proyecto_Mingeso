@@ -19,7 +19,8 @@ export default class ChartLine extends Component {
           dateList: [],
           listItems:[],
           listDate:[],
-          nameDate:""
+          nameDate:"",
+          type : ""
         
         };
         this.handleChange = this.handleChange.bind(this);
@@ -45,21 +46,21 @@ export default class ChartLine extends Component {
           startDate: date
         });
 
-        this.handleSubmit(this.props.userID);
-
+        this.handleSubmit(this.props.userID,this.props.type);
 
       }
 
 
-      handleSubmit = (id) => {
+      handleSubmit = (id,type) => {
       
         var dateLimit =  new Date(this.state.startDate); 
         const date2 = dateLimit.toDateString();
         var post = {dateLimit:this.formatDate(date2)};
         this.state.nameDate = this.formatDate(date2);
-       
+
+       if(type === "student"){
         axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
-          .then(res => {
+       .then(res => {
             console.log(res);
             console.log(res.data);
             const dateList=res.data.result;
@@ -69,15 +70,35 @@ export default class ChartLine extends Component {
             const listDate = dateList.map(date => date.numberSolved);
             this.setState({listDate});
 
-
+          
           })
+        }
+        
+        if(type === "careers"){
+          axios.post(`http://35.226.163.50:8080/Backend/stats/careers/` + id + '/problemsSolved' ,post)
+         .then(res => {
+              console.log(res);
+              console.log(res.data);
+              const dateList=res.data.result;
+              this.setState({ dateList });
+              const listItems = dateList.map(date => date.date);
+              this.setState({listItems});
+              const listDate = dateList.map(date => date.numberSolved);
+              this.setState({listDate});
+  
+            
+            })
+          }
+
+
+
       }  
 
       
       render() {
 
-          <Chart userID={this.state.userID}/>
-            
+          <Chart userID={this.state.userID} type = {this.state.type}/>
+            console.log(this.props.type);
              const data = {
               labels: this.state.listItems,
               datasets: [
