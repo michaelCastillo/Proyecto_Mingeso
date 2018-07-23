@@ -42,6 +42,7 @@ export default class Chart extends Component {
             this.setState({chartcomponent:true});
         }
 
+
      }  
 
 
@@ -114,11 +115,11 @@ export default class Chart extends Component {
                 const userList=res.data.students;
                 this.setState({ userList });
                 console.log(res.data);
-                                
+                this.state.type = "student";                
             }).catch(error => {
                 console.log(error.response)
             });
-          //  this.state.type = "student";
+            this.state.type = "student";
 
 
       };
@@ -176,12 +177,9 @@ export default class Chart extends Component {
 
     if(this.state.type === "classes")
     {
-      this.state.bool = true;
-
+    
       this.getClasseStudent(this.state.userID);
       
-      console.log("HOLA");
-
     }
 
 
@@ -229,10 +227,7 @@ export default class Chart extends Component {
 
         return (
             <div>
-               value: {this.state.value}  
-
-              <br/>
-              type : {this.state.type}
+              
                 <Row > 
                   {component}
                  

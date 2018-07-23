@@ -90,6 +90,38 @@ export default class ChartLine extends Component {
             })
           }
 
+          if(type === "classes"){
+            axios.post(`http://35.226.163.50:8080/Backend/stats/classes/` + id + '/problemsSolved' ,post)
+           .then(res => {
+                console.log(res);
+                console.log(res.data);
+                const dateList=res.data.result;
+                this.setState({ dateList });
+                const listItems = dateList.map(date => date.date);
+                this.setState({listItems});
+                const listDate = dateList.map(date => date.numberSolved);
+                this.setState({listDate});
+    
+              
+              })
+            }
+
+            if(type === "coordinations"){
+              axios.post(`http://35.226.163.50:8080/Backend/stats/coordinations/` + id + '/problemsSolved' ,post)
+             .then(res => {
+                  console.log(res);
+                  console.log(res.data);
+                  const dateList=res.data.result;
+                  this.setState({ dateList });
+                  const listItems = dateList.map(date => date.date);
+                  this.setState({listItems});
+                  const listDate = dateList.map(date => date.numberSolved);
+                  this.setState({listDate});
+      
+                
+                })
+              }
+
 
 
       }  
@@ -98,7 +130,6 @@ export default class ChartLine extends Component {
       render() {
 
           <Chart userID={this.state.userID} type = {this.state.type}/>
-            console.log(this.props.type);
              const data = {
               labels: this.state.listItems,
               datasets: [
