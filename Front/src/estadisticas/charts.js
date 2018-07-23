@@ -21,7 +21,9 @@ export default class Chart extends Component {
           userID: 0,
           listItems:[],
           userList2:[],
-          bool:false
+          bool:false,
+          bool1:true,
+
 
         };
         this.startDate = React.createRef();
@@ -45,11 +47,16 @@ export default class Chart extends Component {
 
      }  
 
+    
 
-    handleValue = event => {
+   
+    handleValue(event){
         this.setState({ value: event.target.value });
+        this.setState({chartcomponent:false});
+        this.state.bool = false;
         console.log(this.state.value);
-        {this.gets(this.state.value)}
+        this.gets(this.state.value);
+
       }
 
     handleChange(date) {
@@ -83,7 +90,11 @@ export default class Chart extends Component {
                 <li key={userl.id}>
                      {userl.code}
                </li>
-                )                 
+                )             
+                this.state.bool=true;  
+                this.state.bool1=true;  
+
+    
             }).catch(error => {
                 console.log(error.response)
             });
@@ -101,7 +112,10 @@ export default class Chart extends Component {
                      {userl.code}
                </li>
                 ) 
-                
+                this.state.bool=true;  
+                this.state.bool1=false;  
+
+
                 
             }).catch(error => {
                 console.log(error.response)
@@ -115,7 +129,11 @@ export default class Chart extends Component {
                 const userList=res.data.students;
                 this.setState({ userList });
                 console.log(res.data);
-                this.state.type = "student";                
+                this.state.type = "student";  
+                this.state.bool=true;  
+                this.state.bool1=false;  
+
+              
             }).catch(error => {
                 console.log(error.response)
             });
@@ -132,6 +150,8 @@ export default class Chart extends Component {
                 this.setState({ userList });
                 console.log(res.data);
                 this.state.type = "classes";
+                this.state.bool=true;  
+                this.state.bool1=true;  
 
             }).catch(error => {
                 console.log(error.response)
@@ -156,7 +176,10 @@ export default class Chart extends Component {
       }
 
       
-    boolNext(event){  
+    boolNext(event){
+
+     console.log(this.state.value);   
+     console.log(this.state.type);   
 
     if((this.state.value === "coordinations") )  
     {  this.getCarrerStudent(this.state.userID);
@@ -171,7 +194,6 @@ export default class Chart extends Component {
       this.state.value = "";
 
 
-
     }
 
 
@@ -179,6 +201,7 @@ export default class Chart extends Component {
     {
     
       this.getClasseStudent(this.state.userID);
+
       
     }
 
@@ -221,31 +244,30 @@ export default class Chart extends Component {
                 ) 
          
       
-     
-
-        console.log(this.props.startDate);
-
         return (
             <div>
-              
+                 
                 <Row > 
                   {component}
                  
                 <Col md={6} smOffset={2} xs={6} >
                             <FormGroup controlId="formControlsSelect">
                             <ControlLabel>Seleccione gráfico a mostrar</ControlLabel>
-                            <FormControl componentClass="select" placeholder="select" onClick={this.handleValue} 
-                              value={this.state.value}>
-                             <option value="careers">coordinacione(s)</option>
+                            <FormControl componentClass="select"  onChange={this.handleValue} 
+                              value={this.state.value} >
+                              
+                             <option  value selected ="">...</option>
+                             <option  value="careers">coordinación(nes)</option>
                              <option value="coordinations">carrera(s)</option>
                             </FormControl>
                             </FormGroup>
                             {this.state.listItems}
+                            <br/>
+                            <Button bsStyle="info" onClick = {this.changeComponentStatus} disabled = {!this.state.bool}>Mostrar estadística</Button>
+                            <Col md={3} smOffset={1} xs={6} >
+                            <Button onClick = {this.boolNext} disabled = {!this.state.bool1}>Siguiente</Button>
 
-                            <Button onClick = {this.boolNext}>Siguiente</Button>
-
-                            <Button bsStyle="info" onClick = {this.changeComponentStatus}>Mostrar estadistica</Button>
-
+                            </Col>
                             </Col>
 
                  </Row> 

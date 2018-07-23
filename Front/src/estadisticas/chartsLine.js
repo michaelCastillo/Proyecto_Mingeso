@@ -20,11 +20,14 @@ export default class ChartLine extends Component {
           listItems:[],
           listDate:[],
           nameDate:"",
-          type : ""
+          type : "",
+          nombreTipo : "",
+          dateActual: ""
         
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleButton = this.handleButton.bind(this);
       }
 
       formatDate(date) {
@@ -46,23 +49,24 @@ export default class ChartLine extends Component {
           startDate: date
         });
 
+      }
+
+      handleButton(event){
+
         this.handleSubmit(this.props.userID,this.props.type);
 
       }
 
-
       handleSubmit = (id,type) => {
-      
-        var dateLimit =  new Date(this.state.startDate); 
-        const date2 = dateLimit.toDateString();
-        var post = {dateLimit:this.formatDate(date2)};
-        this.state.nameDate = this.formatDate(date2);
-
+        var post = {dateLimit:this.state.dateActual};
+        console.log(post);
+        console.log(this.state.dateActual);
        if(type === "student"){
         axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
        .then(res => {
             console.log(res);
             console.log(res.data);
+            this.state.nombreTipo  = "estudiante";
             const dateList=res.data.result;
             this.setState({ dateList });
             const listItems = dateList.map(date => date.date);
@@ -79,12 +83,14 @@ export default class ChartLine extends Component {
          .then(res => {
               console.log(res);
               console.log(res.data);
+              this.state.nombreTipo  = "carrera";
               const dateList=res.data.result;
               this.setState({ dateList });
               const listItems = dateList.map(date => date.date);
               this.setState({listItems});
               const listDate = dateList.map(date => date.numberSolved);
               this.setState({listDate});
+
   
             
             })
@@ -95,12 +101,14 @@ export default class ChartLine extends Component {
            .then(res => {
                 console.log(res);
                 console.log(res.data);
+                this.state.nombreTipo  = "clase";
                 const dateList=res.data.result;
                 this.setState({ dateList });
                 const listItems = dateList.map(date => date.date);
                 this.setState({listItems});
                 const listDate = dateList.map(date => date.numberSolved);
                 this.setState({listDate});
+
     
               
               })
@@ -111,13 +119,14 @@ export default class ChartLine extends Component {
              .then(res => {
                   console.log(res);
                   console.log(res.data);
+                  this.state.nombreTipo  = "coordinación";
                   const dateList=res.data.result;
                   this.setState({ dateList });
                   const listItems = dateList.map(date => date.date);
                   this.setState({listItems});
                   const listDate = dateList.map(date => date.numberSolved);
                   this.setState({listDate});
-      
+
                 
                 })
               }
@@ -128,13 +137,14 @@ export default class ChartLine extends Component {
 
       
       render() {
-
+          this.state.dateActual=this.formatDate(this.state.startDate._d);
+          console.log(this.state.dateActual);
           <Chart userID={this.state.userID} type = {this.state.type}/>
              const data = {
               labels: this.state.listItems,
               datasets: [
                 {
-                  label: "Problemas resueltos por fecha",
+                  label: "Problemas resueltos diariamente hasta la fecha" ,
                   fill: false,
                   lineTension: 0.1,
                   backgroundColor: 'rgba(75,192,192,0.4)',
@@ -170,11 +180,15 @@ export default class ChartLine extends Component {
                               onYearChange = {this.handleChange}
                               
                           />
-                          
+                          <br/>
+                            <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
 
                       </Col>    
                       <Col md={6} smOffset={2} xs={6}>
-                          <h2>Cantidad problemas resueltos desde: {this.state.nameDate}</h2>
+                          <h2>Cantidad problemas resueltos desde: {this.state.dateActual} <br/>
+                              Tipo:{this.state.nombreTipo}
+                          
+                          </h2>
                           <Line data={data}
                           width = {600}
                           height = {400}  
