@@ -19,7 +19,9 @@ export default class Chart extends Component {
           type: '',
           chartcomponent : false,
           userID: 0,
-          listItems:[]
+          listItems:[],
+          userList2:[],
+          bool:false
 
         };
         this.startDate = React.createRef();
@@ -109,29 +111,27 @@ export default class Chart extends Component {
       getClasseStudent =(id) => {
         axios.get('http://35.226.163.50:8080/Backend/classes/' + id +'/students/')
             .then(res => {
-                const userList=res.data;
+                const userList=res.data.students;
                 this.setState({ userList });
                 console.log(res.data);
-                this.state.type = "student";
-                this.state.listItems = userList.map((userl) =>
-                <li key={userl.id}>
-                     {userl.code}
-               </li>
-                ) 
-                
-                
+                                
             }).catch(error => {
                 console.log(error.response)
             });
+          //  this.state.type = "student";
+
+
       };
 
       getClasesCoord =(id) => {
+        
         axios.get('http://35.226.163.50:8080/Backend/coordinations/' + id +'/getClasses/')
             .then(res => {
                 const userList=res.data;
                 this.setState({ userList });
                 console.log(res.data);
-                this.state.type = "classes";    
+                this.state.type = "classes";
+
             }).catch(error => {
                 console.log(error.response)
             });
@@ -148,6 +148,7 @@ export default class Chart extends Component {
           [name]: value
         });
         this.state.userID = target.value;
+        console.log(this.state.userID);
 
        
           
@@ -159,6 +160,7 @@ export default class Chart extends Component {
     if((this.state.value === "coordinations") )  
     {  this.getCarrerStudent(this.state.userID);
        this.state.value = "";
+       this.state.type = "";
       
     }
     
@@ -167,11 +169,18 @@ export default class Chart extends Component {
     {this.getClasesCoord(this.state.userID);
       this.state.value = "";
 
+
+
     }
 
+
     if(this.state.type === "classes")
-    {this.getClasseStudent(this.state.userID);
-      this.state.type = "";
+    {
+      this.state.bool = true;
+
+      this.getClasseStudent(this.state.userID);
+      
+      console.log("HOLA");
 
     }
 
@@ -188,7 +197,7 @@ export default class Chart extends Component {
 
 
 
-    if(this.state.type != "classes"){  
+  
       
       this.state.listItems = this.state.userList.map((userl) =>
           <div class="form-check">
@@ -197,6 +206,8 @@ export default class Chart extends Component {
               {userl.code}  
 
               {userl.name}
+
+
 
             <input 
                 name= "radioOption"
@@ -210,37 +221,18 @@ export default class Chart extends Component {
           </div>         
               
                 ) 
-      }      
+         
       
-      if(this.state.type === "classes"){  
-      
-        this.state.listItems = this.state.userList.map((userl) =>
-            <div class="form-check">
-            <label key = {userl.id}>
-  
-                {userl.students}  
-  
-              <input 
-                  name= "radioOption"
-                  type="radio"
-                  value = {userl.id}
-                  onChange={this.handleInputChange}
-                />
-           
-            </label>
-  
-            </div>         
-                
-                  ) 
-        }          
-  
+     
 
         console.log(this.props.startDate);
 
         return (
             <div>
-              
-                {this.state.type}
+               value: {this.state.value}  
+
+              <br/>
+              type : {this.state.type}
                 <Row > 
                   {component}
                  
