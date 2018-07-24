@@ -31,8 +31,18 @@ class Correction extends Component
         var flagE = false;
         var flagR = false;
 
+        var flagSeparacionEntrada = false;
+        var flagSeparacionProcesamiento = false;
+        var flagSeparacionSalida = false;
 
 
+        var k;
+        console.log("PARTO");
+        for(k = 0; k < list.length; k++)
+        {
+            console.log(list[k][0]);
+        }
+        console.log("TERMINO");
         for(i = 0; i < list.length; i++)
         {
             if(list[i][0] == "TAB")
@@ -59,15 +69,50 @@ class Correction extends Component
             }
             else if(list[i][0] == "COMMENTE")
             {
+                flagSeparacionEntrada = true;
                 flagE = true;
             }
             else if(list[i][0] == "COMMENTR")
             {
+                flagSeparacionSalida = true;
                 flagR = true;
+            }
+            else if(list[i][0] == "COMMENTP")
+            {
+                flagSeparacionProcesamiento = true;
+            }
+            else if(list[i][0] == "FUNCTIONGOODLENGTH")
+            {
+                qTab = j+1;
+
+                if(flagD && flagE && flagR)
+                {
+                    flagD = false;
+                    flagE = false;
+                    flagR = false;
+                }
+                else
+                {
+                    finalList.push("No se detecta una presentacion completa de la funcion en la linea "+list[i][1]+". Se recomienda la incorporacion de:");
+                    if(flagD == false)
+                    {
+                        finalList.push(" - Una descripción.");
+                    }
+                    if(flagE == false)
+                    {
+                        finalList.push(" - Mostrar las entradas.");
+                    }
+                    if(flagR == false)
+                    {
+                        finalList.push(" - Mostrar los retornos.");
+                    }
+                }
             }
             else if(list[i][0] == "FUNCTION")
             {
                 qTab = j+1;
+
+                finalList.push("Se detecta que el nombre de la funcion en la linea "+list[i][1]+" es muy corto, aumentando la posibilidad de que dicho nombre no sea representativo, se recomienda alargarlo.");
 
                 if(flagD && flagE && flagR)
                 {
@@ -139,6 +184,15 @@ class Correction extends Component
                 flagR = false;
             }
         }
+
+        if(flagSeparacionEntrada == false || flagSeparacionProcesamiento == false || flagSeparacionSalida == false)
+        {
+            finalList.push("No se detectan todos los comentarios de separacion del codigo, le recordamos que el codigo tiene que estar separado en:");
+            finalList.push(" - Entrada.");
+            finalList.push(" - Procesamiento.");
+            finalList.push(" - Salida.");
+        }
+
         return finalList;
     }
 

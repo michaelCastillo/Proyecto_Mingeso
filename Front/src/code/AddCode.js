@@ -14,6 +14,7 @@ import ReactLoading from "react-loading";
 import AceEditor from 'react-ace';
 import brace from 'brace';
 
+import 'brace/mode/c_cpp';
 import 'brace/mode/java';
 import 'brace/mode/python';
 import 'brace/theme/github';
@@ -47,6 +48,12 @@ class Code extends Component{
             solution:[],
             ide:"python",
             simplCode:[],
+            letrasMinusculas: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            letrasMayusculas: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+            digito: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+            javaModifiers: ["private", "public", "protected", "static", "final", "abstract", "synchronized"],
+
+
             
 
 
@@ -112,8 +119,8 @@ class Code extends Component{
             }
             
             handleIde(event){
-                if(event.target.value == "C"){
-                    this.setState({ide:"c"});
+                if(event.target.value == "c"){
+                    this.setState({ide:"c_cpp"});
                 }else if(event.target.value == "java"){
                     this.setState({ide:"java"});
                 }else if(event.target.value == "python"){
@@ -282,7 +289,7 @@ class Code extends Component{
                 {
 
                 }
-                else if(this.state.ide == "C")
+                else if(this.state.ide == "c_cpp")
                 {
 
                 }
@@ -310,7 +317,7 @@ class Code extends Component{
                 {
 
                 }
-                else if(this.state.ide == "C")
+                else if(this.state.ide == "c_cpp")
                 {
 
                 }
@@ -337,7 +344,7 @@ class Code extends Component{
                 {
 
                 }
-                else if(this.state.ide == "C")
+                else if(this.state.ide == "c_cpp")
                 {
 
                 }
@@ -364,7 +371,7 @@ class Code extends Component{
                 {
 
                 }
-                else if(this.state.ide == "C")
+                else if(this.state.ide == "c_cpp")
                 {
 
                 }
@@ -425,7 +432,7 @@ class Code extends Component{
                 {
 
                 }
-                else if(this.state.ide == "C")
+                else if(this.state.ide == "c_cpp")
                 {
 
                 }
@@ -449,11 +456,277 @@ class Code extends Component{
                 }
                 else if(this.state.ide == "java")
                 {
+                    if(VarLine.length > 0)
+                    {
+                        var i = 0;
+                        var words = VarLine.split(" ");
+                        while(i < words.length  && this.isInArray(this.state.javaModifiers, words[i]))
+                        {
+                            i++;
+                        }
+                        if(i < words.length)
+                        {
+                            var lineWOMod = words[i];
+                            i++;
+                            while(i < words.length)
+                            {
+                                lineWOMod = lineWOMod.concat(" ", words[i]);
+                                i++;
+                            }
+                            i=0;
+                            while(i < lineWOMod.length && lineWOMod.charAt(i) == ' ')
+                            {
+                                i++;
+                            }
+                            if(i < lineWOMod.length)
+                            {
+                                //Recortamos los espacios previos al texto a revisar
+                                lineWOMod = lineWOMod.slice(i);
+                                var letterVariable = 0;
+                                while(i < lineWOMod.length && (this.isInArray(this.state.letrasMinusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.letrasMayusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.digito, lineWOMod.charAt(i))) )
+                                {
+                                    letterVariable++;
+                                    i++;
+                                }
 
+                                if(i < lineWOMod.length && letterVariable > 0)
+                                {
+                                    while(i < lineWOMod.length && lineWOMod.charAt(i) == " ")
+                                    {
+                                        i++;
+                                    }
+                                    if(i < lineWOMod.length)
+                                    {
+                                        letterVariable = 0;
+                                        while(i < lineWOMod.length && (this.isInArray(this.state.letrasMinusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.letrasMayusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.digito, lineWOMod.charAt(i))) )
+                                        {
+                                            letterVariable++;
+                                            i++;
+                                        }
+                                        if(i < lineWOMod.length)
+                                        {
+                                            if(lineWOMod.charAt(i) == "(" && letterVariable > 0)
+                                            {
+                                                return true;
+                                            }
+                                            else
+                                            {
+                                                while(i < lineWOMod.length && lineWOMod.charAt(i) == " ")
+                                                {
+                                                    i++;
+                                                }
+                                                if(i < lineWOMod.length && lineWOMod.charAt(i) == "(" && letterVariable > 0)
+                                                {
+                                                    return true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                else if(this.state.ide == "C")
+                else if(this.state.ide == "c_cpp")
+                {
+                    var i = 0;
+                    if(VarLine.length > 0)
+                    {
+                        var letterVariable = 0;
+                        while(i < VarLine.length && VarLine.charAt(i) != " " && (this.isInArray(this.state.letrasMinusculas, VarLine.charAt(i)) || this.isInArray(this.state.letrasMayusculas, VarLine.charAt(i)) || this.isInArray(this.state.digito, VarLine.charAt(i)) ))
+                        {
+                            letterVariable++;
+                            i++;
+                        }
+                        if(i < VarLine.length && letterVariable > 0)
+                        {
+                            while(i < VarLine.length && VarLine.charAt(i) == " ")
+                            {
+                                i++;
+                            }
+                            if(i < VarLine.length)
+                            {
+                                letterVariable = 0;
+                                while(i < VarLine.length && (this.isInArray(this.state.letrasMinusculas, VarLine.charAt(i)) || this.isInArray(this.state.letrasMayusculas, VarLine.charAt(i)) || this.isInArray(this.state.digito, VarLine.charAt(i)) ))
+                                {
+                                    letterVariable++;
+                                    i++;
+                                }
+                                while(i < VarLine.length && VarLine.charAt(i) == " ")
+                                {
+                                    i++;
+                                }
+                                if(i < VarLine.length && VarLine.charAt(i) == "(" && letterVariable > 0)
+                                {
+                                    while(i < VarLine.length && VarLine.charAt(i) != ")")
+                                    {
+                                        i++;
+                                    }
+                                    if(i < VarLine.length)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            handleFindFunctionWithNameLimit(VarLine)
+            {
+                if(this.state.ide == "python")
                 {
 
+                    if(VarLine.length >= 3)
+                    {
+                        if(VarLine.charAt(0) == 'd' && VarLine.charAt(1) == 'e' && VarLine.charAt(2) == 'f')
+                        {
+                            var i = 3;
+                            if(i < VarLine.length)
+                            {
+                                while(i < VarLine.length && VarLine.charAt(i) == " ")
+                                {
+                                    i++;
+                                }
+                                if(i < VarLine.length)
+                                {
+                                    var letterVariable = 0;
+                                    while(i < VarLine.length && (this.isInArray(this.state.letrasMinusculas, VarLine.charAt(i)) || this.isInArray(this.state.letrasMayusculas, VarLine.charAt(i)) || this.isInArray(this.state.digito, VarLine.charAt(i)) ))
+                                    {
+                                        letterVariable++;
+                                        i++;
+                                    }
+                                    if(letterVariable >= 4 && VarLine.charAt(i) == "(")
+                                    {
+                                        return true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(this.state.ide == "java")
+                {
+                    if(VarLine.length > 0)
+                    {
+                        var i = 0;
+                        var words = VarLine.split(" ");
+                        console.log("Words: " + words);
+                        while(i < words.length  && this.isInArray(this.state.javaModifiers, words[i]))
+                        {
+                            i++;
+                        }
+                        if(i < words.length)
+                        {
+                            var lineWOMod = words[i];
+                            i++;
+                            while(i < words.length)
+                            {
+                                lineWOMod = lineWOMod.concat(" ", words[i]);
+                                i++;
+                            }
+                            i=0;
+                            while(i < lineWOMod.length && lineWOMod.charAt(i) == ' ')
+                            {
+                                i++;
+                            }
+                            if(i < lineWOMod.length)
+                            {
+                                //Recortamos los espacios previos al texto a revisar
+                                lineWOMod = lineWOMod.slice(i);
+                                var letterVariable = 0
+                                while(i < lineWOMod.length && (this.isInArray(this.state.letrasMinusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.letrasMayusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.digito, lineWOMod.charAt(i))) )
+                                {
+                                    letterVariable++;
+                                    i++;
+                                }
+
+                                if(i < lineWOMod.length && letterVariable > 0)
+                                {
+                                    while(i < lineWOMod.length && lineWOMod.charAt(i) == " ")
+                                    {
+                                        i++;
+                                    }
+                                    if(i < lineWOMod.length)
+                                    {
+                                        letterVariable = 0;
+                                        while(i < lineWOMod.length && (this.isInArray(this.state.letrasMinusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.letrasMayusculas, lineWOMod.charAt(i)) || this.isInArray(this.state.digito, lineWOMod.charAt(i))) )
+                                        {
+                                            letterVariable++;
+                                            i++;
+                                        }
+                                        if(i < lineWOMod.length)
+                                        {
+                                            if(lineWOMod.charAt(i) == "(")
+                                            {
+                                                if(letterVariable >= 4)
+                                                {
+                                                    return true
+                                                }
+                                            }
+                                            else
+                                            {
+                                                while(i < lineWOMod.length && lineWOMod.charAt(i) == " ")
+                                                {
+                                                    i++;
+                                                }
+                                                if(i < lineWOMod.length && lineWOMod.charAt(i) == "(")
+                                                {
+                                                    if(letterVariable >= 4)
+                                                    {
+                                                        return true
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(this.state.ide == "c_cpp")
+                {
+                    var i = 0;
+                    if(VarLine.length > 0)
+                    {
+                        var letterVariable = 0
+                        while(i < VarLine.length && VarLine.charAt(i) != " " && (this.isInArray(this.state.letrasMinusculas, VarLine.charAt(i)) || this.isInArray(this.state.letrasMayusculas, VarLine.charAt(i)) || this.isInArray(this.state.digito, VarLine.charAt(i)) ))
+                        {
+                            letterVariable++;
+                            i++;
+                        }
+                        if(i < VarLine.length && letterVariable > 0)
+                        {
+                            while(i < VarLine.length && VarLine.charAt(i) == " ")
+                            {
+                                i++;
+                            }
+                            if(i < VarLine.length)
+                            {
+                                letterVariable = 0;
+                                while(i < VarLine.length && (this.isInArray(this.state.letrasMinusculas, VarLine.charAt(i)) || this.isInArray(this.state.letrasMayusculas, VarLine.charAt(i)) || this.isInArray(this.state.digito, VarLine.charAt(i))) )
+                                {
+                                    letterVariable++;
+                                    i++;
+                                }
+                                if(i < VarLine.length && letterVariable >= 4 && VarLine.charAt(i) == "(")
+                                {
+                                    while(i < VarLine.length && VarLine.charAt(i) != ")")
+                                    {
+                                        i++;
+                                    }
+                                    if(i < VarLine.length)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 return false;
@@ -461,24 +734,12 @@ class Code extends Component{
 
             handleFindIf(VarLine)
             {
-                if(this.state.ide == "python")
+                if(VarLine.length >= 2)
                 {
-
-                    if(VarLine.length >= 2)
+                    if(VarLine.charAt(0) == 'i' && VarLine.charAt(1) == 'f')
                     {
-                        if(VarLine.charAt(0) == 'i' && VarLine.charAt(1) == 'f')
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-                }
-                else if(this.state.ide == "java")
-                {
-
-                }
-                else if(this.state.ide == "C")
-                {
-
                 }
 
                 return false;
@@ -486,7 +747,7 @@ class Code extends Component{
 
             handleFindWhile(VarLine)
             {
-                if(this.state.ide == "python")
+                if(this.state.ide == "python" || this.state.ide == "c_cpp")
                 {
 
                     if(VarLine.length >= 5)
@@ -499,12 +760,25 @@ class Code extends Component{
                 }
                 else if(this.state.ide == "java")
                 {
+                    // Deteccion del Do-While
+                    if(VarLine.length >= 2)
+                    {
+                        if(VarLine.charAt(0) == 'd' && VarLine.charAt(1) == 'o')
+                        {
+                            return true;
+                        }
+                    }
+                    // Deteccion del While
+                    else if(VarLine.length >= 5)
+                    {
+                        if(VarLine.charAt(0) == 'w' && VarLine.charAt(1) == 'h' && VarLine.charAt(2) == 'i' && VarLine.charAt(3) == 'l' && VarLine.charAt(4) == 'e')
+                        {
+                            return true;
+                        }
+                    }
 
                 }
-                else if(this.state.ide == "C")
-                {
 
-                }
 
                 return false;
             }
@@ -522,13 +796,15 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java")
+                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
                 {
-
-                }
-                else if(this.state.ide == "C")
-                {
-
+                    if(VarLine.length >= 7)
+                    {
+                        if(VarLine.charAt(0) == 'e' && VarLine.charAt(1) == 'l' && VarLine.charAt(2) == 's' && VarLine.charAt(3) == 'e' && VarLine.charAt(4) == ' ' && VarLine.charAt(5) == 'i' && VarLine.charAt(6) == 'f')
+                        {
+                            return true;
+                        }
+                    }
                 }
 
                 return false;
@@ -536,24 +812,12 @@ class Code extends Component{
 
             handleFindElse(VarLine)
             {
-                if(this.state.ide == "python")
+                if(VarLine.length >= 4)
                 {
-
-                    if(VarLine.length >= 4)
+                    if(VarLine.charAt(0) == 'e' && VarLine.charAt(1) == 'l' && VarLine.charAt(2) == 's' && VarLine.charAt(3) == 'e')
                     {
-                        if(VarLine.charAt(0) == 'e' && VarLine.charAt(1) == 'l' && VarLine.charAt(2) == 's' && VarLine.charAt(3) == 'e')
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-                }
-                else if(this.state.ide == "java")
-                {
-
-                }
-                else if(this.state.ide == "C")
-                {
-
                 }
 
                 return false;
@@ -561,24 +825,12 @@ class Code extends Component{
 
             handleFindFor(VarLine)
             {
-                if(this.state.ide == "python")
+                if(VarLine.length >= 3)
                 {
-
-                    if(VarLine.length >= 3)
+                    if(VarLine.charAt(0) == 'f' && VarLine.charAt(1) == 'o' && VarLine.charAt(2) == 'r')
                     {
-                        if(VarLine.charAt(0) == 'f' && VarLine.charAt(1) == 'o' && VarLine.charAt(2) == 'r')
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-                }
-                else if(this.state.ide == "java")
-                {
-
-                }
-                else if(this.state.ide == "C")
-                {
-
                 }
 
                 return false;
@@ -685,7 +937,14 @@ class Code extends Component{
                 }
                 else
                 {
-                    listReturn = ["COMMENT", this.handleFindComment(varLine)];
+                    if(varLine.indexOf("procesamiento") != -1 || varLine.indexOf("Procesamiento") != -1 || varLine.indexOf("PROCESAMIENTO") != -1)
+                    {
+                        listReturn = ["COMMENTP", this.handleFindComment(varLine)];
+                    }
+                    else
+                    {
+                        listReturn = ["COMMENT", this.handleFindComment(varLine)];
+                    }
                 }
 
                 return listReturn;
@@ -698,71 +957,102 @@ class Code extends Component{
                 var i;
                 var j = 0;
                 var booleanFound = false;
+                var booleanComment = false;
                 var actualList = [];
                 var commentList = [];
                 for (i = 0; i < lineas.length; i++)
                 {
-                    
-                    actualList = this.handleFindTab(lineas[i])
-                    lineas[i] = actualList[0];
-                    //Encontrar tabulaciones
-                    if(actualList[1] != 0)
+                    if(booleanComment == false)
                     {
-                        while(j < actualList[1])
+                        actualList = this.handleFindTab(lineas[i])
+                        lineas[i] = actualList[0];
+                        //Encontrar tabulaciones
+                        if(actualList[1] != 0)
                         {
-                            this.state.simplCode.push(["TAB", i+1]);
-                            j++;
+                            while(j < actualList[1])
+                            {
+                                this.state.simplCode.push(["TAB", i+1]);
+                                j++;
+                            }
+                            j=0;
                         }
-                        j=0;
-                    }               
-                    //Encontrar comentarios
-                    commentList = this.handleFindCommentGlobal(lineas[i]);
-                    if(commentList[1] && booleanFound == false)
-                    {
-                        this.state.simplCode.push([commentList[0], i+1]);
-                        booleanFound = true;
-                    }
-                    //Encontrar Funciones
-                    else if(this.handleFindFunction(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push(["FUNCTION", i+1]);
-                        booleanFound = true;
-                    }
-                    //Encontrar If's
-                    else if(this.handleFindIf(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push(["IF", i+1]);
-                        booleanFound = true;
-                    }
-                    //Encontrar While's
-                    else if(this.handleFindWhile(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push(["WHILE", i+1]);
-                        booleanFound = true;
-                    }
-                    else if(this.handleFindElif(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push(["ELSEIF", i+1]);
-                        booleanFound = true;
-                    }
-                    else if(this.handleFindElse(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push(["ELSE", i+1]);
-                        booleanFound = true;
-                    }
-                    else if(this.handleFindFor(lineas[i]) && booleanFound == false)
-                    {
-                        this.state.simplCode.push(["FOR", i+1]);
-                        booleanFound = true;
+                        //#########################################
+                        //Encontrar Comentarios colectivos (/* */)
+
+                        if(lineas[i].indexOf("/*") != -1)
+                        {
+                            if(lineas[i].indexOf("/*") == 0)
+                            {
+                                booleanComment = true;
+                                booleanFound = true;
+                            }
+                            else
+                            {
+                                
+                            }
+                        }
+
+                        //#########################################
+
+                        //Encontrar comentarios
+                        commentList = this.handleFindCommentGlobal(lineas[i]);
+                        if(commentList[1] && booleanFound == false)
+                        {
+                            this.state.simplCode.push([commentList[0], i+1]);
+                            booleanFound = true;
+                        }
+                        //Encontrar Funciones
+                        else if(this.handleFindFunctionWithNameLimit(lineas[i]) && booleanFound == false)
+                        {
+                            this.state.simplCode.push(["FUNCTIONGOODLENGTH", i+1]);
+                            booleanFound = true;
+                        }
+                        else if(this.handleFindFunction(lineas[i]) && booleanFound == false)
+                        {
+                            console.log("Linea:" + i+1);
+                            this.state.simplCode.push(["FUNCTION", i+1]);
+                            booleanFound = true;
+                        }
+                        //Encontrar If's
+                        else if(this.handleFindIf(lineas[i]) && booleanFound == false)
+                        {
+                            this.state.simplCode.push(["IF", i+1]);
+                            booleanFound = true;
+                        }
+                        //Encontrar While's
+                        else if(this.handleFindWhile(lineas[i]) && booleanFound == false)
+                        {
+                            this.state.simplCode.push(["WHILE", i+1]);
+                            booleanFound = true;
+                        }
+                        else if(this.handleFindElif(lineas[i]) && booleanFound == false)
+                        {
+                            this.state.simplCode.push(["ELSEIF", i+1]);
+                            booleanFound = true;
+                        }
+                        else if(this.handleFindElse(lineas[i]) && booleanFound == false)
+                        {
+                            this.state.simplCode.push(["ELSE", i+1]);
+                            booleanFound = true;
+                        }
+                        else if(this.handleFindFor(lineas[i]) && booleanFound == false)
+                        {
+                            this.state.simplCode.push(["FOR", i+1]);
+                            booleanFound = true;
+                        }
+                        else
+                        {
+                            if(actualList[1] != 0)
+                            {
+                                this.state.simplCode.push(["CODE", i+1]);
+                            }
+                        }
+                        booleanFound = false;
                     }
                     else
                     {
-                        if(actualList[1] != 0)
-                        {
-                            this.state.simplCode.push(["CODE", i+1]);
-                        }
+
                     }
-                    booleanFound = false;
                 }
             }
 
@@ -842,7 +1132,7 @@ class Code extends Component{
                                         <FormControl componentClass="select" placeholder="select" onChange={this.handleIde}>
                                             <option value="python">Python</option>
                                             <option value="java">Java</option>
-                                            <option value="C">C</option>
+                                            <option value="c">C</option>
                                         </FormControl>
                                     </FormGroup>
                                 </Form>
