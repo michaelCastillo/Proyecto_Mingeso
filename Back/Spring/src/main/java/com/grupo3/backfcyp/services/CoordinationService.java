@@ -66,6 +66,14 @@ public class CoordinationService {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Coordination createSection(@Valid @RequestBody Coordination coordination){
+        List<Class> classes =coordination.getClasses();
+        if(classes != null){
+            if(!classes.isEmpty()){
+                for(Class classs: classes){
+                    this.classRepository.findClassById(classs.getId()).setCoordination(coordination);
+                }
+            }
+        }
         return this.coordinationRepository.save(coordination);
     }
 
