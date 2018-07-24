@@ -17,9 +17,14 @@ class Register extends Component {
       roles: [],
       coordinations: [],
       classes: [],
+      careers: [],
+      myCareers: [],
       myRoles: [],
       myCoordinations: [],
-      myClasses: []
+      myClasses: [],
+      coordinationCode: -1,
+      flags: -1,
+      flagsCareer: -1
     };
     this.handleName = this.handleName.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
@@ -27,70 +32,180 @@ class Register extends Component {
     this.handleRegister = this.handleRegister.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
+    this.generateCareersOptions = this.generateCareersOptions.bind(this);
     this.generateCoordinationOptions = this.generateCoordinationOptions.bind(this);
     this.handleCheckboxCoordinations = this.handleCheckboxCoordinations.bind(this);
     this.generateClassesOptions = this.generateClassesOptions.bind(this);
     this.handleCheckboxClasses = this.handleCheckboxClasses.bind(this);
+    this.handleCheckboxCareers = this.handleCheckboxCareers.bind(this);
   }
-  handleCheckboxClasses(){
+  
+  handleCheckboxCareers(event) {
 
-  }
-  handleCheckboxCoordinations(){
-
-  }
-  generateClassesOptions() {
-    let flag = 0;
-    this.state.myRoles.forEach(function (rol, index, object) {
-      if (rol.role === "student") {
-        flag = 1;
-      }
-
-    });
-    let items = [];
-    
+    let item = event.target.value.split(",");
     let aux = 0;
-    if(flag === 1){
-      items.push(<ControlLabel>Clases Disponibles</ControlLabel>);
-      this.state.classes.map((myClass) => {
+    this.state.myCareers.forEach(function (career, index, object) {
+      if (career.id == item[0]) {
+        object.splice(index, 1);
+        aux = 1;
+      }
+    });
+    
+    if (aux == 0) {
+      let career = {
+        id: item[0],
+        name: item[1]
+      };
+      this.state.myCareers.push(career);
+    }
+  }
+  handleCheckboxClasses(event) {
+
+    let item = event.target.value.split(",");
+    let aux = 0;
+    this.state.myClasses.forEach(function (classAux, index, object) {
+      if (classAux.id == item[0]) {
+        object.splice(index, 1);
+        aux = 1;
+      }
+    });
+
+    if (aux == 0) {
+      let classAux = {
+        id: item[0],
+        code: item[1]
+      };
+      this.state.myClasses.push(classAux);
+    }
+
+
+  }
+  handleCheckboxCoordinations(event) {
+    let item = event.target.value.split(",");
+    let aux = 0;
+    let flagAux = -1;
+    this.state.myCoordinations.forEach(function (rol, index, object) {
+      if (rol.id == item[0]) {
+        object.splice(index, 1);
+        aux = 1;
+      }
+      if ((rol.role === "student") || (rol.role === "teacher")) {
+        flagAux = 0;
+      }
+    });
+    if (aux == 0) {
+      let coordination = {
+        id: item[0],
+        code: item[1],
+        classes: item[2]
+      };
+      this.state.coordinationCode = item[0];
+      this.state.myCoordinations.push(coordination);
+    }
+    this.setState({ flags: flagAux });
+
+  }
+  generateCareersOptions() {
+    let items = [];
+    if (this.state.flagsCarreer == 0) {
+      let aux = 0;
+      items.push(<ControlLabel>Carreras Disponibles</ControlLabel>);
+
+
+      this.state.careers.map((carreras) => {
+
         return (
           items.push(<Checkbox
             key={aux++}
-            value={[myClass.id, myClass.code]}
-            onChange={this.handleCheckboxCoordinations}> {myClass.code}  </Checkbox>)
+            value={[carreras.id, carreras.name]}
+            onChange={this.handleCheckboxCareers}> {carreras.name}  </Checkbox>)
         )
-        
+
+
+      });
+    }
+    return items;
+  }
+  generateClassesOptions() {
+    let items = [];
+    if (this.state.flags == 0) {
+      let aux = 0;
+
+      this.state.coordinations.map((coordinations) => {
+        if (this.state.coordinationCode == coordinations.id) {
+          coordinations.classes.map((coordinationClass) => {
+
+            return (
+              items.push(<Checkbox
+                key={aux++}
+                value={[coordinationClass.id, coordinationClass.code]}
+                onChange={this.handleCheckboxClasses}> Codigo: {coordinationClass.code} Sala: {coordinationClass.classRoom}  </Checkbox>)
+            )
+          });
+        }
+
       });
 
-    } 
+    }
     
+
+
     return items;
 
   }
   generateCoordinationOptions() {
     let flag = 0;
+    let flagCarreer = -1;
     this.state.myRoles.forEach(function (rol, index, object) {
-      if (rol.role === "coordination") {
+      if (rol.role === "student") {
+        flagCarreer = 0;
+      }
+      if ((rol.role === "student") || (rol.role === "teacher")) {
         flag = 1;
+      }
+      if (rol.role === "coordination") {
+        flag = 2;
       }
 
     });
     let items = [];
-    
+    this.state.flagsCarreer = flagCarreer;
+
     let aux = 0;
-    if(flag === 1){
+
+    //Si es Coordinador
+    if (flag === 2) {
+      items.push(<ControlLabel>Coordinaciones Disponibles</ControlLabel>);
+      this.state.coordinations.map((coordination) => {
+        items.push(<Checkbox
+          key={aux++}
+          value={[coordination.id, coordination.code, coordination.classes]}
+          onChange={this.handleCheckboxCoordinations}> {coordination.code} </Checkbox>)
+
+      }
+      )
+
+
+    }
+    //Si es estudiante
+    if (flag === 1) {
+      this.state.flags = 0;
       items.push(<ControlLabel>Coordinaciones Disponibles</ControlLabel>);
       this.state.coordinations.map((coordination) => {
         return (
           items.push(<Checkbox
             key={aux++}
-            value={[coordination.id, coordination.code]}
+            value={[coordination.id, coordination.code, coordination.classes]}
             onChange={this.handleCheckboxCoordinations}> {coordination.code} </Checkbox>)
+
         )
-        
+
+
       });
 
-    } 
-    
+      items.push(<ControlLabel>Clases Disponibles</ControlLabel>);
+    }
+
     return items;
 
   }
@@ -112,7 +227,6 @@ class Register extends Component {
       this.state.myRoles.push(rol);
     }
     this.generateCoordinationOptions();
-    this.generateClassesOptions();
     this.forceUpdate();
 
 
@@ -165,21 +279,30 @@ class Register extends Component {
       }).catch(error => {
         console.log(error.response)
       });
-      axios.get(`http://35.226.163.50:8080/Backend/coordinations/`)
+    axios.get(`http://35.226.163.50:8080/Backend/coordinations/`)
       .then(res => {
         const coordinations = res.data;
         //Se asigna falso para opened, para el collapse
-       
+
         this.setState({ coordinations });
       }).catch(error => {
         console.log(error.response)
       });
-      axios.get(`http://35.226.163.50:8080/Backend/classes/`)
+    axios.get(`http://35.226.163.50:8080/Backend/classes/`)
       .then(res => {
         const classes = res.data;
         //Se asigna falso para opened, para el collapse
-       
+
         this.setState({ classes });
+      }).catch(error => {
+        console.log(error.response)
+      });
+    axios.get(`http://35.226.163.50:8080/Backend/careers/`)
+      .then(res => {
+        const careers = res.data;
+        //Se asigna falso para opened, para el collapse
+
+        this.setState({ careers });
       }).catch(error => {
         console.log(error.response)
       });
@@ -193,7 +316,14 @@ class Register extends Component {
       password: this.state.password,
       email: this.state.email,
       roles: this.state.myRoles,
+      careers: this.state.myCareers,
+      coordCoordinations: this.state.myCoordinations,
+      classes_teachers: this.state.myClasses,
+      classes_students: []
     };
+    console.log(user);
+    
+
     const url = 'http://35.226.163.50:8080/Backend/users/create';
     axios.post(url, user)
       .then(res => {
@@ -205,6 +335,7 @@ class Register extends Component {
         console.log(error.request);
         console.log(error.message);
       });
+    
   };
 
   validForm = (nam, pass) => () => {
@@ -284,15 +415,22 @@ class Register extends Component {
 
             </FormGroup>
             <FormGroup>
-              
+
+              {this.generateCareersOptions()}
+
+            </FormGroup>
+            <FormGroup>
+
               {this.generateCoordinationOptions()}
 
             </FormGroup>
             <FormGroup>
-              
+
               {this.generateClassesOptions()}
 
             </FormGroup>
+
+
             <Button
               type="success" onClick={this.handleRegister}
             >

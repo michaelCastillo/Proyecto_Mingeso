@@ -153,7 +153,7 @@ class ShowUsersList extends Component {
                 items.push(<option
                     key={aux++}
                     value={role.id}
-                    onChange={this.handleShowSections}> {role.role} </option>)
+                    > {role.role} </option>)
             )
         });
         return items;
@@ -168,7 +168,7 @@ class ShowUsersList extends Component {
                     items.push(<option
                         key={aux++}
                         value={section.id}
-                        onChange={this.handleShowSections}> {section.code} </option>)
+                        > {section.code} </option>)
                 )
             });
         }
