@@ -49,6 +49,7 @@ class Code extends Component{
         this.onSend = this.onSend.bind(this);
         this.handleIde = this.handleIde.bind(this);
         this.isSucsess = this.isSucsess.bind(this);
+        this.setOut = this.setOut.bind(this);
     };
             
             componentDidMount(){
@@ -273,7 +274,7 @@ class Code extends Component{
             if(this.state.solution.test != null){
                 this.state.o_outputs.map((out,index)=>{return(
                     <tr>
-                        <th> {out} </th>
+                        <th> {out.name} </th>
                         <th>{this.state.solution.test.results[index].stdout}</th>
                         <th> {this.onComparison(index)} </th>
                     </tr>
@@ -282,7 +283,7 @@ class Code extends Component{
             }else{
                 this.state.o_outputs.map((out,index)=>{return(
                     <tr>
-                        <th> {out} </th>
+                        <th> {out.name} </th>
                         <th> - </th>
                         <th> - </th>
                     </tr>
@@ -290,6 +291,27 @@ class Code extends Component{
                 })
             }
 
+        }
+        setOut(out,index){
+            if(out.hidden){
+                return(
+                    <tr>
+                        <th> oculto </th>
+                        <th> oculto </th>
+                        <th> oculto </th>
+                        <th> {this.onComparison(index)} </th>
+                    </tr>
+                );
+            }else{
+                return(
+                    <tr>
+                        <th> {this.state.o_inputs[index]} </th>
+                        <th> {out.name} </th>
+                        <th>{this.getResult(index)}</th>
+                        <th> {this.onComparison(index)} </th>
+                    </tr>
+                );
+            }
         }
 
     render(){
@@ -309,39 +331,19 @@ class Code extends Component{
                                 <Table responsive>
                                     <thead>
                                         <tr>
-                                        
-                                        <th>Salida esperada</th>
-                                        <th>Salida</th>
-                                        <th>Comparación</th>
-                                        
+                                            <th>Entrada</th>
+                                            <th>Salida esperada</th>
+                                            <th>Salida</th>
+                                            <th>Comparación</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             this.state.o_outputs.map((out,index)=>{return(
-                                                <tr>
-                                                    <th> {out} </th>
-                                                    <th>{this.getResult(index)}</th>
-                                                    <th> {this.onComparison(index)} </th>
-                                                </tr>
+                                                        this.setOut(out,index)
                                             );
                                             })
-                                        }
-                                        
-
-                                        {/*
-                                            this.state.comparison.map((comparison) => {return (
-                                                <tr> 
-                                                    <th> {this.state.results.stdout} </th>
-                                                    {this.onComparison(comparison)}
-                                                </tr>
-                                            
-                                            );})
-                                        */
-                                        }
-                                        
-                                        
-                                            
+                                        }   
                                     </tbody>
                                     </Table>
 
@@ -419,14 +421,13 @@ class Code extends Component{
 
                         
                     
+
+               
                 </Grid>
             );
         }
-
+        
+        
     }
 }
-
-
-
-
 export default Code;                

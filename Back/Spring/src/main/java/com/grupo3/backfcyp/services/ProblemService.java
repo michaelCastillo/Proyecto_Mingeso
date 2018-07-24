@@ -32,7 +32,6 @@ public class ProblemService {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public List<Problem> getProblems(){
-
         return this.problemRepository.findAll();
     }
 
@@ -70,7 +69,7 @@ public class ProblemService {
                             parameter.setProblem(problem);
                             //this.parameterReporitory.save(parameter);
                         }
-                        for(Return return_: problem.obtenerReturnsObj()){
+                        for(Return return_: problem.getReturns()){
                             return_.setProblem(problem);
                             //this.returnRepository.save(return_);
                         }
