@@ -178,7 +178,7 @@ public class SolutionService {
     private Test execute(String codeId, Problem problem, Solution solution){
         System.out.println("EXECUTE! ");
         ArrayList<String> params = problem.getParameters();
-        ArrayList<String> returns = problem.getReturns();
+        ArrayList<String> returns = problem.getReturns_string();
         Test test = new Test();
         test.codeIdSet(codeId);
         test.setSolution(solution);
