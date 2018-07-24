@@ -285,13 +285,15 @@ class Code extends Component{
                         return true;
                     }
                 }
-                else if(this.state.ide == "java")
+                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
                 {
-
-                }
-                else if(this.state.ide == "c_cpp")
-                {
-
+                    if(VarLine.length >= 2)
+                    {
+                        if(VarLine.charAt(0) == "/" && VarLine.charAt(1) == "/")
+                        {
+                            return true;
+                        }
+                    }
                 }
 
                 return false;
@@ -313,13 +315,18 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java")
+                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
                 {
-
-                }
-                else if(this.state.ide == "c_cpp")
-                {
-
+                    if(VarLine.length >= 2)
+                    {
+                        if(VarLine.charAt(0) == "/" && VarLine.charAt(1) == "/")
+                        {
+                            if(VarLine.includes("Descripción") || VarLine.includes("Descripcion") || VarLine.includes("descripción") || VarLine.includes("descripcion"))
+                            {
+                                return true;
+                            }
+                        }
+                    }
                 }
 
                 return false;
@@ -340,13 +347,18 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java")
+                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
                 {
-
-                }
-                else if(this.state.ide == "c_cpp")
-                {
-
+                    if(VarLine.length >= 2)
+                    {
+                        if(VarLine.charAt(0) == "/" && VarLine.charAt(1) == "/")
+                        {
+                            if(VarLine.includes("Retorno") || VarLine.includes("retorno") || VarLine.includes("Return") || VarLine.includes("return") || VarLine.includes("Salida") || VarLine.includes("salida") || VarLine.includes("Salidas") || VarLine.includes("salidas"))
+                            {
+                                return true;
+                            }
+                        }
+                    }
                 }
 
                 return false;
@@ -367,13 +379,18 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java")
+                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
                 {
-
-                }
-                else if(this.state.ide == "c_cpp")
-                {
-
+                    if(VarLine.length >= 2)
+                    {
+                        if(VarLine.charAt(0) == "/" && VarLine.charAt(1) == "/")
+                        {
+                            if(VarLine.includes("Entrada") || VarLine.includes("entrada") || VarLine.includes("Entradas") || VarLine.includes("entradas"))
+                            {
+                                return true;
+                            }
+                        }
+                    }
                 }
 
                 return false;
@@ -958,6 +975,8 @@ class Code extends Component{
                 var j = 0;
                 var booleanFound = false;
                 var booleanComment = false;
+                var flag = false;
+                var temporalList = [];
                 var actualList = [];
                 var commentList = [];
                 for (i = 0; i < lineas.length; i++)
@@ -985,10 +1004,14 @@ class Code extends Component{
                             {
                                 booleanComment = true;
                                 booleanFound = true;
+                                flag = true;
                             }
                             else
                             {
-                                
+                                temporalList = lineas[i].split("/*");
+                                temporalList[1] = "/*" + temporalList[1];
+                                lineas.splice(i, 1, temporalList);
+                                flag = true;
                             }
                         }
 
@@ -1048,10 +1071,50 @@ class Code extends Component{
                             }
                         }
                         booleanFound = false;
+                        if(flag)
+                        {
+                            i--;
+                            flag = false;
+                        }
                     }
                     else
                     {
+                        if(lineas[i].indexOf("*/") == -1)
+                        {
+                            commentList = this.handleFindCommentGlobal("//"+lineas[i]);
+                            if(commentList[1] && booleanFound == false)
+                            {
+                                this.state.simplCode.push([commentList[0], i+1]);
+                                booleanFound = true;
+                            }
+                        }
+                        else
+                        {
+                            if(lineas[i].indexOf("*/") == lineas[i].length -2)
+                            {
+                                commentList = this.handleFindCommentGlobal("//"+lineas[i]);
+                                if(commentList[1] && booleanFound == false)
+                                {
+                                    this.state.simplCode.push([commentList[0], i+1]);
+                                    booleanFound = true;
+                                }
+                                booleanComment = false;
+                            }
+                            else
+                            {
+                                temporalList = lineas[i].split("*/");
+                                temporalList[0] = temporalList[0] + "*/";
+                                lineas.splice(i, 1, temporalList);
+                                flag = true;
+                            }
+                        }
 
+                        if(flag)
+                        {
+                            i--;
+                            flag = false;
+                        }
+                        booleanFound = false;
                     }
                 }
             }
