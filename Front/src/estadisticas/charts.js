@@ -6,6 +6,8 @@ import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,F
 import moment from 'moment';
 import axios from 'axios';
 import ChartLine from './chartsLine'
+import TimeChart from './time'
+
 
 
 export default class Chart extends Component {
@@ -51,10 +53,9 @@ export default class Chart extends Component {
 
    
     handleValue(event){
-        this.setState({ value: event.target.value });
-        this.setState({chartcomponent:false});
         this.state.bool = false;
-        console.log(this.state.value);
+        this.state.chartcomponent = false;
+        this.state.value =  event.target.value ;
         this.gets(this.state.value);
 
       }
@@ -80,6 +81,7 @@ export default class Chart extends Component {
    
 
       gets =(type) => {
+          console.log(type);
         axios.get(`http://35.226.163.50:8080/Backend/` + type)
             .then(res => {
                 const userList=res.data;
@@ -168,6 +170,7 @@ export default class Chart extends Component {
         this.setState({
           [name]: value
         });
+
         this.state.userID = target.value;
         console.log(this.state.userID);
 
@@ -181,7 +184,7 @@ export default class Chart extends Component {
      console.log(this.state.value);   
      console.log(this.state.type);   
 
-    if((this.state.value === "coordinations") )  
+    if((this.state.value === "careers") )  
     {  this.getCarrerStudent(this.state.userID);
        this.state.value = "";
        this.state.type = "";
@@ -189,7 +192,7 @@ export default class Chart extends Component {
     }
     
     console.log(this.state.userID)
-    if(this.state.value === "careers")
+    if(this.state.value === "coordinations")
     {this.getClasesCoord(this.state.userID);
       this.state.value = "";
 
@@ -211,10 +214,15 @@ export default class Chart extends Component {
     render() {
 
       let component = null;
+      let component2 = null;
+
 
      if (this.state.chartcomponent){
         component = <ChartLine ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
-      }
+        component2 = <TimeChart ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
+
+    }
+
 
 
 
@@ -249,16 +257,21 @@ export default class Chart extends Component {
                  
                 <Row > 
                   {component}
-                 
+
+                   <br/>     
+                
+                  {component2}
+                 <br/>
+                 <br/>
                 <Col md={6} smOffset={2} xs={6} >
                             <FormGroup controlId="formControlsSelect">
                             <ControlLabel>Seleccione gráfico a mostrar</ControlLabel>
                             <FormControl componentClass="select"  onChange={this.handleValue} 
-                              value={this.state.value} >
+                              >
                               
-                             <option  value selected ="">...</option>
-                             <option  value="careers">coordinación(nes)</option>
-                             <option value="coordinations">carrera(s)</option>
+                             <option disabled="true" selected ="true">...</option>
+                             <option  value="coordinations" key ={1}>coordinación(nes)</option>
+                             <option value="careers" key = {2} >carrera(s)</option>
                             </FormControl>
                             </FormGroup>
                             {this.state.listItems}
