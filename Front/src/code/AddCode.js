@@ -408,50 +408,39 @@ class Code extends Component{
             handleFindTab(VarLine)
             {
                 var listReturn = [];
-                if(this.state.ide == "python")
+                var i=0;
+                var num = 0;
+                var flag = true;
+                //Se cuentan cuantos espacios hay al inicio antes de un caracter distinto
+                while(i < VarLine.length)
                 {
-                    var i=0;
-                    var num = 0;
-                    var flag = true;
-                    //Se cuentan cuantos espacios hay al inicio antes de un caracter distinto
-                    while(i < VarLine.length)
+                    if(VarLine.charAt(i) == ' ' && flag)
                     {
-                        if(VarLine.charAt(i) == ' ' && flag)
-                        {
-                            num++;
-                        }
-                        else
-                        {
-                            flag = false;
-                        }
-                        i++;
+                        num++;
                     }
-
-                    //Si no hubo caracter distinto se ignoran las tabulaciones
-                    if(flag)
-                    {
-                        num = 0;
-                    }
-                    //Si hay caracteres distintos, se calculan las tabulaciones, de haber un numero impar
-                    //de espacios, se resta un espacio del contador y se cuentan las tabulaciones existentes.
                     else
                     {
-                        VarLine = VarLine.slice(num);
-                        if(num%2 != 0 &&  0 < num)
-                        {
-                            num = num -1;
-
-                        }
-                        num = num/2;
+                        flag = false;
                     }
+                    i++;
                 }
-                else if(this.state.ide == "java")
-                {
 
+                //Si no hubo caracter distinto se ignoran las tabulaciones
+                if(flag && num > 0)
+                {
+                    num = -1;
                 }
-                else if(this.state.ide == "c_cpp")
+                //Si hay caracteres distintos, se calculan las tabulaciones, de haber un numero impar
+                //de espacios, se resta un espacio del contador y se cuentan las tabulaciones existentes.
+                else if(num > 0 && flag == false)
                 {
+                    VarLine = VarLine.slice(num);
+                    if(num%2 != 0 &&  0 < num)
+                    {
+                        num = num -1;
 
+                    }
+                    num = num/2;
                 }
 
                 listReturn = [VarLine, num];
@@ -631,7 +620,6 @@ class Code extends Component{
                     {
                         var i = 0;
                         var words = VarLine.split(" ");
-                        console.log("Words: " + words);
                         while(i < words.length  && this.isInArray(this.state.javaModifiers, words[i]))
                         {
                             i++;
@@ -786,7 +774,7 @@ class Code extends Component{
                         }
                     }
                     // Deteccion del While
-                    else if(VarLine.length >= 5)
+                    if(VarLine.length >= 5)
                     {
                         if(VarLine.charAt(0) == 'w' && VarLine.charAt(1) == 'h' && VarLine.charAt(2) == 'i' && VarLine.charAt(3) == 'l' && VarLine.charAt(4) == 'e')
                         {
@@ -967,6 +955,28 @@ class Code extends Component{
                 return listReturn;
             }
 
+            handleFindParenthesis(varLine)
+            {
+                var listaRetorno = [];
+                if(varLine.indexOf("{") >= 0)
+                {
+                    listaRetorno.push([true, varLine.indexOf("{")]);
+                }
+                else
+                {
+                    listaRetorno.push([false, -1]);
+                }
+                if(varLine.indexOf("}") >= 0)
+                {
+                    listaRetorno.push([true, varLine.indexOf("}")]);
+                }
+                else
+                {
+                    listaRetorno.push([false, -1]);
+                }
+                return listaRetorno;
+            }
+
             handleRedaction(varCode)
             {
                 var lineas = varCode.split("\n");
@@ -979,6 +989,7 @@ class Code extends Component{
                 var temporalList = [];
                 var actualList = [];
                 var commentList = [];
+                var listaParentesis = [];
                 for (i = 0; i < lineas.length; i++)
                 {
                     if(booleanComment == false)
@@ -1015,6 +1026,10 @@ class Code extends Component{
                             }
                         }
 
+                        //Lista deteccion parentesis de llaves
+
+                        listaParentesis = this.handleFindParenthesis(lineas[i]);
+
                         //#########################################
 
                         //Encontrar comentarios
@@ -1032,7 +1047,6 @@ class Code extends Component{
                         }
                         else if(this.handleFindFunction(lineas[i]) && booleanFound == false)
                         {
-                            console.log("Linea:" + i+1);
                             this.state.simplCode.push(["FUNCTION", i+1]);
                             booleanFound = true;
                         }
@@ -1063,9 +1077,25 @@ class Code extends Component{
                             this.state.simplCode.push(["FOR", i+1]);
                             booleanFound = true;
                         }
+                        else if(listaParentesis[0][0] && booleanFound == false)
+                        {
+                            if(listaParentesis[0][1] == 0)
+                            {
+                                this.state.simplCode.push(["{", i+1]);
+                                booleanFound = true;
+                            }
+                        }
+                        else if(this.handleFindParenthesis(lineas[i])[1][0] && booleanFound == false)
+                        {
+                            if(listaParentesis[1][1] == 0)
+                            {
+                                this.state.simplCode.push(["}", i+1]);
+                                booleanFound = true;
+                            }
+                        }
                         else
                         {
-                            if(actualList[1] != 0)
+                            if(actualList[1] != -1)
                             {
                                 this.state.simplCode.push(["CODE", i+1]);
                             }

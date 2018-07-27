@@ -35,6 +35,8 @@ class Correction extends Component
         var flagSeparacionProcesamiento = false;
         var flagSeparacionSalida = false;
 
+        var flagParentesis = false;
+
 
         var k;
         console.log("PARTO");
@@ -45,25 +47,37 @@ class Correction extends Component
         console.log("TERMINO");
         for(i = 0; i < list.length; i++)
         {
-            if(list[i][0] == "TAB")
+            if(list[i][1] == actLine)
             {
-                if(list[i][1] == actLine)
+                if(list[i][0] == "TAB" || (flagParentesis && list[i][0] == "{"))
                 {
                     j++;
+                    
+
+                    if(j > qTab)
+                    {
+                        finalList.push("Se a colocado en la linea "+list[i][1]+" una tabulacion que podria ser innecesaria.");
+                    } 
+                }
+            }
+            else
+            {
+                actLine = list[i][1];
+                if(list[i][0] == "TAB" || (flagParentesis && list[i][0] == "{"))
+                {
+                    j = 1;
+
+                    if(j > qTab)
+                    {
+                        finalList.push("Se a colocado en la linea "+list[i][1]+" una tabulacion que podria ser innecesaria.");
+                    } 
                 }
                 else
                 {
-                    j = 1;
-                    actLine = list[i][1];
+                    j=0;
                 }
-
-                if(j > qTab)
-                {
-                    finalList.push("Se a colocado en la linea "+list[i][1]+" una tabulacion que podria ser innecesaria.");
-                }
-                
             }
-            else if(list[i][0] == "COMMENTD")
+            if(list[i][0] == "COMMENTD")
             {
                 flagD = true;
             }
@@ -83,6 +97,7 @@ class Correction extends Component
             }
             else if(list[i][0] == "FUNCTIONGOODLENGTH")
             {
+                flagParentesis = true;
                 qTab = j+1;
 
                 if(flagD && flagE && flagR)
@@ -111,6 +126,7 @@ class Correction extends Component
             else if(list[i][0] == "FUNCTION")
             {
                 qTab = j+1;
+                flagParentesis = true;
 
                 finalList.push("Se detecta que el nombre de la funcion en la linea "+list[i][1]+" es muy corto, aumentando la posibilidad de que dicho nombre no sea representativo, se recomienda alargarlo.");
 
@@ -140,6 +156,7 @@ class Correction extends Component
             else if(list[i][0] == "IF")
             {
                 qTab = j+1;
+                flagParentesis = true;
 
                 flagD = false;
                 flagE = false;
@@ -148,6 +165,7 @@ class Correction extends Component
             else if(list[i][0] == "WHILE")
             {
                 qTab = j+1;
+                flagParentesis = true;
 
                 flagD = false;
                 flagE = false;
@@ -156,6 +174,7 @@ class Correction extends Component
             else if(list[i][0] == "ELSEIF")
             {
                 qTab = j+1;
+                flagParentesis = true;
 
                 flagD = false;
                 flagE = false;
@@ -164,6 +183,7 @@ class Correction extends Component
             else if(list[i][0] == "ELSE")
             {
                 qTab = j+1;
+                flagParentesis = true;
 
                 flagD = false;
                 flagE = false;
@@ -172,13 +192,30 @@ class Correction extends Component
             else if(list[i][0] == "FOR")
             {
                 qTab = j+1;
+                flagParentesis = true;
 
+                flagD = false;
+                flagE = false;
+                flagR = false;
+            }
+            else if(list[i][0] == "}")
+            {
+                if(j < qTab)
+                {
+                    qTab = j;
+                }
+                flagParentesis = false;
                 flagD = false;
                 flagE = false;
                 flagR = false;
             }
             else if(list[i][0] == "CODE")
             {
+                if(j < qTab)
+                {
+                    qTab = j;
+                }
+                flagParentesis = false;
                 flagD = false;
                 flagE = false;
                 flagR = false;
