@@ -10,6 +10,7 @@ import TimeChart from './time'
 
 
 
+
 export default class Chart extends Component {
 
     constructor (props) {
@@ -29,6 +30,7 @@ export default class Chart extends Component {
 
         };
         this.startDate = React.createRef();
+
         this.chart =  React.createRef();
         this.handleChange = this.handleChange.bind(this);
         this.handleValue = this.handleValue.bind(this);
@@ -44,8 +46,7 @@ export default class Chart extends Component {
             this.setState({chartcomponent:false});
         } else {
             this.setState({chartcomponent:true});
-        }
-
+        }   
 
      }  
 
@@ -219,15 +220,9 @@ export default class Chart extends Component {
 
      if (this.state.chartcomponent){
         component = <ChartLine ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
-        component2 = <TimeChart ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
+        component2 = <TimeChart   ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
 
     }
-
-
-
-
-  
-      
       this.state.listItems = this.state.userList.map((userl) =>
           <div class="form-check">
           <label key = {userl.id}>
@@ -254,7 +249,7 @@ export default class Chart extends Component {
       
         return (
             <div>
-                 
+
                 <Row > 
                   {component}
 

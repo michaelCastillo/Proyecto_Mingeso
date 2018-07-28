@@ -16,14 +16,16 @@ export default class TimeChart extends Component {
           nombreTipo: ""
         
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
-
+     
 
     }
    
+  
     
-    handleSubmit(id,type) {
-       
+
+    componentDidMount() {
+      const type = this.props.type;
+      const id = this.props.userID;
        if(type === "student"){
         axios.get(`http://35.226.163.50:8080/Backend/stats/users/` + id + '/totalTime')
        .then(res => {
@@ -94,11 +96,10 @@ export default class TimeChart extends Component {
 
 
 render(){
-    <Chart userID={this.state.userID} type = {this.state.type}/>
+    <Chart userID={this.state.userID} type = {this.state.type} />
     console.log(this.props.userID);
     console.log(this.props.type);
     console.log(this.state.textTime);
-    this.handleSubmit(this.props.userID,this.props.type);
     const percentage = 100;
 
 return(
@@ -110,11 +111,11 @@ return(
          <Col md={3} smOffset={3} xs={3} sm = {2}>
       
          <h4>
-             <Label>Cantidad total empleada al resolver problemas:</Label>
+             <Label>Tiempo total empleado para resolver problemas:</Label>
         </h4>
         <br/>
-        
         <CircularProgressbar
+             
              percentage={percentage}
              text={`${this.state.textTime} s`}
         />   

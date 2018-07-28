@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap'
 import imagen from './computer_77914.png';
+import { Grid, Row, Col} from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 
@@ -18,7 +19,8 @@ class HeaderUp extends Component {
           return [
             
             <div>
-                    
+              <Row>
+          <Col md={11} xs={3} >      
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
@@ -46,13 +48,13 @@ class HeaderUp extends Component {
             
             
             <Nav pullRight>
-                <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
-                Ingresar
-                </NavItem>
+             
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut
+                SignOut ({role})
                 </NavItem>
             </Nav>
+          </Col> 
+          </Row> 
            </div>
           ];
         }
@@ -61,7 +63,8 @@ class HeaderUp extends Component {
           console.log(role);
           return [
             <div>
-                    
+          <Row>
+          <Col md={11} xs={3} >      
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.2} href='/problems/show'>Problemas a resolver</MenuItem>
@@ -74,13 +77,13 @@ class HeaderUp extends Component {
             </Nav>
             
             <Nav pullRight>
-                <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
-                Ingresar
-                </NavItem>
+                
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut
+                SignOut ({role})
                 </NavItem>
             </Nav>
+            </Col>
+            </Row>
            </div>
           ];
         }
@@ -89,7 +92,8 @@ class HeaderUp extends Component {
           console.log(role);
           return [
             <div>
-                    
+            <Row>
+            <Col md={11} xs={3} >           
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
@@ -105,13 +109,12 @@ class HeaderUp extends Component {
             </Nav>
             
             <Nav pullRight>
-                <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
-                Ingresar
-                </NavItem>
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut
+                SignOut ({role})
                 </NavItem>
             </Nav>
+            </Col>
+            </Row>
            </div>
           ];
         }
@@ -121,7 +124,9 @@ class HeaderUp extends Component {
           return [
             
             <div>
-                    
+
+              <Row>
+              <Col md={11} xs={3} >           
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
@@ -140,13 +145,12 @@ class HeaderUp extends Component {
             </Nav>
             
             <Nav pullRight>
-                <NavItem eventKey={1} style={{background:'#37d67a0'}} href="/login">
-                Ingresar
-                </NavItem>
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut
+                SignOut ({role})
                 </NavItem>
             </Nav>
+            </Col>
+            </Row>
            </div>
           ];
         }
@@ -179,7 +183,7 @@ class HeaderUp extends Component {
             <Navbar inverse collapseOnSelect  style={{ background:'#1D2D44', height: 90}}>
             <Navbar.Header>
             <Navbar.Brand>
-            <a  href="/home">
+            <a  href="/dashboard">
             <img border="10" style={{marginLeft:-60 ,marginTop:-15, width: 80, height: 80}} src={imagen} alt=""/></a>
             </Navbar.Brand>
             <Navbar.Toggle />
