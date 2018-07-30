@@ -83,17 +83,19 @@ class Register extends Component {
   handleCheckboxCoordinations(event) {
     let item = event.target.value.split(",");
     let aux = 0;
-    let flagAux = -1;
+    let flagAux = 0;
+    let classAux = [];
+    console.log(this.state.myCoordinations);
     this.state.myCoordinations.forEach(function (rol, index, object) {
       if (rol.id == item[0]) {
         object.splice(index, 1);
         aux = 1;
+        flagAux = -2;
       }
-      if ((rol.role === "student") || (rol.role === "teacher")) {
-        flagAux = 0;
-      }
+      
     });
     if (aux == 0) {
+      classAux = this.state.myClasses;
       let coordination = {
         id: item[0],
         code: item[1]
@@ -101,7 +103,7 @@ class Register extends Component {
       this.state.coordinationCode = item[0];
       this.state.myCoordinations.push(coordination);
     }
-    this.setState({ flags: flagAux });
+    this.setState({ flags: flagAux, myClasses: classAux });
 
   }
   generateCareersOptions() {
@@ -127,6 +129,7 @@ class Register extends Component {
   }
   generateClassesOptions() {
     let items = [];
+ 
     if (this.state.flags == 0) {
       let aux = 0;
 
@@ -188,7 +191,6 @@ class Register extends Component {
     }
     //Si es estudiante
     if (flag === 1) {
-      this.state.flags = 0;
       items.push(<ControlLabel>Coordinaciones Disponibles</ControlLabel>);
       this.state.coordinations.map((coordination) => {
         return (
