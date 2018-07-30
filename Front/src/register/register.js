@@ -96,8 +96,7 @@ class Register extends Component {
     if (aux == 0) {
       let coordination = {
         id: item[0],
-        code: item[1],
-        classes: item[2]
+        code: item[1]
       };
       this.state.coordinationCode = item[0];
       this.state.myCoordinations.push(coordination);
@@ -311,19 +310,35 @@ class Register extends Component {
 
   handleRegister = (event) => {
     event.preventDefault();
-    const user = {
+    let user = {};
+    let classesAuxTeacher = [];
+    let classesAuxStudent = [];
+    this.state.myRoles.map((role) => {
+      if(role.id == "4"){
+        classesAuxStudent = this.state.myClasses;
+      }
+      if(role.id == "3"){
+        classesAuxTeacher = this.state.myClasses;
+      }
+    });
+    
+    
+    user = {
       name: this.state.name,
       password: this.state.password,
       email: this.state.email,
       roles: this.state.myRoles,
       careers: this.state.myCareers,
       coordCoordinations: this.state.myCoordinations,
-      classes_teachers: this.state.myClasses,
-      classes_students: []
+      classes_teachers: classesAuxTeacher,
+      classes_student: classesAuxStudent
     };
+      
+    
+      
     console.log(user);
     
-
+    
     const url = 'http://35.226.163.50:8080/Backend/users/create';
     axios.post(url, user)
       .then(res => {
@@ -335,8 +350,9 @@ class Register extends Component {
         console.log(error.request);
         console.log(error.message);
       });
-    
+      
   };
+  
 
   validForm = (nam, pass) => () => {
     var txt;
