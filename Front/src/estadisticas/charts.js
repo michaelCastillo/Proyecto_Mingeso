@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import ScrollArea from 'react-scrollbar';
 import {Line} from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
+import { Well, Row, Col,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
 import moment from 'moment';
 import axios from 'axios';
 import ChartLine from './chartsLine'
@@ -167,7 +168,7 @@ export default class Chart extends Component {
         const target = event.target;
         var value = target.type === 'radio' ? target.checked : target.value;
         const name = target.name;
-    
+        this.state.chartcomponent = false;
         this.setState({
           [name]: value
         });
@@ -212,12 +213,67 @@ export default class Chart extends Component {
 
     }
 
+    rolesComponent(){
+
+        const role = localStorage.getItem('role');
+       if(role != "student"){
+        return[
+
+
+            <Col md={6} smOffset={2} xs={6} >
+            <FormGroup controlId="formControlsSelect">
+            <ControlLabel>Seleccione gráfico a mostrar</ControlLabel>
+            <FormControl componentClass="select"  onChange={this.handleValue} 
+              >
+              
+             <option disabled="true" selected ="true">...</option>
+             <option  value="coordinations" key ={1}>coordinación(nes)</option>
+             <option value="careers" key = {2} >carrera(s)</option>
+            </FormControl>
+            </FormGroup>
+            
+            <ScrollArea speed={0.8} className="area2" contentClassName="content"
+             horizontal={false} style={{ height: 200 , width:500 }}  >
+        
+            <Well>
+            {this.state.listItems}
+            </Well>
+            
+            </ScrollArea>
+            
+
+            <br/>
+            <Button bsStyle="info" onClick = {this.changeComponentStatus} disabled = {!this.state.bool}>Mostrar estadística</Button>
+            <Col md={3} smOffset={1} xs={6} >
+            <Button onClick = {this.boolNext} disabled = {!this.state.bool1}>Siguiente</Button>
+
+            </Col>
+            </Col>
+
+            
+        ]
+
+
+       }
+      
+
+    }
+
     render() {
+    
+    const role = localStorage.getItem('role');
+    const id = localStorage.getItem('userId');
+    if(role === "student"){
+        this.state.chartcomponent = true;
+        this.state.type = "student";   
+        this.state.userID = id;
+
+    }
 
       let component = null;
       let component2 = null;
 
-
+    console.log(this.state.chartcomponent);
      if (this.state.chartcomponent){
         component = <ChartLine ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
         component2 = <TimeChart   ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
@@ -249,7 +305,6 @@ export default class Chart extends Component {
       
         return (
             <div>
-
                 <Row > 
                   {component}
 
@@ -258,26 +313,8 @@ export default class Chart extends Component {
                   {component2}
                  <br/>
                  <br/>
-                <Col md={6} smOffset={2} xs={6} >
-                            <FormGroup controlId="formControlsSelect">
-                            <ControlLabel>Seleccione gráfico a mostrar</ControlLabel>
-                            <FormControl componentClass="select"  onChange={this.handleValue} 
-                              >
-                              
-                             <option disabled="true" selected ="true">...</option>
-                             <option  value="coordinations" key ={1}>coordinación(nes)</option>
-                             <option value="careers" key = {2} >carrera(s)</option>
-                            </FormControl>
-                            </FormGroup>
-                            {this.state.listItems}
-                            <br/>
-                            <Button bsStyle="info" onClick = {this.changeComponentStatus} disabled = {!this.state.bool}>Mostrar estadística</Button>
-                            <Col md={3} smOffset={1} xs={6} >
-                            <Button onClick = {this.boolNext} disabled = {!this.state.bool1}>Siguiente</Button>
-
-                            </Col>
-                            </Col>
-
+               
+                {this.rolesComponent()}
                  </Row> 
               </div>
 

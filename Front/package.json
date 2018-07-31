@@ -16,6 +16,7 @@
     "react-bootstrap-select": "^0.14.0",
     "react-chartjs-2": "^2.7.4",
     "react-circular-progressbar": "^1.0.0",
+    "react-custom-scrollbar": "^1.0.0",
     "react-datepicker": "^1.5.0",
     "react-dom": "^16.3.2",
     "react-icons-kit": "^1.1.5",
