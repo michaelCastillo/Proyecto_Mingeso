@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid,Form,FormControl, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar, FormGroup, ControlLabel} from 'react-bootstrap';
+import { Well,Grid,Form,FormControl, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar, FormGroup, ControlLabel} from 'react-bootstrap';
 import Timer from './Timer';
 
 //React Login
@@ -13,11 +13,14 @@ import ReactLoading from "react-loading";
 //React ACE!
 import AceEditor from 'react-ace';
 import brace from 'brace';
+import ReactSvgPieChart from "react-svg-piechart"
+
 
 import 'brace/mode/java';
 import 'brace/mode/python';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
+import ResultChart from './ResultsChar';
 
 
 
@@ -28,6 +31,7 @@ class Code extends Component{
     constructor(props){
         super(props);
         this.timer = React.createRef();
+        this.chart = React.createRef();
         this.state = {
             ready:false,
             code: "",
@@ -38,6 +42,8 @@ class Code extends Component{
             comparison:[],
             solution:[],
             ide:"",
+            nsucc :0,
+            nfails :0
             
 
 
@@ -50,6 +56,7 @@ class Code extends Component{
         this.handleIde = this.handleIde.bind(this);
         this.isSucsess = this.isSucsess.bind(this);
         this.setOut = this.setOut.bind(this);
+        this.setNumSuccFails = this.setNumSuccFails.bind(this);
     };
             
             componentDidMount(){
@@ -112,6 +119,21 @@ class Code extends Component{
                 }
             }
 
+            setNumSuccFails(){
+                var nsucc = 0;
+                var nfails= 0;
+                
+                this.state.solution.test.results.map((result) => {
+                    if(result.result){
+                        nsucc++;
+                    }else{
+                        nfails++;
+                    }
+                });
+                this.chart.current.setState({data:[{title: "Data 2", value: nfails, color: "#ff0000"},{title: "Data 3", value: nsucc, color: "#00ff00"}]});
+                this.setState({nsucc:nsucc,nfails:nfails});
+          }
+
             toCode = (save) =>{
                 
                 let id_problem = this.props.match.params.id;
@@ -156,7 +178,8 @@ class Code extends Component{
                             console.log("Error en el cerrado de la solución, inténtelo más tarde.",error);
                         });
                     }
-                    console.log(this.state);
+                    //Aqui se cambia el chart.
+                    this.setNumSuccFails();
                 }).catch(error => {
                     alert("Error");
                     alert(error.response);
@@ -164,6 +187,10 @@ class Code extends Component{
                 });
                 
               }
+
+             
+
+              
 
               handleCode(newValue){
                 this.setState({code:newValue});
@@ -293,16 +320,7 @@ class Code extends Component{
 
         }
         setOut(out,index){
-            if(out.hidden){
-                return(
-                    <tr>
-                        <th> oculto </th>
-                        <th> oculto </th>
-                        <th> oculto </th>
-                        <th> {this.onComparison(index)} </th>
-                    </tr>
-                );
-            }else{
+            if(!out.hidden){
                 return(
                     <tr>
                         <th> {this.state.o_inputs[index]} </th>
@@ -315,7 +333,7 @@ class Code extends Component{
         }
 
     render(){
-    
+        
         
         console.log(this.props);
         if(!this.state.ready){
@@ -325,6 +343,9 @@ class Code extends Component{
         }else{
             return(
                 <Grid>
+                    <Row>
+                        <Well>Enunciado!</Well>
+                    </Row>
                     <Row>
                         <Col md ={5}>
                             <Row>
@@ -347,7 +368,11 @@ class Code extends Component{
                                     </tbody>
                                     </Table>
 
-                                </Row>
+                            </Row>
+                            <Row>
+                                <ResultChart ref={this.chart} nsucc={this.state.nsucc} nfails={this.state.nfails}/>
+                            </Row>
+                            
                                 <br/>
                                 <br/>
                                 <Row>
@@ -418,9 +443,9 @@ class Code extends Component{
                                     
                         </Row>
                         
-
                         
-                    
+                        
+                        
 
                
                 </Grid>
