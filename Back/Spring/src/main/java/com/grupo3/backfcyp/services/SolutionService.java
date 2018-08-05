@@ -161,9 +161,10 @@ public class SolutionService {
             //Se cambian ciertos parametros de solution con los actuales
             //El codigo ya existe por lo tanto solo se actualiza su fecha.
             testToFront.setCreated(new Date());
+
             testToFront.setTime(time);
             this.testRepository.save(testToFront);
-
+            solution.setSuccess(testToFront.isCorrect());
             //Se genera un objeto para retornar al front.
             Map<String,Object> return_to_front = new HashMap<String,Object>();
             return_to_front.put("time",time);
