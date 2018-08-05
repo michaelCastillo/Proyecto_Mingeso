@@ -16,7 +16,7 @@ public class Parameter {
 
 
     private String name;
-
+    private boolean hidden;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_problem")
@@ -26,7 +26,13 @@ public class Parameter {
     //constructores
 
 
+    public boolean isHidden() {
+        return hidden;
+    }
 
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
 
     public Long getId() {
         return id;

@@ -5,23 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupo3.backfcyp.models.Solution;
 import com.grupo3.backfcyp.models.mongoModels.Code;
 import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
-import com.sun.javafx.beans.IDProperty;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "tests")
-public class Test implements Comparable<Test> {
-
-
-
-
+public class Test {
 
 
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,6 +24,7 @@ public class Test implements Comparable<Test> {
     private String codeId; //Deberia ser la id del codigo en mongo
     private boolean correct;
     private String language;
+    private int time;//se agrega el tiempo local.
     @Transient
     private Strategy strategy;
 
@@ -55,6 +47,23 @@ public class Test implements Comparable<Test> {
 
     public Test(){
         this.created = new Date();
+    }
+
+
+    public String getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public List<Results> exec(ArrayList<String> o_inputs, CodeRepository codeRepository){
@@ -180,8 +189,5 @@ public class Test implements Comparable<Test> {
         }
     }
 
-    @Override
-    public int compareTo(Test o) {
-        return this.getCreated().compareTo(o.getCreated());
-    }
+
 }

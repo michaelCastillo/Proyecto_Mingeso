@@ -36,8 +36,8 @@ class CreateProblem extends Component{
         var parameters =[];
         var returns =[];
         tuples.map((tuple) =>{
-            parameters.push({name:tuple.current.state.in});
-            returns.push({name:tuple.current.state.out});
+            parameters.push({name:tuple.current.state.in, hidden:tuple.current.state.hidden});
+            returns.push({name:tuple.current.state.out,hidden:tuple.current.state.hidden});
         });
         
         event.preventDefault();

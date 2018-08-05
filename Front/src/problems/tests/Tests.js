@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ControlLabel,Grid, Row, Col, Label,Button, FormGroup,FormControl,MenuItem,DropdownButton,Form } from 'react-bootstrap';
 import Tuple from './Tuple';
+import './Tuple.css';
 class Tests extends Component{
 
 
@@ -45,7 +46,7 @@ class Tests extends Component{
                         <ControlLabel>Pruebas</ControlLabel>
                     </Col>
                     <Col md={4}> 
-                        <Button bsStyle="primary" onClick={this.onAddTuple}>Agregar</Button>  
+                        <Button bsStyle="primary" onClick={this.onAddTuple}>+</Button>  
                     </Col>
                 </Row>
                 <Row>

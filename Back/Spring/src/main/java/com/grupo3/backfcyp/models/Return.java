@@ -16,12 +16,20 @@ public class Return {
     private Long id;
 
     private String name;
-
+    private boolean hidden;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "id_problem" )
     private Problem problem ;
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
 
     public Long getId() {
         return id;
