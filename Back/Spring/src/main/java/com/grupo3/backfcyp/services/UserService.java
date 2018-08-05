@@ -203,13 +203,13 @@ public class UserService {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/student/{id}/getUnsolvedProblems",method = RequestMethod.GET)
+    @RequestMapping(value = "/student/{id}/getSolvedProblems",method = RequestMethod.GET)
     @ResponseBody
     public List<Problem> getUnsolvedSolutions (@PathVariable Long id){
         User student = this.userRepository.findUserById(id);
         List<Problem> problems = new ArrayList<>();
         for(Solution sol: student.getSolutions()){
-            if(!sol.isSuccess()){
+            if(sol.isSuccess()){
                 problems.add(sol.getProblem());
             }
         }
