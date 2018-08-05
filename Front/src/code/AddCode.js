@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Well,Grid,Form,FormControl, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar, FormGroup, ControlLabel} from 'react-bootstrap';
+import { Alert,Well,Grid,Form,FormControl, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar, FormGroup, ControlLabel} from 'react-bootstrap';
 import Timer from './Timer';
 
 //React Login
@@ -43,9 +43,8 @@ class Code extends Component{
             solution:[],
             ide:"",
             nsucc :0,
-            nfails :0
-            
-
+            nfails :0,
+            statement:"",
 
         }
 
@@ -57,6 +56,7 @@ class Code extends Component{
         this.isSucsess = this.isSucsess.bind(this);
         this.setOut = this.setOut.bind(this);
         this.setNumSuccFails = this.setNumSuccFails.bind(this);
+        this.setError = this.setError.bind(this);
     };
             
             componentDidMount(){
@@ -70,9 +70,11 @@ class Code extends Component{
                 .then(res => {
                     const problem = res.data;
                     this.setState({
+                        statement:problem.statement,
                         language:problem.language,
                         o_inputs:problem.parameters,
                         o_outputs:problem.returns,
+                        
                     });
                 }).catch(error => {
                     console.log(error.response)
@@ -91,16 +93,17 @@ class Code extends Component{
                 };
                 let sol_resp = axios.post(local_url+`/solutions/create`,solution).
                 then(res => {
-                    console.log("resultado");
-                    console.log(res);
                     var solution = res.data.solution;
+                    console.log("test => ");
                     var codeDeformed = this.deformCode(res.data.code);
                     this.setState({code:codeDeformed});
                     this.setState({solution:solution});
                     this.setState({ready:true});
+                    this.setNumSuccFails();
                 }).catch(error => {
                     console.log("Ha ocurrido un error: "+error);
                 });
+                
             };
             
             deformCode(code){
@@ -130,7 +133,30 @@ class Code extends Component{
                         nfails++;
                     }
                 });
-                this.chart.current.setState({data:[{title: "Data 2", value: nfails, color: "#ff0000"},{title: "Data 3", value: nsucc, color: "#00ff00"}]});
+                this.chart.current.setState(
+                    
+                    
+                    {
+                        data: {
+                            labels: [
+                                'exitos',
+                                'fallos'
+                            ],
+                            datasets: [{
+                                data: [nsucc, nfails],
+                                backgroundColor: [
+                                    '#4BC0C0',
+                                    '#FF6384',
+                                ],
+                                hoverBackgroundColor: [
+                                    '#4BC0C0',
+                                    '#FF6384',
+                                ]
+                            }]
+                        }
+                    }
+                
+                );
                 this.setState({nsucc:nsucc,nfails:nfails});
           }
 
@@ -254,13 +280,21 @@ class Code extends Component{
               }
               isClosed(){
                   if(this.state.solution.closed){
-                      return(
-                          <Label> Si </Label>
-                      );
-                  }else{
                     return(
-                        <Label> No </Label>
+                        <ButtonGroup justified>
+                            <Button href="#" disabled>Guardar</Button>
+                            <Button href="#"  onClick={this.toCode} disabled>Ejecutar</Button>
+                            <Button href="#"  onClick={this.onSend} disabled>Enviar</Button>
+                        </ButtonGroup>
                     );
+                  }else{
+                      return(
+                        <ButtonGroup justified>
+                            <Button href="#" >Guardar</Button>
+                            <Button href="#"  onClick={this.toCode} >Ejecutar</Button>
+                            <Button href="#"  onClick={this.onSend} >Enviar</Button>
+                        </ButtonGroup>
+                      );
                   }
               }
 
@@ -269,23 +303,7 @@ class Code extends Component{
             onSend(){
                 
                 this.toCode(true);
-                // var elapsed = Math.round(this.timer.current.state.elapsed/ 100);
-                // var seconds = (elapsed / 10).toFixed(0);    
-                // console.log(seconds);
-
-                // let global_url = `http://46.101.81.136:8181/Backend`;
-                // let local_url = `http://localhost:1313`;
-                // let msg ={
-                //     id_solution:this.state.solution.id,
-                //     code:this.state.code
-                // };              
-                // axios.post(local_url+`/solutions/send`,msg)
-                // .then(res => {
-                //     console.log(res);
-                // })
-                // .catch(error => {
-                //     console.log(error);
-                // });
+                
             }
 
             getResult(index){
@@ -331,6 +349,41 @@ class Code extends Component{
                 );
             }
         }
+        setError(){
+            if(this.state.ready){
+                var err = this.state.solution.test.results[0].stderr; 
+                console.log(this.state.solution.test.results[0].stderr);
+                var total = this.state.nsucc + this.state.nfails;
+                if(err != null){
+                    if(err != ""){
+
+                        return(
+                            <Alert bsStyle="danger">
+                            <strong>Error: </strong> {err}
+                        </Alert>
+                    );
+                }else{
+                    if(total == this.state.nsucc){
+                        console.log("closed ",this.state.solution.closed);
+                        if(this.state.solution.closed){
+                            return(
+                                <Alert bsStyle="success">
+                                    <strong>   Problema resuelto! y cerrado </strong>
+                                </Alert>
+                                );
+                        }
+
+                        return(
+                            <Alert bsStyle="success">
+                                <strong>   Problema resuelto!  </strong>
+                            </Alert>
+                        );
+                        
+                        }
+                    }
+                }
+            }
+        }
 
     render(){
         
@@ -341,11 +394,17 @@ class Code extends Component{
                 <ReactLoading type={"spin"} color={"#000"} height={667} width={375} />
             );
         }else{
+
+            
+
             return(
                 <Grid>
                     <Row>
-                        <Well>Enunciado!</Well>
+                        <Well>{this.state.statement}</Well>
                     </Row>
+                    <Row>
+                            {this.setError()}
+                    </Row> 
                     <Row>
                         <Col md ={5}>
                             <Row>
@@ -375,6 +434,7 @@ class Code extends Component{
                             
                                 <br/>
                                 <br/>
+                                {/*
                                 <Row>
                                     <Col md={4}> 
                                         <Label>Time: {this.state.solution.time}</Label>
@@ -383,19 +443,17 @@ class Code extends Component{
                                         {this.isSucsess()}
                                     </Col>
                                 </Row>
+                            */}
                                 <Row>
                                     <Col md={6}> 
                                         <Timer start={Date.now()} time = {this.state.solution.time} ref = {this.timer}> </Timer>
-                                    </Col>
-                                    <Col md ={6}>
-                                        <Label>Cerrado: {this.isClosed()} </Label>
                                     </Col>
                                 </Row>
                             
                         </Col>
                         
                         <Col md ={6} xsOffset={1}>
-                            <Row> 
+                            {/*<Row> 
                                 <Form inline> 
                                     <FormGroup> 
                                         <ControlLabel>Codigo: </ControlLabel>
@@ -406,7 +464,7 @@ class Code extends Component{
                                         </FormControl>
                                     </FormGroup>
                                 </Form>
-                            </Row>
+                            </Row>*/}
                             <Row>
                                 <Col md = {12}>
                                 <AceEditor
@@ -426,22 +484,21 @@ class Code extends Component{
                                     enableSnippets: false,
                                     showLineNumbers: true,
                                     tabSize: 2,
-                                    }}/>
+                                    }} disabled/>
                                 </Col>
                             </Row>
                             <Row>
+                                
                                 <Col  md={12}>
-                                    <ButtonGroup justified>
-                                        <Button href="#">Guardar</Button>
-                                        <Button href="#" onClick={this.toCode}>Ejecutar</Button>
-                                        <Button href="#" onClick={this.onSend}>Enviar</Button>
-                                    </ButtonGroup>
+                                    
+                                        {this.isClosed()}
+                                    
                                 </Col>
                             </Row>
                             
                         </Col>
-                                    
                         </Row>
+                         
                         
                         
                         
@@ -450,7 +507,10 @@ class Code extends Component{
                
                 </Grid>
             );
-        }
+            //Cierre if closed
+        
+        
+    }
         
         
     }
