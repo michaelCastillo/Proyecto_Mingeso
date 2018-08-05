@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class CodeTest
 {
     private Code codigo;
-
+    private String idObtenida;
     @Before
     public void setUp() throws Exception
     {
@@ -36,7 +36,7 @@ public class CodeTest
     public void setId()
     {
         codigo.setId("999");
-        String idObtenida = codigo.getId();
+        idObtenida = codigo.getId();
         assertEquals("999", idObtenida);
     }
 
