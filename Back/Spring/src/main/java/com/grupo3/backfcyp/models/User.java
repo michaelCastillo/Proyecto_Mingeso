@@ -52,8 +52,26 @@ public class User
     private List<Class> classes_teachers;
 
 
-    public User(){
+    public User()
+    {
         this.coordCoordinations = new ArrayList<>();
+    }
+
+    public User(String prueba)
+    {
+        this.coordCoordinations = new ArrayList<Coordination>();
+        this.roles = new ArrayList<Role>();
+        this.careers = new ArrayList<Career>();
+        this.solutions = new ArrayList<Solution>();
+        this.problems = new ArrayList<Problem>();
+        this.classes_students = new ArrayList<Class>();
+        this.classes_teachers = new ArrayList<Class>();
+
+        this.id = Long.valueOf(999);
+        this.name = "nombrePrueba";
+        this.password = "passPrueba";
+        this.email = "emailPrueba";
+        this.bloqued = false;
     }
 
 
