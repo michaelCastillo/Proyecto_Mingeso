@@ -68,7 +68,7 @@ public class UserTest {
 
     @Before
     public void prepare(){
-        userReal = userRepository.findUserById(new Long(11));
+        //userReal = userRepository.findUserById(new Long(11));
 
         userTest = new User();
         userTest.setName(name);
