@@ -19,7 +19,7 @@ public class RoleService {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public List<Role> getRoles(){
-        return this.roleRepository.findAll();
+        return (List<Role>)this.roleRepository.findAll();
     }
 
     @CrossOrigin
@@ -27,5 +27,18 @@ public class RoleService {
     @ResponseBody
     public Role createRole(@Valid @RequestBody Role role){
         return this.roleRepository.save(role);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteRole(@PathVariable Long id){
+        this.roleRepository.delete(this.roleRepository.findRoleById(id));
+    }
+    @CrossOrigin
+    @RequestMapping(value = "/all",method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteAll(){
+        this.roleRepository.deleteAll();
     }
 }

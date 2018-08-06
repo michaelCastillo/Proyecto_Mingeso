@@ -50,7 +50,7 @@ render(){
                           <Col sm ={6} md={12}>  
                             <ListGroup>
                                   
-                            <ListGroupItem style={{background:'#66B3DD'}} href={`/Profesores/${teacher.id}`}  >{teacher.name}</ListGroupItem>
+                            <ListGroupItem style={{background:'#66B3DD'}} href={`/users/${teacher.id}`}  >{teacher.name}</ListGroupItem>
                             </ListGroup>
                           </Col>
                       </Row>

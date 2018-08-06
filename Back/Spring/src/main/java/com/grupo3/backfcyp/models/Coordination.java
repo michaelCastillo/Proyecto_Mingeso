@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "sections")
-public class Section {
+public class Coordination {
 
 
     @Id
@@ -16,12 +16,29 @@ public class Section {
 
     private String code;
 
-
-    @ManyToMany
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinTable(name = "users_sections", joinColumns = @JoinColumn(name = "id_user"),inverseJoinColumns = @JoinColumn(name = "id_coordination"))
-    private List<User> users;
+    @JoinTable(name = "id_coord")
+    private User coordinator;
 
+    @OneToMany(mappedBy = "coordination")
+    private List<Class> classes;
+
+    public List<Class> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<Class> classes) {
+        this.classes = classes;
+    }
+
+    public User getCoordinator() {
+        return coordinator;
+    }
+
+    public void setCoordinator(User coordinator) {
+        this.coordinator = coordinator;
+    }
 
     public Long getId() {
         return id;
@@ -39,13 +56,4 @@ public class Section {
         this.code = code;
     }
 
-
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 }

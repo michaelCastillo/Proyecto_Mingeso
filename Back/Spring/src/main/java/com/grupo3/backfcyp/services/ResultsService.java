@@ -33,7 +33,7 @@ public class ResultsService {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/deleteAll",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/all",method = RequestMethod.DELETE)
     @ResponseBody
     public void deleteAll(){
         this.resultsRepository.deleteAll();

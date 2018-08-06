@@ -1,21 +1,31 @@
 package com.grupo3.backfcyp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "career")
+@Table(name = "careers")
 public class Career {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     private String name;
     private String code;
 
-    @OneToMany(mappedBy = "career")
-    private List<User> user;
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "users_careers", joinColumns = @JoinColumn(name = "id_user"),inverseJoinColumns = @JoinColumn(name = "id_career"))
+    private List<User> users;
+
+    public Career(){
+        this.users = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -23,6 +33,18 @@ public class Career {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void addUser(User user){
+        this.users.add(user);
     }
 
     public String getName() {
@@ -39,13 +61,5 @@ public class Career {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public List<User> getUser() {
-        return user;
-    }
-
-    public void setUser(List<User> user) {
-        this.user = user;
     }
 }

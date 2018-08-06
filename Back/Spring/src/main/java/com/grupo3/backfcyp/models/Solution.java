@@ -2,11 +2,12 @@ package com.grupo3.backfcyp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grupo3.backfcyp.strategy.Results;
+import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.strategy.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "solutions")
@@ -18,7 +19,6 @@ public class Solution {
     private Long id;
 
     private String title;
-    private String code;
     private int fails;
     private int time; //in seconds
     private Date timestamp;
@@ -27,8 +27,10 @@ public class Solution {
     //closed. (the user clicked on Send and its success.)
     private int successes;
     private String errors;
-
-
+    private Date solvedDate;
+    @Transient
+    @Autowired
+    private CodeRepository codeRepositoryMongo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -41,15 +43,14 @@ public class Solution {
     private Problem problem;
 
     @OneToMany(mappedBy = "solution")
-    private List<Results> results;
+    private List<Test> tests;
 
     public Solution(){
-
+        this.tests = new ArrayList<>();
     }
 
-    public Solution(String title, String code, int fails, int time, Date timestamp, boolean success, boolean closed, int successes, String errors, User student, Problem problem) {
+    public Solution(String title, int fails, int time, Date timestamp, boolean success, boolean closed, int successes, String errors, User student, Problem problem) {
         this.title = title;
-        this.code = code;
         this.fails = fails;
         this.time = time;
         this.timestamp = timestamp;
@@ -59,11 +60,10 @@ public class Solution {
         this.errors = errors;
         this.student = student;
         this.problem = problem;
+        this.tests = new ArrayList<>();
     }
 
-    public List<Results> getResults() {
-        return results;
-    }
+
 
     public void addSucc(){
         this.successes++;
@@ -72,44 +72,35 @@ public class Solution {
         this.fails++;
     }
 
+    public String codeGet(CodeRepository codeRepository){
 
+        List<Test> tests = this.tests;
+        if(!tests.isEmpty()){
+            if(tests.size()>1){
+                Collections.sort(tests,new SortByDate());
+            }
+            if(tests.size() > 0){
+                return tests.get(0).getCode(codeRepository);
+            }
+            return "ingrese codigo";
+        }else{
+            return "ingrese codigo";
+        }
 
-    public void setResults(List<Results> results) {
-        this.results = results;
+    }
+    public List<Test> testsGet() {
+        return tests;
+    }
+    public Test getTest(){
+        if(tests.size()>1){
+            Collections.sort(tests,new SortByDate());
+        }
+        if(tests.size() > 0){
+            return tests.get(0);
+        }
+        return null;
     }
 
-    public void addResult(Results results){
-        this.results.add(results);
-    }
-
-    public boolean isClosed() {
-        return closed;
-    }
-
-    public void setClosed(boolean closed) {
-        this.closed = closed;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public String getErrors() {
-        return errors;
-    }
-
-    public void setErrors(String errors) {
-        this.errors = errors;
-    }
-
-
-    public User getStudent() {
-        return student;
-    }
-
-    public void setStudent(User student) {
-        this.student = student;
-    }
 
     public Long getId() {
         return id;
@@ -125,14 +116,6 @@ public class Solution {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public int getFails() {
@@ -159,12 +142,20 @@ public class Solution {
         this.timestamp = timestamp;
     }
 
-    public boolean getSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 
     public int getSuccesses() {
@@ -175,7 +166,21 @@ public class Solution {
         this.successes = successes;
     }
 
+    public String getErrors() {
+        return errors;
+    }
 
+    public void setErrors(String errors) {
+        this.errors = errors;
+    }
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
+    }
 
     public Problem getProblem() {
         return problem;
@@ -183,5 +188,29 @@ public class Solution {
 
     public void setProblem(Problem problem) {
         this.problem = problem;
+    }
+
+    public Date getSolvedDate() {
+        return solvedDate;
+    }
+
+    public void setSolvedDate(Date solvedDate) {
+        this.solvedDate = solvedDate;
+    }
+
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
+    }
+}
+
+class SortByDate implements Comparator<Test> {
+
+    @Override
+    public int compare(Test o1, Test o2) {
+        return -o1.getCreated().compareTo(o2.getCreated());
     }
 }
