@@ -109,7 +109,7 @@ public class UserTest {
 
         System.out.println(userService.getUsers());
         assertThat(userService.getUsers().equals(userRepository.findAll()));
-        userService.getUserById(new Long(1));
+        //userService.getUserById(new Long(1));
 
 
     }
