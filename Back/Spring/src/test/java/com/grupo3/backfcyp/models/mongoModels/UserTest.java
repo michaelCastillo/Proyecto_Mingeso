@@ -40,11 +40,11 @@ public class UserTest {
     private User userExit;
 
     @MockBean
-    UserRepository userRepository;
+    public UserRepository userRepository;
     @Autowired
     MockMvc mvc;
     @MockBean
-    UserService userService;
+    public UserService userService;
 
 
     @Before
