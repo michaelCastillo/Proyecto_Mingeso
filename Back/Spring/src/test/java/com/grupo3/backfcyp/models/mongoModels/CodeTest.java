@@ -24,7 +24,7 @@ public class CodeTest
         assertEquals(nombre1, nombre2);
     }
     */
-
+/*
     @Test
     public void getId()
     {
@@ -52,4 +52,5 @@ public class CodeTest
     {
 
     }
+    */
 }
