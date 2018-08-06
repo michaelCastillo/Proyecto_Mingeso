@@ -1,0 +1,12 @@
+
+section#PanelSugerencias
+{
+    margin-top: 5px;
+}
+
+section#cuerpoPanelSugerencias
+{
+    margin-top: 5px;
+    height: 200px;
+    overflow-y: scroll;
+}
