@@ -42,14 +42,14 @@ public class Statement {
         this.statement = statement;
     }
 
-    /*
+
     @Override
     public String toString() {
         return String.format(
                 "Customer[id=%s, firstName='%s', lastName='%s']",
                 id, statement);
     }
-    */
+
 
 
 }

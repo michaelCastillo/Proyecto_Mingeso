@@ -1,8 +1,9 @@
 package com.grupo3.backfcyp.models.mongoModels;
 
 import org.junit.Before;
+import org.junit.Test;
 
-
+import static org.junit.Assert.*;
 
 public class CodeTest
 {
@@ -15,7 +16,7 @@ public class CodeTest
         codigo = new Code("Prueba");
     }
 
-    /*
+
     @Test
     public void toString()
     {
@@ -23,7 +24,7 @@ public class CodeTest
         String nombre2 = codigo.toString();
         assertEquals(nombre1, nombre2);
     }
-    */
+
 
 
 
