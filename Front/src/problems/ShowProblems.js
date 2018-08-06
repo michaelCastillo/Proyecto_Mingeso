@@ -65,10 +65,11 @@ class ShowProblems extends Component{
 
         navbarlinks(problemid){
             const role = localStorage.getItem('role');
-          
+            
             if (this.props.authenticated   && role == "su") {
                 return[
                     <div>
+                        
                         <Col md={1} sm={6}>                                    
                         <Button href={`/code/${problemid}`} >
                         A programar! 
@@ -78,7 +79,7 @@ class ShowProblems extends Component{
                         <Icon icon={publish} size={25}/>
                         </Col>
                         <Col md={1} sm={6} >
-                        <Icon icon ={edit} size={25} />
+                                                        
                         </Col>
                         <Col md={1} sm={6}>
                         <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
@@ -97,7 +98,11 @@ class ShowProblems extends Component{
                         <Button href={`/code/${problemid}`} >
                         A programar! 
                         </Button>
-                        </Col>     
+                        </Col>   
+                        <Col md={1} sm={6} >
+                        <a href={`/problemsProfile/${problemid}`}><span class="glyphicon glyphicon-eye-open"></span></a>
+                                                        
+                        </Col>  
                     </div>
 
                     
@@ -112,7 +117,7 @@ class ShowProblems extends Component{
                         <Icon icon={publish} size={25}/>
                         </Col>
                         <Col md={1} sm={6} >
-                        <Icon icon ={edit} size={25} />
+                        <a href={`/problemsProfile/${problemid}`}><span class="glyphicon glyphicon-eye-open"></span></a>
                         </Col>
                         <Col md={1} sm={6}>
                         <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
