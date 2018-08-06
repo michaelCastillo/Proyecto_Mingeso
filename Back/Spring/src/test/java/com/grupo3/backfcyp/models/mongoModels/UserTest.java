@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserService.class)
+
 public class UserTest {
 
     private String name = "prueba 1";
@@ -41,8 +41,6 @@ public class UserTest {
 
     @MockBean
     public UserRepository userRepository;
-    @Autowired
-    MockMvc mvc;
     @MockBean
     public UserService userService;
 

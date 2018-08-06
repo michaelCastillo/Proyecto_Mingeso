@@ -1,12 +1,12 @@
 package com.grupo3.backfcyp.models.mongoModels;
 
 import org.junit.Before;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+
 
 public class CodeTest
 {
+
     private Code codigo;
     private String idObtenida = "09";
     @Before
