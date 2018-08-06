@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class CodeTest
 {
     private Code codigo;
-    private String idObtenida;
+    private String idObtenida = "09";
     @Before
     public void setUp() throws Exception
     {
