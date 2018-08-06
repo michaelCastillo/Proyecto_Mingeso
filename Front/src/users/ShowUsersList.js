@@ -56,16 +56,7 @@ class ShowUsersList extends Component {
             }).catch(error => {
                 console.log(error.response)
             });
-        axios.get(`http://35.226.163.50:8080/Backend/sections/`)
-            .then(res => {
-                const sections = res.data;
-                //Se asigna falso para opened, para el collapse
-                sections.map((section) => { section.opened = false });
-                this.setState({ sections });
-            }).catch(error => {
-                alert("Error con conexion a base de datos de secciones");
-                console.log(error.response)
-            });
+        
         axios.get(`http://35.226.163.50:8080/Backend/roles`)
             .then(res => {
                 const roles = res.data;
@@ -262,15 +253,7 @@ class ShowUsersList extends Component {
                                 <Checkbox onChange={this.handleCheckbox}> Descendente </Checkbox>
                             </h4>
                         </Col>
-                        <Col md={4} xs={4}>
-                            <h3>
-                                <ControlLabel>Seccion: </ControlLabel>
-                                <FormControl componentClass="select" placeholder="select" onChange={this.selectSection}>
-                                    <option selected="true" value="all">Todas</option>
-                                    {this.createSectionsOptions()}
-                                </FormControl>
-                            </h3>
-                        </Col>
+                        
                         <Col md={4} xs={4}>
                             <h3>
                                 <ControlLabel>Rol: </ControlLabel>
