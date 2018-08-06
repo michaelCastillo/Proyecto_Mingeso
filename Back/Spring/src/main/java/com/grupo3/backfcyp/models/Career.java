@@ -8,7 +8,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "careers")
-public class Career {
+public class Career
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,8 +24,20 @@ public class Career {
     @JoinTable(name = "users_careers", joinColumns = @JoinColumn(name = "id_user"),inverseJoinColumns = @JoinColumn(name = "id_career"))
     private List<User> users;
 
-    public Career(){
+    public Career()
+    {
         this.users = new ArrayList<>();
+    }
+
+    public Career(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombrePrueba";
+        this.code = "09";
+
+        List<User> lista = new ArrayList<User>();
+
+        this.users = lista;
     }
 
     public Long getId() {

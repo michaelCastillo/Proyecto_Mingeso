@@ -33,10 +33,21 @@ public class Class {
     @JsonIgnore
     private Coordination coordination;
 
-    public Class(){
+    public Class()
+    {
         this.teachers = new ArrayList<>();
         this.students = new ArrayList<>();
-        
+    }
+
+    public Class(String prueba)
+    {
+        this.teachers = new ArrayList<User>();
+        this.students = new ArrayList<User>();
+
+        this.id = Long.valueOf(999);
+        this.classRoom = "ClasePrueba";
+        this.code = "09";
+        this.coordination = new Coordination();
     }
 
 
