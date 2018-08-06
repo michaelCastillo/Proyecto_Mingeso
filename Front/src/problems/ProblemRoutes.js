@@ -7,6 +7,8 @@ import ShowProblems from './ShowProblems';
 import CreateProblem from './CreateProblem';
 import Authorization from '../hoc/roleRequire';
 import requireAuth from '../hoc/requireAuth';
+import ProblemProfile from '../problems/ProblemProfile';
+
 
 const perm1 = Authorization(['teacher', 'coordination', 'su']);
 
@@ -48,6 +50,7 @@ class ProblemRoutes extends Component{
                             <Row className = "grid-show" >
 
                             <Route path="/problems/show" component ={requireAuth(ShowProblems)}/>
+                            <Route path="/problemsProfile/:id" component={ProblemProfile}/>
 
                            
                             </Row >
