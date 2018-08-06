@@ -7,6 +7,8 @@ class Signout extends Component {
 
     componentWillMount() {
         signOutAction();
+        window.location.href = "/home";
+
     }
 
 render(){

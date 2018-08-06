@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
@@ -234,7 +235,52 @@ class EditUser extends Component {
             });
     }
 
+    filterRole(){
 
+        const role = localStorage.getItem('role');
+      
+        if (role === "su") {
+          
+          return [
+
+           <div> 
+            <Col md={2} xs={2}>
+            <Button bsSize="large" onClick={this.blockUser} bsStyle="danger" class="btn btn-primary">
+                Bloquear</Button>
+             </Col>
+            <Col md={2} xs={2}>
+            <Button bsSize="large" onClick={this.deleteUser} bsStyle="danger" class="btn btn-primary">
+                Eliminar</Button>
+             </Col>
+           </div> 
+
+
+          ];
+        }
+    
+        if (role === "coordination") {
+           
+            return [
+  
+             <div> 
+              <Col md={2} xs={2}>
+                <Button bsSize="large" onClick={this.blockUser} bsStyle="danger" class="btn btn-primary">
+                Bloquear</Button>
+                </Col>
+  
+              
+             </div> 
+  
+  
+            ]
+          }
+
+         
+  
+
+
+
+    }
 
     render() {
 
@@ -307,20 +353,12 @@ class EditUser extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={5} xs={5}>
-                            <Button bsSize="large" onClick={this.updateUser} bsStyle="success" class="btn btn-primary">
-                                Guardar</Button>
+                    <Col md={5} xs={5}>
+                     <Button bsSize="large" onClick={this.updateUser} bsStyle="success" class="btn btn-primary">
+                        Guardar</Button>
                         </Col>
-
-                        <Col md={2} xs={2}>
-                            <Button bsSize="large" onClick={this.blockUser} bsStyle="danger" class="btn btn-primary">
-                                Bloquear</Button>
-                        </Col>
-                        <Col md={2} xs={2}>
-                            <Button bsSize="large" onClick={this.deleteUser} bsStyle="danger" class="btn btn-primary">
-                                Eliminar</Button>
-                        </Col>
-
+                           
+                    {this.filterRole()}
                     </Row>
 
                 </div>
@@ -333,4 +371,9 @@ class EditUser extends Component {
 
 
 }
+
+
+
+
+
 export default EditUser;                
