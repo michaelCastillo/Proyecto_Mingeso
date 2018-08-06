@@ -54,7 +54,7 @@ class CreateProblem extends Component{
 
         const gc = `http://35.226.163.50:8080/Backend`;
         const local = `http://localhost:1313`
-        const url = local+`/problems/create/`+localStorage.getItem('userId');
+        const url = gc+`/problems/create/`+localStorage.getItem('userId');
         console.log(url);
         axios.post(url,problem)
         .then(res => {

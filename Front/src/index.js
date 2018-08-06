@@ -11,7 +11,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import HeaderUp from './header/HeaderUp';
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Code from './code/AddCode';
 import Home from './home/Home';
 import Redirect from './home/redirect';
@@ -20,7 +20,10 @@ import ProblemRoutes from './problems/ProblemRoutes';
 import Login from './login/login';
 import Teachers from './teachers/teachers';
 import Students from './students/students';
-import { AUTHENTICATED , UNAUTHENTICATED } from './actions/actionSign';
+import ShowParticipado from './students/participado';
+import ShowResueltos from './students/resueltos';
+
+import { AUTHENTICATED } from './actions/actionSign';
 import requireAuth from './hoc/requireAuth';
 import noRequireAuth from './hoc/noRequireAuth';
 import Authorization from './hoc/roleRequire';
@@ -36,6 +39,7 @@ import Chart from './estadisticas/charts';
 const perm = Authorization(['coordination', 'su']);
 const perm1 = Authorization(['teacher', 'coordination', 'su']);
 const perm2 = Authorization(['student', 'su']);
+const perm3 = Authorization(['student']);
 const su = Authorization([ 'su']);
 
 
@@ -76,6 +80,10 @@ ReactDOM.render(
                 <Route path="/Profesores" component ={perm(Teachers)}/>
                 <Route path="/redirect" component ={requireAuth(Redirect)}/>
                 <Route path="/dashboard" component ={requireAuth(Chart)}/>
+                <Route path="/soluciones/enproceso" component ={perm3(ShowParticipado)}/>
+                <Route path="/soluciones/MisSoluciones" component ={perm3(ShowResueltos)}/>
+
+
 
 
                 </div>

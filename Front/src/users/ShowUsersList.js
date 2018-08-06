@@ -63,7 +63,7 @@ class ShowUsersList extends Component {
                 sections.map((section) => { section.opened = false });
                 this.setState({ sections });
             }).catch(error => {
-                alert("Error con conexion a base de datos de secciones");
+              //  alert("Error con conexion a base de datos de secciones");
                 console.log(error.response)
             });
         axios.get(`http://35.226.163.50:8080/Backend/roles`)

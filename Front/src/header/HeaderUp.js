@@ -36,10 +36,7 @@ class HeaderUp extends Component {
                  Profesores
                 </NavItem>
 
-                <NavDropdown eventKey={6}  title="Soluciones" id="basic-nav-dropdown">
-                <MenuItem eventKey={6.1} href='/soluciones/enproceso'>En proceso</MenuItem>
-                <MenuItem eventKey={6.2} href='/soluciones/misSoluciones'> Mis soluciones</MenuItem>
-                </NavDropdown>
+               
                 <NavItem eventKey={7} href="/users/showlist">
                  Administrar usuarios
                 </NavItem>
