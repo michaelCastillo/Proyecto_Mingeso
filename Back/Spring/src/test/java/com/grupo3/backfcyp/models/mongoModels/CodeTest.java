@@ -24,7 +24,12 @@ public class CodeTest
         assertEquals(nombre1, nombre2);
     }
     */
+
+
+
+
 /*
+
     @Test
     public void getId()
     {
@@ -44,13 +49,15 @@ public class CodeTest
     public void getCode()
     {
         String codeObtenida = codigo.getCode();
-        assertEquals("09", idObtenida);
+        assertEquals("09", codeObtenida);
     }
 
     @Test
     public void setCode()
     {
-
+        codigo.setId("0999");
+        String codeObtenida = codigo.getId();
+        assertEquals("0999", codeObtenida);
     }
     */
 }

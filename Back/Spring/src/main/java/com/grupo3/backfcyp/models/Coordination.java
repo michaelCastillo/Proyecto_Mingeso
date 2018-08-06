@@ -3,11 +3,13 @@ package com.grupo3.backfcyp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "sections")
-public class Coordination {
+public class Coordination
+{
 
 
     @Id
@@ -23,6 +25,19 @@ public class Coordination {
 
     @OneToMany(mappedBy = "coordination")
     private List<Class> classes;
+
+    public Coordination()
+    {
+
+    }
+
+    public Coordination(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.code = "09";
+        this.coordinator = new User();
+        this.classes = new ArrayList<Class>();
+    }
 
     public List<Class> getClasses() {
         return classes;
