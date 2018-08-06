@@ -32,9 +32,8 @@ class ShowProblems extends Component{
     }
 
     componentDidMount() {
-            let local = `http://localhost:1313/problems/` ;
             let global = `http://35.226.163.50:8080/Backend/problems/`;
-            axios.get(local)
+            axios.get(global)
                 .then(res => {
                     const problems = res.data;
                     //Se asigna falso para opened, para el collapse
@@ -62,6 +61,71 @@ class ShowProblems extends Component{
             this.setState({problems});
 
         };
+
+
+        navbarlinks(problemid){
+            const role = localStorage.getItem('role');
+          
+            if (this.props.authenticated   && role == "su") {
+                return[
+                    <div>
+                        <Col md={1} sm={6}>                                    
+                        <Button href={`/code/${problemid}`} >
+                        A programar! 
+                        </Button>
+                        </Col>
+                        <Col md={1} sm={6} mdOffset={1}>
+                        <Icon icon={publish} size={25}/>
+                        </Col>
+                        <Col md={1} sm={6} >
+                        <Icon icon ={edit} size={25} />
+                        </Col>
+                        <Col md={1} sm={6}>
+                        <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
+                        </Col>  
+                            
+                    </div>
+
+                    
+                ] 
+            }
+
+            if (this.props.authenticated   && role == "student") {
+                return[
+                    <div>
+                        <Col md={1} sm={6}>                                    
+                        <Button href={`/code/${problemid}`} >
+                        A programar! 
+                        </Button>
+                        </Col>     
+                    </div>
+
+                    
+                ] 
+            }
+
+            if (this.props.authenticated   && (role == "teacher" || role ==="coordination")) {
+                return[
+                    <div>
+                      
+                        <Col md={1} sm={6} mdOffset={1}>
+                        <Icon icon={publish} size={25}/>
+                        </Col>
+                        <Col md={1} sm={6} >
+                        <Icon icon ={edit} size={25} />
+                        </Col>
+                        <Col md={1} sm={6}>
+                        <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
+                        </Col>  
+                            
+                    </div>
+
+                    
+                ] 
+            }
+        }
+
+
 
 
 
@@ -92,21 +156,7 @@ class ShowProblems extends Component{
                                                 <Col md={7} ms={12} onClick={this.collapse(problem.id)}>
                                                     <Panel.Title componentClass="h3">{problem.name}</Panel.Title>
                                                 </Col>
-                                                <Col md={1} sm={6}>
-                                                
-                                                    <Button href={`/code/${problem.id}`} >
-                                                     A programar! 
-                                                    </Button>
-                                                </Col>
-                                                <Col md={1} sm={6} mdOffset={1}>
-                                                    <Icon icon={publish} size={25}/>
-                                                </Col>
-                                                <Col md={1} sm={6} >
-                                                    <Icon icon ={edit} size={25} />
-                                                </Col>
-                                                <Col md={1} sm={6}>
-                                                    <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
-                                                </Col>  
+                                               {this.navbarlinks(problem.id)}
                                             </Row>
                                         </Panel.Heading>
                                         <Panel.Body>

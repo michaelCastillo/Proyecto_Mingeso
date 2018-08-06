@@ -40,6 +40,13 @@ public class CoordinationService {
     public Coordination getSectionById(@PathVariable Long id){
         return this.coordinationRepository.findCoordinationById(id);
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{id}/getClasses",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Class> getClassesFromCoord(@PathVariable Long id){
+        return (this.coordinationRepository.findCoordinationById(id)).getClasses();
+    }
     @CrossOrigin
     @RequestMapping(value = "/{id}/classes", method = RequestMethod.GET)
     @ResponseBody
@@ -59,6 +66,14 @@ public class CoordinationService {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Coordination createSection(@Valid @RequestBody Coordination coordination){
+        List<Class> classes =coordination.getClasses();
+        if(classes != null){
+            if(!classes.isEmpty()){
+                for(Class classs: classes){
+                    this.classRepository.findClassById(classs.getId()).setCoordination(coordination);
+                }
+            }
+        }
         return this.coordinationRepository.save(coordination);
     }
 

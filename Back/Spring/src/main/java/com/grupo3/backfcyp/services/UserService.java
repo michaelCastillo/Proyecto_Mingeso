@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,35 @@ public class UserService {
             response.put("roles",null);
         }
         return response;
+    }
+
+
+
+    @CrossOrigin
+    @RequestMapping(value = "/student/{id}/getAllProblems",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Problem> getSolutionsByStudent(@PathVariable Long id){
+        List<Problem> problems = new ArrayList<>();
+        User student = this.userRepository.findUserById(id);
+        List<Solution> solutions = student.getSolutions();
+        for(Solution solution: solutions){
+            problems.add(solution.getProblem());
+        }
+        return problems;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/student/{id}/getSolvedProblems",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Problem> getUnsolvedSolutions (@PathVariable Long id){
+        User student = this.userRepository.findUserById(id);
+        List<Problem> problems = new ArrayList<>();
+        for(Solution sol: student.getSolutions()){
+            if(sol.isSuccess()){
+                problems.add(sol.getProblem());
+            }
+        }
+        return problems;
     }
 
 

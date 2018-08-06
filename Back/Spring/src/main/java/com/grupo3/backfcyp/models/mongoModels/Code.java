@@ -9,13 +9,26 @@ public class Code {
 
     private String code;
 
+    public Code()
+    {
 
+    }
+
+    public Code(String prueba)
+    {
+        this.code = "09";
+        this.id = "9";
+    }
+
+    /*
     @Override
-    public String toString() {
+    public String toString()
+    {
         return String.format(
                 "Customer[id=%s, firstName='%s', lastName='%s']",
                 id, code);
     }
+    */
 
     public String getId() {
         return id;

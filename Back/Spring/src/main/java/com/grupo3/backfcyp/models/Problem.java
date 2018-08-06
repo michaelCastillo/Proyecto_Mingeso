@@ -105,7 +105,7 @@ public class Problem {
         this.parameters = parameters;
     }
 
-    public ArrayList<String> getReturns() {
+    public ArrayList<String> getReturns_string() {
         ArrayList<String> returns = new ArrayList<>();
         for(Return return_: this.returns){
             returns.add(return_.getName());
@@ -116,7 +116,7 @@ public class Problem {
     public List<Parameter> obtenerParametersObj(){
         return this.parameters;
     }
-    public List<Return> obtenerReturnsObj(){
+    public List<Return> getReturns(){
         return this.returns;
     }
 
