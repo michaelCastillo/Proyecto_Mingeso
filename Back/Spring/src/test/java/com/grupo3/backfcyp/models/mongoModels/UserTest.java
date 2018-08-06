@@ -20,6 +20,8 @@ import sun.rmi.server.UnicastServerRef;
 
 import javax.jws.soap.SOAPBinding;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,7 +74,7 @@ public class UserTest {
 
     @Test
     public void testController(){
-        Assert.assertEquals(userService.getUsers(),userRepository.findAll());
+        assertThat(userService.getUsers().equals(userRepository.findAll()));
     }
 
 
