@@ -20,7 +20,7 @@ public class Code {
         this.id = "9";
     }
 
-
+    /*
     @Override
     public String toString()
     {
@@ -28,6 +28,7 @@ public class Code {
                 "Customer[id=%s, firstName='%s', lastName='%s']",
                 id, code);
     }
+    */
 
 
     public String getId() {
