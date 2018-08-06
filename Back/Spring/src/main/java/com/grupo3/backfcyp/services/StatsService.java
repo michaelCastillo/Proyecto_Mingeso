@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.annotation.security.PermitAll;
+import javax.management.DescriptorKey;
 import java.math.BigInteger;
 import java.security.AlgorithmConstraints;
 import java.text.ParseException;
@@ -224,6 +225,21 @@ public class StatsService {
             response.put("message","No existe coordination asociada a la id");
             response.put("result",null);
         }
+        return response;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/getSelect",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> getSelectValues(){
+        List<Career> careers = this.careerRepository.findAll();
+        List<Coordination> coordinations = this.coordinationRepository.findAll();
+        Map<String,Object> response = new HashMap<>();
+        
+
+        response.put("careers",careers);
+        response.put("coordinations",coordinations);
+
         return response;
     }
 
