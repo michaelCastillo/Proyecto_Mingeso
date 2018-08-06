@@ -50,4 +50,6 @@ public class UserTest {
         Assert.assertEquals(userTest.isBloqued(),bloqued);
     }
 
+    
+
 }
