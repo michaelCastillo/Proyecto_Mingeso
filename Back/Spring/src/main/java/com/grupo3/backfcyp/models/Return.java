@@ -24,6 +24,19 @@ public class Return
     @JoinColumn(name = "id_problem" )
     private Problem problem ;
 
+    public Return()
+    {
+
+    }
+
+    public Return(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombrePrueba";
+        this.hidden = false;
+        this.problem = new Problem();
+    }
+
     public boolean isHidden() {
         return hidden;
     }
