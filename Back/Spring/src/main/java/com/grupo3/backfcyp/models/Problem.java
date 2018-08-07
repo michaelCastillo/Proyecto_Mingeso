@@ -9,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "problems")
-public class Problem {
+public class Problem
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,6 +37,26 @@ public class Problem {
 
     @OneToMany(mappedBy = "problem")
     private List<Solution> solutions;
+
+    public Problem()
+    {
+
+    }
+
+    public Problem(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombrePrueba";
+        this.statement = "statePrueba";
+        this.language = "lenguajePrueba";
+        this.difficulty = 999;
+        this.publish = false;
+        this.teacher = new User();
+
+        this.parameters = new ArrayList<Parameter>();
+        this.returns = new ArrayList<Return>();
+        this.solutions = new ArrayList<Solution>();
+    }
 
     public boolean isPublish() {
         return publish;

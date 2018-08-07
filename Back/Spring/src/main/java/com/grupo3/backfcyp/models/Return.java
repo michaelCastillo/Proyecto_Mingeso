@@ -7,7 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "returns")
-public class Return {
+public class Return
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
