@@ -26,6 +26,7 @@ import ResultChart from './ResultsChar';
 //Components1
 
 import Correction from './Correction.js';
+import Editor from './Editor';
 
 
 
@@ -41,6 +42,7 @@ class Code extends Component{
         super(props);
         this.timer = React.createRef();
         this.chart = React.createRef();
+        this.editor = React.createRef();
         this.state = {
             ready:false,
             code: "",
@@ -76,6 +78,7 @@ class Code extends Component{
         this.setOut = this.setOut.bind(this);
         this.setNumSuccFails = this.setNumSuccFails.bind(this);
         this.setError = this.setError.bind(this);
+        this.handleRedaction = this.handleRedaction.bind(this);
     };
             
             componentDidMount(){
@@ -197,11 +200,13 @@ class Code extends Component{
                 };
                 const global_url = `http://35.226.163.50:8080/Backend/solutions/execute`;
                 const url = `http://localhost:1313/solutions/execute`;
-
+                console.log("post");
+                this.editor.current.isCharging(true);
                 axios.post(global_url,post_code)
                 .then(res => {
                     let solution = res.data.solution;
                     let local_url = `http://localhost:1313/solutions/save`;
+                    let global_url = `http://35.226.163.50:8080/Backend/solutions/save`;
                     let code = this.deformCode(res.data.code);
                     this.setState({
                         code:code,
@@ -215,16 +220,19 @@ class Code extends Component{
                         let closeSol = {
                             id_solution:this.state.solution.id
                         }
-                        axios.post(local_url,closeSol)
+                        axios.post(global_url,closeSol)
                         .then(res => {
                             let solution = this.state.solution;
                             solution.closed = res.data.closed;
                             this.setState({solution:solution});
-                            console.log("Se cerró exitosamente la solucion.",res);
+                            if(!res.data.closed){
+                                alert("Tu solución aún no resuelve el problema, vuelve a intentarlo!");
+                            }
                         }).catch(error => {
                             console.log("Error en el cerrado de la solución, inténtelo más tarde.",error);
                         });
                     }
+                    this.editor.current.isCharging(false);
                     //Aqui se cambia el chart.
                     this.setNumSuccFails();
                 }).catch(error => {
@@ -242,18 +250,10 @@ class Code extends Component{
               handleCode(newValue){
                 this.setState({code:newValue});
                 console.log("Code: ",this.state.code);
-                console.log("solution ",this.state.solution);
-                //var code = this.state.solution.code.concat(newValue);
-                //console.log(code);
-                //var code = newValue.replace('\\',"\\\\");
-                //code = code.replace(/"/gi, "\\\"");
-                //this.setState({code:code});
-                //console.log("code");
-                //console.log(this.state.solution.code);
-
-                //Accion del cambio del panel de sugerencias
+                
+                
                 this.state.simplCode = [];
-                this.handleRedaction(this.state.solution.code);
+                this.handleRedaction();
               }
               handleAce(newValue) {
                 console.log('change',newValue);
@@ -331,7 +331,7 @@ class Code extends Component{
                 
             }
 
-
+        // idden code
             isInArray(VarList, data)
             {
                 var i;
@@ -1051,7 +1051,7 @@ class Code extends Component{
 
             handleRedaction(varCode)
             {
-                var lineas = varCode.split("\n");
+                var lineas = this.state.code.split("\n");
 
                 var i;
                 var j = 0;
@@ -1221,9 +1221,9 @@ class Code extends Component{
                 }
             }
 
-            
+                
 
-              
+                
 
             getResult(index){
                 if(this.state.solution.test != null){
@@ -1232,77 +1232,82 @@ class Code extends Component{
                     return(<th> - </th>);
                 }
             }
+            setResults(){
 
-        setResults(){
-
-            if(this.state.solution.test != null){
-                this.state.o_outputs.map((out,index)=>{return(
-                    <tr>
-                        <th> {out.name} </th>
-                        <th>{this.state.solution.test.results[index].stdout}</th>
-                        <th> {this.onComparison(index)} </th>
-                    </tr>
-                );
-                })
-            }else{
-                this.state.o_outputs.map((out,index)=>{return(
-                    <tr>
-                        <th> {out.name} </th>
-                        <th> - </th>
-                        <th> - </th>
-                    </tr>
-                );
-                })
-            }
-
-        }
-        setOut(out,index){
-            if(!out.hidden){
-                return(
-                    <tr>
-                        <th> {this.state.o_inputs[index]} </th>
-                        <th> {out.name} </th>
-                        <th>{this.getResult(index)}</th>
-                        <th> {this.onComparison(index)} </th>
-                    </tr>
-                );
-            }
-        }
-        setError(){
-            if(this.state.ready && (this.state.solution.test != null)){
-                var err = this.state.solution.test.results[0].stderr; 
-                console.log(this.state.solution.test.results[0].stderr);
-                var total = this.state.nsucc + this.state.nfails;
-                if(err != null){
-                    if(err != ""){
-
-                        return(
-                            <Alert bsStyle="danger">
-                            <strong>Error: </strong> {err}
-                        </Alert>
+                if(this.state.solution.test != null){
+                    this.state.o_outputs.map((out,index)=>{return(
+                        <tr>
+                            <th> {out.name} </th>
+                            <th>{this.state.solution.test.results[index].stdout}</th>
+                            <th> {this.onComparison(index)} </th>
+                        </tr>
                     );
+                    })
                 }else{
-                    if(total == this.state.nsucc){
-                        console.log("closed ",this.state.solution.closed);
-                        if(this.state.solution.closed){
-                            return(
-                                <Alert bsStyle="success">
-                                    <strong>   Problema resuelto! y cerrado </strong>
-                                </Alert>
-                                );
-                        }
+                    this.state.o_outputs.map((out,index)=>{return(
+                        <tr>
+                            <th> {out.name} </th>
+                            <th> - </th>
+                            <th> - </th>
+                        </tr>
+                    );
+                    })
+                }
 
-                        return(
-                            <Alert bsStyle="success">
-                                <strong>   Problema resuelto!  </strong>
+            }
+            setOut(out,index){
+                if(!out.hidden){
+                    return(
+                        <tr>
+                            <th> {this.state.o_inputs[index]} </th>
+                            <th> {out.name} </th>
+                            <th>{this.getResult(index)}</th>
+                            <th> {this.onComparison(index)} </th>
+                        </tr>
+                    );
+                }
+            }
+            setError(){
+                if(this.state.ready && (this.state.solution.test != null)){
+                    var err = this.state.solution.test.results[0].stderr; 
+                    console.log(this.state.solution.test.results[0].stderr);
+                    var total = this.state.nsucc + this.state.nfails;
+                    if(err != null){
+                        if(err != ""){
+
+                            return(
+                                <Alert bsStyle="danger">
+                                <strong>Error: </strong> {err}
                             </Alert>
                         );
-                        
+                    }else{
+                        if(total == this.state.nsucc){
+                            console.log("closed ",this.state.solution.closed);
+                            if(this.state.solution.closed){
+                                return(
+                                    <Alert bsStyle="success">
+                                        <strong>   Problema resuelto! y cerrado </strong>
+                                    </Alert>
+                                    );
+                            }
+
+                            return(
+                                <Alert bsStyle="success">
+                                    <strong>   Problema resuelto!  </strong>
+                                </Alert>
+                            );
+                            
+                            }else{
+                                return(
+                                    <Alert bsStyle="danger">
+                                        <strong>   Tu solución aún no resuelve el problema, sigue intentandolo!  </strong>
+                                    </Alert>
+                                );  
+                            }
                         }
                     }
                 }
             }
-        }
 
 
     render(){
@@ -1385,28 +1390,13 @@ class Code extends Component{
                                     </FormGroup>
                                 </Form>
                             </Row>*/}
-                            <Row>
-                                <Col md = {12}>
-                                <AceEditor
-                                    mode={this.state.ide}
-                                    theme="monokai"
-                                    name="blah2"
-                                    onLoad={this.onLoad}
-                                    onChange={this.handleCode}
-                                    fontSize={14}
-                                    showPrintMargin={true}
-                                    showGutter={true}
-                                    highlightActiveLine={true}
-                                    value={this.state.code}
-                                    setOptions={{
-                                    enableBasicAutocompletion: false,
-                                    enableLiveAutocompletion: false,
-                                    enableSnippets: false,
-                                    showLineNumbers: true,
-                                    tabSize: 2,
-                                    }} disabled/>
-                                </Col>
-                            </Row>
+                            <Editor
+                                ref = {this.editor}
+                                handleCode = {this.handleCode}
+                                >
+
+                            </Editor>
+                            
                             <Row>
                                 
                                 <Col  md={12}>

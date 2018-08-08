@@ -1,6 +1,7 @@
 package com.grupo3.backfcyp.services;
 
 
+import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.*;
 import com.grupo3.backfcyp.repositories.ParameterReporitory;
 import com.grupo3.backfcyp.repositories.ProblemRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,13 @@ public class ProblemService {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public List<Problem> getProblems(){
-        return this.problemRepository.findAll();
+    public List<Map<String,String>> getProblems(){
+
+
+        List<Map<String,String>> problems =  this.problemRepository.findAllProblemsReduced();
+
+
+        return problems;
     }
 
     @CrossOrigin()
@@ -150,3 +157,5 @@ public class ProblemService {
     }
 */
 }
+
+

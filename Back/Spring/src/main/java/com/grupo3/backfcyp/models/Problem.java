@@ -37,6 +37,17 @@ public class Problem {
     @OneToMany(mappedBy = "problem")
     private List<Solution> solutions;
 
+    public Problem(){
+
+    }
+    public Problem(String name, String statement, String language, int difficulty, boolean publish) {
+        this.name = name;
+        this.statement = statement;
+        this.language = language;
+        this.difficulty = difficulty;
+        this.publish = publish;
+    }
+
     public boolean isPublish() {
         return publish;
     }
