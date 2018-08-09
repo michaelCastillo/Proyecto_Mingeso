@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import ScrollArea from 'react-scrollbar';
-import {Line} from 'react-chartjs-2';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Well, Row, Col,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
 import moment from 'moment';

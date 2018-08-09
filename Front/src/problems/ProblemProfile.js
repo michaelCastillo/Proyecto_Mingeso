@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import ShowUser from './VisualizeProblem'
 import EditUser from './EditProblem'
-import { Grid, Row, FormControl, Col, Label, Panel, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 
 class ProblemProfile extends Component {
 

@@ -2,7 +2,6 @@
 
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import { Alert,Well,Grid,Form,FormControl, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar, FormGroup, ControlLabel} from 'react-bootstrap';
 import Timer from './Timer';
@@ -11,9 +10,7 @@ import Timer from './Timer';
 import ReactLoading from "react-loading";
 
 //React ACE!
-import AceEditor from 'react-ace';
 import brace from 'brace';
-import ReactSvgPieChart from "react-svg-piechart"
 
 
 import 'brace/mode/c_cpp';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, ControlLabel } from "react-bootstrap";
 import './login.css'
 import { Field, reduxForm } from 'redux-form';
 import { signInAction } from '../actions/actionSign';

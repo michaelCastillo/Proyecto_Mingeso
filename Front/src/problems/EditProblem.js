@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid, Row, FormControl, Col, Label, Panel, Checkbox, ListGroup, ListGroupItem, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
+import { Grid, Row, FormControl, Col, Label } from 'react-bootstrap';
 
 class EditProblem extends Component {
 

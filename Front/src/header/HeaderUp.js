@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap'
 import imagen from './computer_77914.png';
-import { Grid, Row, Col} from 'react-bootstrap';
+import { Row, Col} from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 
