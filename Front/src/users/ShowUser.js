@@ -1,9 +1,7 @@
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid, Row, FormControl, Col, Label, Panel, ListGroup, ListGroupItem, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
-import UserProfile from './UserProfile';
+import { Grid, Row, Col, Label, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 class ShowUser extends Component {
 

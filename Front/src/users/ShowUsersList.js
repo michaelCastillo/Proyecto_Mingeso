@@ -1,14 +1,10 @@
 
 import React, { Component } from 'react';
-import { Button, Grid, Row, Col, Panel, Collapse, Well, Label, FormControl, ControlLabel, Checkbox } from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Collapse, Well, Label, FormControl, ControlLabel, Checkbox } from 'react-bootstrap';
 import axios from 'axios';
-import { trashO } from 'react-icons-kit/fa/trashO';
-import { edit } from 'react-icons-kit/fa/edit';
-import { publish } from 'react-icons-kit/entypo/publish';
 import './ShowUsersList.css';
 
 
-import Icon from 'react-icons-kit';
 
 
 

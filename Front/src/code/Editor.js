@@ -1,6 +1,6 @@
 import React,{Component } from "react";
 
-import {Row, Col, Label,Button, FormGroup,FormControl,MenuItem,DropdownButton,Form } from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 
 import 'brace/mode/c_cpp';
 import 'brace/mode/java';
@@ -8,7 +8,6 @@ import 'brace/mode/python';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
 import AceEditor from 'react-ace';
-import brace from 'brace';
 import ReactLoading from "react-loading";
 
 class Editor extends Component{

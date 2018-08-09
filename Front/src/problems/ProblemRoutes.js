@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router,Route } from 'react-router-dom';
-import Code from '../code/AddCode';
-import {Button, Grid,Row} from 'react-bootstrap';
+import { Grid,Row} from 'react-bootstrap';
 import ShowProblems from './ShowProblems';
 import CreateProblem from './CreateProblem';
 import Authorization from '../hoc/roleRequire';

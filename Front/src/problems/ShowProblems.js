@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Grid,Row,Col,Panel,Collapse,Well, Label} from 'react-bootstrap';
 import axios from 'axios';
-import {bullhorn} from 'react-icons-kit/icomoon/bullhorn';
-import {lock} from 'react-icons-kit/icomoon/lock';
 import {trashO} from 'react-icons-kit/fa/trashO';
-import {ic_unarchive} from 'react-icons-kit/md/ic_unarchive';
-import {newspaper} from 'react-icons-kit/icomoon/newspaper';
-import {edit} from 'react-icons-kit/fa/edit';
 import {publish} from 'react-icons-kit/entypo/publish';
-import {ic_code} from 'react-icons-kit/md/ic_code';
-import {  Link } from "react-router-dom";
 import './ShowProblems.css';
 
 
