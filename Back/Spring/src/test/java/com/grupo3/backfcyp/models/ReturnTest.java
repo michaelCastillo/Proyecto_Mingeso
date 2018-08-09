@@ -69,8 +69,8 @@ public class ReturnTest
     @Test
     public void setProblem()
     {
-        Problem coordinacionX = new Problem("Prueba");
-        retorno.setProblem(coordinacionX);
-        assertEquals(coordinacionX, retorno.getProblem());
+        Problem problemaX = new Problem("Prueba");
+        retorno.setProblem(problemaX);
+        assertEquals(problemaX, retorno.getProblem());
     }
 }

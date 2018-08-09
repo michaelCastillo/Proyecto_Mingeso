@@ -3,6 +3,7 @@ package com.grupo3.backfcyp.models;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -63,13 +64,21 @@ public class SolutionTest
         }
     }
 
-    /*
     @Test
     public void getTest()
     {
+        boolean boleano = false;
+        if(solucion.getTest() == null)
+        {
+            boleano = true;
+        }
+        else
+        {
+            boleano = com.grupo3.backfcyp.strategy.Test.class.equals(solucion.getTest().getClass());
+        }
 
+        assertTrue(boleano);
     }
-    */
 
     @Test
     public void getId()
@@ -191,50 +200,94 @@ public class SolutionTest
     @Test
     public void getErrors()
     {
+        String errorObtenida = solucion.getErrors();
+        assertEquals("errorPrueba", errorObtenida);
     }
 
     @Test
     public void setErrors()
     {
+        solucion.setErrors("errorAlterado");
+        String errorObtenida = solucion.getErrors();
+        assertEquals("errorAlterado", errorObtenida);
     }
 
     @Test
     public void getStudent()
     {
+        boolean boleano = User.class.equals(solucion.getStudent().getClass());
+        assertTrue(boleano);
     }
 
     @Test
     public void setStudent()
     {
+        User estudianteX = new User("Prueba");
+        solucion.setStudent(estudianteX);
+        assertEquals(estudianteX, solucion.getStudent());
     }
 
     @Test
     public void getProblem()
     {
+        boolean boleano = Problem.class.equals(solucion.getProblem().getClass());
+        assertTrue(boleano);
     }
 
     @Test
     public void setProblem()
     {
+        Problem problemaX = new Problem("Prueba");
+        solucion.setProblem(problemaX);
+        assertEquals(problemaX, solucion.getProblem());
     }
 
     @Test
     public void getSolvedDate()
     {
+        assertNotNull(solucion.getSolvedDate());
     }
 
     @Test
     public void setSolvedDate()
     {
+        java.util.Date date = new java.util.Date();
+        solucion.setSolvedDate(date);
+        assertEquals(date, solucion.getSolvedDate());
     }
 
     @Test
     public void getTests()
     {
+        boolean boleano = false;
+
+        List<com.grupo3.backfcyp.strategy.Test> listaPrueba = solucion.getTests();
+
+        int i = 0;
+        while(i < listaPrueba.size())
+        {
+            assertNotNull(listaPrueba.get(i));
+            boleano = com.grupo3.backfcyp.strategy.Test.class.equals(listaPrueba.get(i).getClass());
+
+            assertTrue(boleano);
+
+            i++;
+        }
+
+        if(i == 0)
+        {
+            boleano = true;
+            assertTrue(boleano);
+        }
     }
 
     @Test
     public void setTests()
     {
+        List<com.grupo3.backfcyp.strategy.Test> lista = new ArrayList<com.grupo3.backfcyp.strategy.Test>();
+        com.grupo3.backfcyp.strategy.Test pruebaX = new com.grupo3.backfcyp.strategy.Test();
+        lista.add(pruebaX);
+        solucion.setTests(lista);
+        assertEquals(lista, solucion.getTests());
     }
 }
