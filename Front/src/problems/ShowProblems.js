@@ -27,7 +27,7 @@ class ShowProblems extends Component{
     componentDidMount() {
             let global = `http://35.226.163.50:8080/Backend/problems/`;
             let local = `http://localhost:1313/problems`;
-            axios.get(local)
+            axios.get(global)
                 .then(res => {
                     const problems = res.data;
                     //Se asigna falso para opened, para el collapse

@@ -34,6 +34,57 @@ public class UserService {
     public List<User> getUsers(){
         return this.userRepository.findAll();
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/simple",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> getUsersSimplified(){
+
+        Map<String,Object> response = new HashMap<>();
+        //Obtener osuarios por carrera
+        List<Career> careers = this.careerRepository.findAll();
+
+        List<Map<String,Object>> careersToResponse = new ArrayList<>();
+        for(Career career: careers){
+            Map<String,Object> careerWithUsers = new HashMap<>();
+            careerWithUsers.put("id",career.getId());
+            careerWithUsers.put("name",career.getName());
+            careerWithUsers.put("students_career",career.getUsers());
+            careersToResponse.add(careerWithUsers);
+        }
+
+        List<Map<String,Object>> coordinationsToResponse = new ArrayList<>();
+        List<Coordination> coordinations = this.coordinationRepository.findAll();
+        for(Coordination coord: coordinations){
+            Map<String,Object> coordWithClasses = new HashMap<>();
+            coordWithClasses.put("id",coord.getId());
+            coordWithClasses.put("code",coord.getCode());
+
+            List<Class> classes = coord.getClasses();
+            List<Map<String,Object>> classesWithStudents = new ArrayList<>();
+            for(Class class_: classes){
+                Map<String,Object>  classObj = new HashMap<>();
+                classObj.put("id",class_.getId());
+                classObj.put("code",class_.getCode());
+
+                List<User> users = class_.getStudents() ;
+
+                classObj.put("students",users);
+                classesWithStudents.add(classObj);
+            }
+            coordWithClasses.put("classes",classesWithStudents);
+            coordinationsToResponse.add(coordWithClasses);
+
+        }
+        response.put("careers",careersToResponse);
+        response.put("coordinations",coordinationsToResponse);
+
+
+        return response;
+
+    }
+
+
     
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
