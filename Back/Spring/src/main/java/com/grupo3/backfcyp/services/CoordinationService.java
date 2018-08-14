@@ -18,6 +18,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/coordinations")
 public class CoordinationService {
+    private static final String STATUS = "status";
+    private static final String COORDINATION = "coordination";
 
     @Autowired
     private CoordinationRepository coordinationRepository;
@@ -54,10 +56,10 @@ public class CoordinationService {
         Map<String, Object> response = new HashMap<>();
         if (this.coordinationRepository.findCoordinationById(id) != null) {
             response.put("classes", this.coordinationRepository.findCoordinationById(id).getClasses());
-            response.put("status", "have classes");
+            response.put(STATUS, "have classes");
         } else {
             response.put("classes", null);
-            response.put("status", "coordination doesn't exist");
+            response.put(STATUS, "coordination doesn't exist");
         }
         return response;
     }
@@ -86,13 +88,13 @@ public class CoordinationService {
                 coordination.getClasses().add(classNew);
                 this.classRepository.findClassById(classNew.getId()).setCoordination(coordination);
             }
-            response.put("status", "coordination exist");
-            response.put("coordination", this.coordinationRepository.save(coordination));
+            response.put(STATUS, "coordination exist");
+            response.put(COORDINATION, this.coordinationRepository.save(coordination));
 
             return response;
         } else {
-            response.put("status", "coordination doesn't exist");
-            response.put("coordination", coordination);
+            response.put(STATUS, "coordination doesn't exist");
+            response.put(COORDINATION, coordination);
             return response;
         }
 
@@ -109,7 +111,7 @@ public class CoordinationService {
         if ((coordination != null) && (user1 != null)) {
             boolean isCoord = false;
             for (Role role : user1.getRoles()) {
-                if (role.getRole().compareTo("coordination") == 0) {
+                if (role.getRole().compareTo(COORDINATION) == 0) {
                     isCoord = true;
                     break;
                 }
@@ -117,18 +119,18 @@ public class CoordinationService {
             if (isCoord) {
                 coordination.setCoordinator(user1);
                 user1.getCoordCoordinations().add(coordination);
-                response.put("status", "coordinator added");
+                response.put(STATUS, "coordinator added");
                 response.put("coordinator", coordination);
                 return response;
             } else {
-                response.put("status", "user have not the permission");
+                response.put(STATUS, "user have not the permission");
                 response.put("coordinator", coordination);
                 return response;
             }
 
         } else {
-            response.put("status", "the user|coordination doesn't exist");
-            response.put("status", coordination);
+            response.put(STATUS, "the user|coordination doesn't exist");
+            response.put(STATUS, coordination);
             return response;
         }
 

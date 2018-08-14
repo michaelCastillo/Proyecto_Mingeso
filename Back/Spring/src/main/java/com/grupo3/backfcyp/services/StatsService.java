@@ -1,7 +1,5 @@
 package com.grupo3.backfcyp.services;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.Career;
 import com.grupo3.backfcyp.models.Class;
 import com.grupo3.backfcyp.models.Coordination;
@@ -11,15 +9,9 @@ import com.grupo3.backfcyp.repositories.CareerRepository;
 import com.grupo3.backfcyp.repositories.ClassRepository;
 import com.grupo3.backfcyp.repositories.CoordinationRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
-import com.grupo3.backfcyp.strategy.Test;
-import com.sun.tracing.dtrace.ProviderAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import javax.annotation.security.PermitAll;
-import java.math.BigInteger;
-import java.security.AlgorithmConstraints;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;

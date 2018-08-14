@@ -24,10 +24,7 @@ public class ProblemService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private ParameterReporitory parameterReporitory;
-    @Autowired
-    private ReturnRepository returnRepository;
+
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)

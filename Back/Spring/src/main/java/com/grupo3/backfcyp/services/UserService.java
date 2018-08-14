@@ -130,24 +130,22 @@ public class UserService {
             return response;
         }
         /* desde el front debe elegir si o si un rol*/
-        if((roleList = user.getRoles()).isEmpty()) {
+        roleList = user.getRoles();
+        if(roleList.isEmpty()) {
             response.put("status","El usuario no tiene roles seleccionados, vuelva a registrar uno valido");
             response.put("user",null);
             return response;
         }
-        boolean roles[] = new boolean[4];roles[0]=false;roles[1]=false;roles[2]=false;roles[3]=false;
-        int i = 0;
+        boolean[] roles = new boolean[4];roles[0]=false;roles[1]=false;roles[2]=false;roles[3]=false;
         for(Role role: roleList){
             if(role.getRole().compareTo("su") ==0) roles[0] = true;
             else if(role.getRole().compareTo("coordination") ==0) roles[1] = true;
             else if(role.getRole().compareTo("teacher") ==0) roles[2] = true;
             else if(role.getRole().compareTo("student") ==0) roles[3] = true;
-            i++;
             this.roleRepository.findRoleByRole(role.getRole()).getUsers().add(user);
         }
         //Si es coordinador
         if(roles[1]) {
-            System.out.println("Soy coordinador");
             List<Coordination> coordinations = user.getCoordCoordinations();
             if(coordinations != null){
                 for(Coordination coordination: coordinations){
@@ -158,7 +156,6 @@ public class UserService {
         }
         //Si es profesor
         if(roles[2]){
-            System.out.println("Soy profesor");
             List<Class> classes = user.getClasses_teachers();
             if(classes != null){
                 for(Class teacherClass: classes){
@@ -170,45 +167,25 @@ public class UserService {
         }
         //Si es estudiante
         if(roles[3]){
-            System.out.println("Soy alumno");
             if(user.getCareers() != null){
                 List<Career> careers = user.getCareers();
                 for(Career career: careers){
                     this.careerRepository.findCareerById(career.getId()).getUsers().add(user);
                 }
             }
-            //this.careerRepository.saveAll(careers);
             if(user.getClasses_students() != null){
                 List<Class> classes = user.getClasses_students();
                 for(Class studentClass: classes){
                     this.classRepository.findClassById(studentClass.getId()).getStudents().add(user);
                 }
             }
-            //this.classRepository.saveAll(classes);
         }
         this.userRepository.save(user);
         response.put("status","Usuario agregado correctamente a la base de datos");
         response.put("user",user);
         return response;
 
-//        if(!(roleList = user.getRoles()).isEmpty()){
-//            for(Role role: roleList){
-//                Role role_exist = roleRepository.findRoleByRole(role.getRole());
-//                if(role_exist != null){//Si el rol existe
-//                    role_exist.getUsers().add(user);
-//                }
-//            }
-//        }
-//        List<Coordination> coordinationList;
-//        if((coordinationList =  user.getCoordinations() ) != null){
-//            for(Coordination coordination : coordinationList){
-//                Coordination coordination_exist = this.sectionRepository.findSectionByCode(coordination.getCode());
-//                if(coordination_exist != null){
-//                    coordination_exist.getUsers().add(user);
-//                }
-//            }
-//        }
-//        return this.userRepository.save(user);
+
     }
 
 

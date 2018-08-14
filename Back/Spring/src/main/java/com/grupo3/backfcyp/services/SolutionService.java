@@ -6,17 +6,17 @@ import com.grupo3.backfcyp.models.mongoModels.Code;
 import com.grupo3.backfcyp.repositories.*;
 import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
 
-import com.grupo3.backfcyp.strategy.Results;
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 @RestController
 @RequestMapping(value = "/solutions")
 public class SolutionService {
+    private static final String CLOSED = "closed";
+    private static final String SOLUTION = "solution";
 
     @Autowired
     public SolutionRepository solutionRepository;
@@ -78,7 +78,7 @@ public class SolutionService {
             solution.setProblem(problem);
             solution.setTitle(jsonIn.get("title").toString());
             solution.setErrors(jsonIn.get("errors").toString());
-            solution.setClosed((boolean) jsonIn.get("closed"));
+            solution.setClosed((boolean) jsonIn.get(CLOSED));
             solution.setSuccess((boolean) jsonIn.get("success"));
             solution.setSuccesses(Integer.parseInt(jsonIn.get("successes").toString()));
             solution.setFails(0);
@@ -89,7 +89,7 @@ public class SolutionService {
             solution.setTimestamp(today);
             System.out.println(solution.getTimestamp());
             response.put("code",solution.codeGet(codeRepository));
-            response.put("solution",this.solutionRepository.save(solution));
+            response.put(SOLUTION,this.solutionRepository.save(solution));
             return response;
         }else{
             System.out.println("La solución ya existe.");
@@ -145,7 +145,6 @@ public class SolutionService {
             testToFront.codeIdSet(code.getId());
             testToFront.setTime(time);//Se añade el tiempo parcial.
             //Se almacena el test.
-            //this.testRepository.save(test);
 
             //Se genera un objeto para retornar al front.
             Map<String,Object> return_to_front = new HashMap<String,Object>();
@@ -197,13 +196,11 @@ public class SolutionService {
             System.out.println("Es correcto");
             solution.addSucc();
             solution.setSuccess(true);
-            //this.solutionRepository.save(solution);
 
         }else{
             System.out.println("Es incorrecto");
             solution.addFails();
             solution.setSuccess(false);
-            //this.solutionRepository.save(solution);
         }
         return test;
     }
@@ -222,13 +219,13 @@ public class SolutionService {
                 solution.setClosed(true);
                 solution.setSolvedDate(new Date());
                 this.solutionRepository.save(solution);
-                response.put("status","closed");
-                response.put("closed",true);
+                response.put("status",CLOSED);
+                response.put(CLOSED,true);
                 System.out.println("Cerrada");
             }else{
                 //No hay cambios y la solucion aun no se cierra.
                 response.put("status","not success, not closed");
-                response.put("closed",false);
+                response.put(CLOSED,false);
                 System.out.println("No cerrada");
             }
 
