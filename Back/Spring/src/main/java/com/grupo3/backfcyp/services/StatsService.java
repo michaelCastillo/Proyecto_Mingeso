@@ -55,7 +55,7 @@ public class StatsService {
     public Map<String,Object> getTimeByUser(@PathVariable Long id){
         Map<String,Object> response;
         User student = this.userRepository.findUserById(id);
-        Long totalTime = 0;
+        Long totalTime = 0L;
         if(student != null){
             List<Solution> solutions = student.getSolutions();
             for(Solution solution: solutions){
@@ -78,7 +78,7 @@ public class StatsService {
     public Map<String,Object> getTimeByClass(@PathVariable Long id){
         Map<String,Object> response;
         Class classToStat = this.classRepository.findClassById(id);
-        Long totalTime = 0;
+        Long totalTime = 0L;
         if(classToStat != null){
             List<User> students = classToStat.getStudents();
             if(students != null){
@@ -107,7 +107,7 @@ public class StatsService {
     public Map<String,Object> getTimeByCoordination(@PathVariable Long id){
         Coordination coordination = coordinationRepository.findCoordinationById(id);
         Map<String,Object> response;
-        Long totalTime = 0;;
+        Long totalTime = 0L;
         if(coordination != null){
             List<Class> classes = coordination.getClasses();
             if(!classes.isEmpty()){
@@ -147,7 +147,7 @@ public class StatsService {
         //Se toman los estudiantes
         List<User> students = career.getUsers();
         if(!students.isEmpty()){
-            Long totalTime = new Long(0);
+            Long totalTime = 0L;
             for(User user: students){
                 List<Solution> solutionsUser = user.getSolutions();
                 for(Solution solution: solutionsUser){
