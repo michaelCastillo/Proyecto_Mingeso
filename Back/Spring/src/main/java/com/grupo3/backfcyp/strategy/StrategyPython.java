@@ -69,10 +69,10 @@ public class StrategyPython implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                LOGGER.log(STATUS, e);
+                LOGGER.info(STATUS, e);
                 return Collections.emptyList(); //Se retorna un mensaje por JSON
             } catch (IOException e) {
-                LOGGER.log(STATUS, e);
+                LOGGER.info(STATUS, e);
                 return Collections.emptyList(); //Se retorna un mensaje por JSON
             }
         }
@@ -88,11 +88,11 @@ public class StrategyPython implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            LOGGER.log(STATUS, e);
+            LOGGER.info(STATUS, e);
         } catch (JsonMappingException e) {
-            LOGGER.log(STATUS, e);
+            LOGGER.info(STATUS, e);
         } catch (IOException e) {
-            LOGGER.log(STATUS, e);
+            LOGGER.info(STATUS, e);
         }
         return results;
     }

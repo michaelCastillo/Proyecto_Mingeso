@@ -64,10 +64,10 @@ public class StrategyC implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                LOGGER.log(STATUS, e);
+                LOGGER.info(STATUS, e);
                 return results;
             } catch (IOException e) {
-                LOGGER.log(STATUS, e);
+                LOGGER.info(STATUS, e);
                 return results;
             }
         }
@@ -81,11 +81,11 @@ public class StrategyC implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            LOGGER.log(STATUS, e);
+            LOGGER.info(STATUS, e);
         } catch (JsonMappingException e) {
-            LOGGER.log(STATUS, e);
+            LOGGER.info(STATUS, e);
         } catch (IOException e) {
-            LOGGER.log(STATUS, e);
+            LOGGER.info(STATUS, e);
         }
         return results;
     }

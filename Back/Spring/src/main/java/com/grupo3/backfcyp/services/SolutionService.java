@@ -18,6 +18,7 @@ public class SolutionService {
     private static final String CLOSED = "closed";
     private static final String SOLUTION = "solution";
     private static final String STATUS = "status";
+    private static Logger LOGGER = Logger.getLogger("InfoLogging");
 
     @Autowired
     public SolutionRepository solutionRepository;
@@ -165,8 +166,8 @@ public class SolutionService {
     }
 
     private Test execute(String codeId, Problem problem, Solution solution){
-        ArrayList<String> params = problem.getParameters();
-        ArrayList<String> returns = problem.getReturns_string();
+        List<String> params = problem.getParameters();
+        List<String> returns = problem.getReturns_string();
         Test test = new Test();
         test.codeIdSet(codeId);
         test.setSolution(solution);
@@ -245,7 +246,7 @@ public class SolutionService {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public void test(){
-        logger.log("Test!");
+        logger.info("Test!");
     }
 
 
