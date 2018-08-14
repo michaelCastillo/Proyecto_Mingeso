@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import ScrollArea from 'react-scrollbar';
-import {Line} from 'react-chartjs-2';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Well, Row, Col,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
 import moment from 'moment';
@@ -9,8 +7,12 @@ import axios from 'axios';
 import ChartLine from './chartsLine'
 import TimeChart from './time'
 
+import { TreeSelect } from 'antd';
+import 'antd/dist/antd.css';
 
 
+
+const TreeNode = TreeSelect.TreeNode;
 
 export default class Chart extends Component {
 
@@ -27,8 +29,11 @@ export default class Chart extends Component {
           userList2:[],
           bool:false,
           bool1:true,
-
-
+          value: undefined,
+          userCoord: [],
+          userCareer:[],
+          classCord:[],
+          studentCareer:[]
         };
         this.startDate = React.createRef();
 
@@ -58,7 +63,8 @@ export default class Chart extends Component {
         this.state.bool = false;
         this.state.chartcomponent = false;
         this.state.value =  event.target.value ;
-        this.gets(this.state.value);
+        console.log(this.state.value);
+       // this.gets(this.state.value);
 
       }
 
@@ -223,7 +229,7 @@ export default class Chart extends Component {
             <Col md={6} smOffset={2} xs={6} >
             <FormGroup controlId="formControlsSelect">
             <ControlLabel>Seleccione gráfico a mostrar</ControlLabel>
-            <FormControl componentClass="select"  onChange={this.handleValue} 
+            <FormControl componentClass="select" // onChange={this.handleValue} 
               >
               
              <option disabled="true" selected ="true">...</option>
@@ -259,6 +265,66 @@ export default class Chart extends Component {
 
     }
 
+// TRESELECT
+
+componentDidMount(){
+    axios.get(`http://35.226.163.50:8080/Backend/users/simple`)
+        .then(res => {
+            const userCareer=res.data.careers;
+            const userCoord=res.data.coordinations;
+            this.setState({ userCareer,userCoord });
+            console.log(userCareer);
+            console.log(userCoord);
+           
+          this.state.studentCareer = userCareer.map(function(scareer,id){
+                <li key={id}>
+                {scareer.name}
+                 </li>     
+           } )
+
+           this.state.classCord = userCoord.map(function(classcoord,id){
+            <li key={id}>
+            {classcoord.code}
+             </li>     
+       } )
+            
+
+        }).catch(error => {
+            console.log(error.response)
+        });
+
+}
+
+showTreenode(){
+    
+    if( this.state.userCareer){
+         this.state.userCareer.map((userl) => {
+            this.state.studentCareer.push( <TreeNode value={userl.id} title={userl.name} key="random" />);
+        });
+    }
+
+    if( this.state.userCoord){
+        this.state.userCoord.map((userl) => {
+           this.state.classCord.push( <TreeNode value={userl.id} title={userl.code} key="random1" />);
+       });
+   }
+    
+
+    
+
+
+
+}
+
+
+onChange = (value) => {
+    console.log(value);
+    this.state.bool = false;
+    this.state.chartcomponent = false;
+    //this.getSimple();
+
+  }    
+
     render() {
     
     const role = localStorage.getItem('role');
@@ -279,32 +345,23 @@ export default class Chart extends Component {
         component2 = <TimeChart   ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
 
     }
-      this.state.listItems = this.state.userList.map((userl) =>
+   
+        
+        this.state.studentCareer = this.state.userCareer.map((userl) =>
           <div class="form-check">
           <label key = {userl.id}>
-
-              {userl.code}  
-
               {userl.name}
 
-
-
-            <input 
-                name= "radioOption"
-                type="radio"
-                value = {userl.id}
-                onChange={this.handleInputChange}
-              />
          
           </label>
 
           </div>         
               
                 ) 
-         
-      
+        
         return (
             <div>
+                {this.showTreenode()}                
                 <Row > 
                   {component}
 
@@ -313,9 +370,33 @@ export default class Chart extends Component {
                   {component2}
                  <br/>
                  <br/>
-               
-                {this.rolesComponent()}
+                 <Col md={6} smOffset={2} xs={6} >
+                     <TreeSelect
+                        showSearch
+                        style={{ width: 300 }}
+                        value={this.state.value}
+                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                        placeholder="Please select"
+                        allowClear
+                        treeDefaultExpandAll
+                        onChange={this.onChange}      
+                        >
+                   
+                    <TreeNode value="coordinations" title="coordinacion(es)" key="0-1-1">
+                      {this.state.classCord}  
+                    </TreeNode>
+                    <TreeNode value="careers" title="carrera(s)" key="random2">
+                    {this.state.studentCareer}
+                    </TreeNode>
+                 
+                    </TreeSelect>
+
+                </Col>
+
                  </Row> 
+
+              
+            
               </div>
 
             );

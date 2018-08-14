@@ -132,6 +132,7 @@ class Code extends Component{
                 .then(res => {
                     let solution = res.data.solution;
                     let local_url = `http://localhost:1313/solutions/save`;
+                    let url1 = "http://35.226.163.50:8080/Backend/solutions/save"
                     let code = this.deformCode(res.data.code);
                     this.setState({
                         code:code,
@@ -145,7 +146,7 @@ class Code extends Component{
                         let closeSol = {
                             id_solution:this.state.solution.id
                         }
-                        axios.post(local_url,closeSol)
+                        axios.post(url1,closeSol)
                         .then(res => {
                             console.log("Se cerró exitosamente la solucion.",res);
                         }).catch(error => {
