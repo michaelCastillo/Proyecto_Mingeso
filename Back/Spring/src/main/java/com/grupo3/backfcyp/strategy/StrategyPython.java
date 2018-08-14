@@ -88,11 +88,8 @@ public class StrategyPython implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            System.out.println("Error ", e);
         } catch (JsonMappingException e) {
-            System.out.println("Error ", e);
         } catch (IOException e) {
-            System.out.println("Error ", e);
         }
         return results;
     }

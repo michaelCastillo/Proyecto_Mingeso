@@ -62,10 +62,8 @@ public class StrategyC implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                System.out.println("Error ", e);
                 return results;
             } catch (IOException e) {
-                System.out.println("Error ", e);
                 return results;
             }
         }
@@ -79,11 +77,8 @@ public class StrategyC implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            System.out.println("Error ", e);
         } catch (JsonMappingException e) {
-            System.out.println("Error ", e);
         } catch (IOException e) {
-            System.out.println("Error ", e);
         }
         return results;
     }
