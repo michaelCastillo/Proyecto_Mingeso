@@ -17,6 +17,7 @@ import java.util.*;
 public class SolutionService {
     private static final String CLOSED = "closed";
     private static final String SOLUTION = "solution";
+    private static final String STATUS = "status";
 
     @Autowired
     public SolutionRepository solutionRepository;
@@ -88,7 +89,7 @@ public class SolutionService {
             response.put(SOLUTION,this.solutionRepository.save(solution));
             return response;
         }else{
-            response.put("solution",solutionFromRepo);
+            response.put(SOLUTION,solutionFromRepo);
             response.put("code",solutionFromRepo.codeGet(codeRepository));
             return response;
         }
@@ -177,7 +178,6 @@ public class SolutionService {
         this.testRepository.save(test);
         this.resultsRepository.saveAll(test.getResults()); //Se guardan los resultados.
         //Si esta correcto
-        boolean isCorrect ;
         //Se aumenta el valor del numero de exitosos o fallidos segun corresponda.
         if(test.isCorrect()){
             solution.addSucc();
@@ -204,16 +204,16 @@ public class SolutionService {
                 solution.setClosed(true);
                 solution.setSolvedDate(new Date());
                 this.solutionRepository.save(solution);
-                response.put("status",CLOSED);
+                response.put(STATUS,CLOSED);
                 response.put(CLOSED,true);
             }else{
                 //No hay cambios y la solucion aun no se cierra.
-                response.put("status","not success, not closed");
+                response.put(STATUS,"not success, not closed");
                 response.put(CLOSED,false);
             }
 
         }catch (Exception error){
-            response.put("status",error.toString());
+            response.put(STATUS,error.toString());
         }
         return response;
     }

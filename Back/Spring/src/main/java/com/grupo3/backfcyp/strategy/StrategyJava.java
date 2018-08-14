@@ -21,7 +21,6 @@ public class StrategyJava implements Strategy {
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
         List<Results> results = new ArrayList<>();
-        String clientId = "9cf4866b-8e10-4e3a-84bf-2ee26e40c992"; //Replace with your client ID
         ArrayList<String> outputs = new ArrayList<String>();
 
         String output = new String();
@@ -42,7 +41,6 @@ public class StrategyJava implements Strategy {
                 }
 
                 String input = "{" + stdin + ",\"files\": [{\"name\":\"Main.java\", \"content\":  \"" + test.getCode(codeRepository) + "\"}]}";
-                System.out.println(input);
 
                 OutputStream outputStream = connection.getOutputStream();
                 outputStream.write(input.getBytes());
@@ -58,11 +56,9 @@ public class StrategyJava implements Strategy {
                         (connection.getInputStream())));
 
 
-                System.out.println("Output from JDoodle .... \n");
                 while ((output = bufferedReader.readLine()) != null) {
                     results.add(parseResults(output));
                     outputs.add(output);
-                    System.out.println(output);
                 }
 
                 connection.disconnect();
