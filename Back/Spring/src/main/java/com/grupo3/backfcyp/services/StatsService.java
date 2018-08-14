@@ -157,7 +157,7 @@ public class StatsService {
             }
             response = responseInit(STATUS, 200, MESSAGE, "Solicitud aceptada, se entrega el tiempo total", TIME, totalTime);
         }else{
-            response = responseInit(STATUS, 204, MESSAGE, "La carrera no tiene estudiantes.", TIME, totalTime);
+            response = responseInit(STATUS, 204, MESSAGE, "La carrera no tiene estudiantes.", TIME, 0);
 
         }
         return response;

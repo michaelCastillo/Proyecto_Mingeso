@@ -69,10 +69,8 @@ public class StrategyPython implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                System.out.println("Error ", e);
                 return Collections.emptyList(); //Se retorna un mensaje por JSON
             } catch (IOException e) {
-                System.out.println("Error ", e);
                 return Collections.emptyList(); //Se retorna un mensaje por JSON
             }
         }
