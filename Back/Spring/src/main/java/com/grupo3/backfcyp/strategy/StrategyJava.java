@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class StrategyJava implements Strategy {
     private static final String STATUS = "status";
     
-    private static Logger LOGGER = Logger.getLogger("InfoLogging");
+    private static Logger LOGGER = Logger.getLogger(MyClass.class.getName());
 
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
@@ -68,10 +68,10 @@ public class StrategyJava implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                LOGGER.info(STATUS, e);
+                LOGGER.log(STATUS, e);
                 return Collections.emptyList();
             } catch (IOException e) {
-                LOGGER.info(STATUS, e);
+                LOGGER.log(STATUS, e);
                 return Collections.emptyList();
             }
 
@@ -85,11 +85,11 @@ public class StrategyJava implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            LOGGER.info(STATUS, e);
+            LOGGER.log(STATUS, e);
         } catch (JsonMappingException e) {
-            LOGGER.info(STATUS, e);
+            LOGGER.log(STATUS, e);
         } catch (IOException e) {
-            LOGGER.info(STATUS, e);
+            LOGGER.log(STATUS, e);
         }
         return results;
     }

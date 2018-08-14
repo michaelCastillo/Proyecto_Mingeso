@@ -9,6 +9,7 @@ import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.logging.Logger;
 
 import java.util.*;
 
@@ -246,7 +247,6 @@ public class SolutionService {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public void test(){
-        logger.info("Test!");
     }
 
 
