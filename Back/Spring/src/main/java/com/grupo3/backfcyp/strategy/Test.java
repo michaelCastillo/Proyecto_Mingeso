@@ -67,16 +67,12 @@ public class Test {
     }
 
     public List<Results> exec(ArrayList<String> o_inputs, CodeRepository codeRepository){
-        System.out.println(this.language);
         if(this.language.compareTo("python") == 0){
-            System.out.println("Es python!");
             //Si es python.
             this.strategy = new StrategyPython();
         }else if(this.language.compareTo("c") == 0){
             this.strategy = new StrategyC();
-            System.out.println("Es C");
         }else if(this.language.compareTo("java") == 0){
-            System.out.println("Es java!");
             this.strategy = new StrategyJava();
             //Strategy java.
         }
@@ -93,15 +89,12 @@ public class Test {
         List<Results> results = this.getResults();
         ArrayList<String> result_compare = new ArrayList<>();
         int numCorrects = 0;
-        int i = 0;
-        for(String out: o_outputs) {
+        for(int i = 0; i<o_outputs.size(); i++) {
 
 
             if (results.get(i).getError().equals("")) {
                 String[] stdout_s = results.get(i).getStdout().split("\n");
-                System.out.println("  Glot: " + stdout_s[0] + "  Front: " + o_outputs.get(i));
                 if (stdout_s[0].equals(o_outputs.get(i))) {
-                    System.out.println("Las salidas son iguales");
                     numCorrects++;
                     this.results.get(i).setResult(true);
                     result_compare.add("Correcto");
@@ -116,7 +109,6 @@ public class Test {
             } else {
                 this.correct= false;
             }
-            i++;
         }
         return result_compare;
     }

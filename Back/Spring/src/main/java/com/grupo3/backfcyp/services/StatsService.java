@@ -111,7 +111,6 @@ public class StatsService {
                 for(Class classWithStudents: classes){
 
                     for(User student : classWithStudents.getStudents()){
-                        System.out.println("usuario: "+student.getName());
                         if(!students.contains(student)){
                             List<Solution> solutions = student.getSolutions();
                             for(Solution sol: solutions){
@@ -179,9 +178,7 @@ public class StatsService {
         if(!solutions.isEmpty()){ //Si el estudiante tiene soluciones asociadas
             SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
             Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
-            System.out.println("limite Sin formateo => "+dateLimit.toString());
             String dateLimitFormated = new SimpleDateFormat(YYYYMMDD).format(dateLimit);
-            System.out.println("date limit => "+dateLimitFormated);
             solutions = sortDescAndFiltreByDate(solutions,dateLimit);
             List<Map<String,Object>> results = getNumberProblemsByDate(solutions);
             response.put(RESULT,results);
@@ -297,7 +294,6 @@ public class StatsService {
             int indexPointer = 0;
             int acum = 0;
             int x = 0;
-            System.out.println("solutions size => "+solutions.size());
             for(Solution solution: solutions){
                 x++;
                 String actualDateFormatted =  new SimpleDateFormat(YYYYMMDD).format(solution.getSolvedDate());
@@ -339,9 +335,6 @@ public class StatsService {
         for(Solution solution: solutions){
 
             if(solution.getSolvedDate() != null) {
-                System.out.println("solution id: "+solution.getId());
-                System.out.println("date sin format => "+solution.getSolvedDate());
-                System.out.println("fecha: "+new SimpleDateFormat(YYYYMMDD).format(solution.getSolvedDate()));
                 solutionsFinished.add(solution);
             }
         }
@@ -355,8 +348,6 @@ public class StatsService {
             Date actualDate = formater.parse(dateDays);
             if(dateLimit.compareTo(actualDate) <= 0){
                 validSolutions.add(solution);
-            }else{
-                System.out.println(actualDate+" Es más antigua que "+dateLimit.toString());
             }
         }
         return validSolutions;

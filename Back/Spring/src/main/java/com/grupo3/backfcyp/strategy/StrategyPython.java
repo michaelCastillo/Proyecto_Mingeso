@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StrategyPython implements Strategy {
@@ -19,7 +20,7 @@ public class StrategyPython implements Strategy {
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
         List<Results> results = new ArrayList<>();
         ArrayList<String> outputs = new ArrayList<String>();
-        String output = new String();
+        String output = "";
 
         for(int i = 0; i<o_inputs.size(); i++) {
             //Se hace un llamado por cada uno de los parametros de entrada
@@ -48,7 +49,7 @@ public class StrategyPython implements Strategy {
                 outputStream.flush();
 
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    throw new RuntimeException("Please check your inputs : HTTP error code : " + connection.getResponseCode());
+                    throw new RuntimeException("Error http : " + connection.getResponseCode());
                 }
 
                 BufferedReader bufferedReader;
@@ -66,10 +67,10 @@ public class StrategyPython implements Strategy {
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                return null; //Se retorna un mensaje por JSON
+                return Collections.emptyList(); //Se retorna un mensaje por JSON
             } catch (IOException e) {
                 e.printStackTrace();
-                return null; //Se retorna un mensaje por JSON
+                return Collections.emptyList(); //Se retorna un mensaje por JSON
             }
         }
         return results;

@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StrategyJava implements Strategy {
@@ -23,7 +24,7 @@ public class StrategyJava implements Strategy {
         List<Results> results = new ArrayList<>();
         ArrayList<String> outputs = new ArrayList<String>();
 
-        String output = new String();
+        String output = "";
         for(int i = 0; i<o_inputs.size(); i++) {
             try {
                 URL url = new URL("https://run.glot.io/languages/java/latest");
@@ -48,7 +49,7 @@ public class StrategyJava implements Strategy {
 
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
 
-                    throw new RuntimeException("Please check your inputs : HTTP error code : " + connection.getResponseCode());
+                    throw new RuntimeException(" HTTP error code : " + connection.getResponseCode());
                 }
 
                 BufferedReader bufferedReader;
@@ -65,10 +66,10 @@ public class StrategyJava implements Strategy {
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                return null;
+                return Collections.emptyList();
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
+                return Collections.emptyList();
             }
 
         }

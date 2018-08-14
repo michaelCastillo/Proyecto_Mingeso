@@ -1,9 +1,7 @@
 package com.grupo3.backfcyp.services;
 
 import com.grupo3.backfcyp.models.*;
-import com.grupo3.backfcyp.repositories.ParameterReporitory;
 import com.grupo3.backfcyp.repositories.ProblemRepository;
-import com.grupo3.backfcyp.repositories.ReturnRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
