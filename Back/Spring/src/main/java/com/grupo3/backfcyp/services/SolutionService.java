@@ -9,7 +9,6 @@ import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.logging.Logger;
 
 import java.util.*;
 
@@ -19,7 +18,6 @@ public class SolutionService {
     private static final String CLOSED = "closed";
     private static final String SOLUTION = "solution";
     private static final String STATUS = "status";
-    private static Logger LOGGER = Logger.getLogger("InfoLogging");
 
     @Autowired
     public SolutionRepository solutionRepository;
@@ -167,8 +165,10 @@ public class SolutionService {
     }
 
     private Test execute(String codeId, Problem problem, Solution solution){
-        List<String> params = problem.getParameters();
-        List<String> returns = problem.getReturns_string();
+        List<String> paramsAux = problem.getParameters();
+        List<String> returnsAux = problem.getReturns_string();
+        ArrayList<String> params = new ArrayList<String>(paramsAux);
+        ArrayList<String> returns = new ArrayList<String>(returnsAux);
         Test test = new Test();
         test.codeIdSet(codeId);
         test.setSolution(solution);

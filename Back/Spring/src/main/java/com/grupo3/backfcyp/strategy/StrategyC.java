@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonParseException;
 import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
-import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +16,6 @@ import java.util.List;
 
 public class StrategyC implements Strategy {
     private static final String STATUS = "status";
-    private static Logger LOGGER = Logger.getLogger("InfoLogging");
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
         List<Results> results = new ArrayList<>();
@@ -64,10 +62,10 @@ public class StrategyC implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                LOGGER.log(STATUS, e);
+                System.out.println("Error ", e);
                 return results;
             } catch (IOException e) {
-                LOGGER.log(STATUS, e);
+                System.out.println("Error ", e);
                 return results;
             }
         }
@@ -81,11 +79,11 @@ public class StrategyC implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            LOGGER.log(STATUS, e);
+            System.out.println("Error ", e);
         } catch (JsonMappingException e) {
-            LOGGER.log(STATUS, e);
+            System.out.println("Error ", e);
         } catch (IOException e) {
-            LOGGER.log(STATUS, e);
+            System.out.println("Error ", e);
         }
         return results;
     }

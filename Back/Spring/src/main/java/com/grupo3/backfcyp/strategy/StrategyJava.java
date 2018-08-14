@@ -15,12 +15,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class StrategyJava implements Strategy {
     private static final String STATUS = "status";
     
-    private static Logger LOGGER = Logger.getLogger(MyClass.class.getName());
 
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
@@ -68,10 +66,10 @@ public class StrategyJava implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                LOGGER.log(STATUS, e);
+                System.out.println("Error ", e);
                 return Collections.emptyList();
             } catch (IOException e) {
-                LOGGER.log(STATUS, e);
+                System.out.println("Error ", e);
                 return Collections.emptyList();
             }
 
@@ -85,11 +83,11 @@ public class StrategyJava implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            LOGGER.log(STATUS, e);
+            System.out.println("Error ", e);
         } catch (JsonMappingException e) {
-            LOGGER.log(STATUS, e);
+            System.out.println("Error ", e);
         } catch (IOException e) {
-            LOGGER.log(STATUS, e);
+            System.out.println("Error ", e);
         }
         return results;
     }
