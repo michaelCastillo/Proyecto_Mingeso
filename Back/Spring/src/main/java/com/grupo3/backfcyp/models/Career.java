@@ -36,7 +36,7 @@ public class Career
         this.name = prueba;
         this.code = "09";
 
-        List<User> lista = new ArrayList<User>();
+        List<User> lista = new ArrayList<>();
 
         this.users = lista;
     }

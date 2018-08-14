@@ -40,8 +40,8 @@ public class Class {
     }
     public Class(String prueba)
     {
-        this.teachers = new ArrayList<User>();
-        this.students = new ArrayList<User>();
+        this.teachers = new ArrayList<>();
+        this.students = new ArrayList<>();
 
         this.id = Long.valueOf(999);
         this.classRoom = prueba;

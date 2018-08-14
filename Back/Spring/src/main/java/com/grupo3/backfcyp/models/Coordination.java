@@ -37,7 +37,7 @@ public class Coordination
         this.id = Long.valueOf(999);
         this.code = prueba;
         this.coordinator = new User();
-        this.classes = new ArrayList<Class>();
+        this.classes = new ArrayList<>();
 }
 
     public List<Class> getClasses() {

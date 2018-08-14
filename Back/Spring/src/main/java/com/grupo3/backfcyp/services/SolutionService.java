@@ -50,8 +50,6 @@ public class SolutionService {
         Problem problem = this.problemRepository.findProblemById(id_problem);
         Solution solution = this.solutionRepository.findSolutionByStudentAndProblem(student,problem);
         if(solution != null){
-            System.out.println("Solucion: ");
-            System.out.println(solution);
             return solution;
         }else{
             return null;
@@ -85,14 +83,11 @@ public class SolutionService {
             solution.setTime(0);
             //Se setea la fecha de hoy.
             Date today = new Date();
-            System.out.println(today);
             solution.setTimestamp(today);
-            System.out.println(solution.getTimestamp());
             response.put("code",solution.codeGet(codeRepository));
             response.put(SOLUTION,this.solutionRepository.save(solution));
             return response;
         }else{
-            System.out.println("La solución ya existe.");
             response.put("solution",solutionFromRepo);
             response.put("code",solutionFromRepo.codeGet(codeRepository));
             return response;
@@ -106,7 +101,6 @@ public class SolutionService {
     @RequestMapping(value = "/execute",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> executeCode(@RequestBody Map<String,Object> jsonIn){
-        System.out.println(jsonIn);
         //Se extraen los valores del post.
         //Solution
         Long id_solution = Long.parseLong(jsonIn.get("id_solution").toString());
@@ -121,7 +115,6 @@ public class SolutionService {
 
 
         String codeFromFront = jsonIn.get("code").toString();
-        System.out.println("Codigo =>"+codeFromFront);
         Test testToFront = null;
 
         List<Test> old_results = solution.testsGet();
@@ -136,10 +129,8 @@ public class SolutionService {
         Code code = new Code();
         code.setCode(codeFromFront);
         code = this.codeRepository.save(code);
-        System.out.println("Code id => "+code.getId());
 
         if(testToFront == null){
-            System.out.println("El test es nulo, por ende no hay codigo que se le parezca en la bd.");
             testToFront = execute(code.getId(),problem,solution);
             testToFront.setSolution(solution);
             testToFront.codeIdSet(code.getId());
@@ -151,12 +142,10 @@ public class SolutionService {
             return_to_front.put("time",time);
             return_to_front.put("solution",solution);
             return_to_front.put("code",codeFromFront);
-            System.out.println(return_to_front);
             solution.testsGet().add(testToFront);
             this.solutionRepository.save(solution);
             return return_to_front;
         }else{
-            System.out.println("El codigo ya existe");
             //Se cambian ciertos parametros de solution con los actuales
             //El codigo ya existe por lo tanto solo se actualiza su fecha.
             testToFront.setCreated(new Date());
@@ -169,14 +158,12 @@ public class SolutionService {
             return_to_front.put("time",time);
             return_to_front.put("solution",solution);
             return_to_front.put("code",codeFromFront);
-            System.out.println(return_to_front);
             this.solutionRepository.save(solution);
             return return_to_front;
         }
     }
 
     private Test execute(String codeId, Problem problem, Solution solution){
-        System.out.println("EXECUTE! ");
         ArrayList<String> params = problem.getParameters();
         ArrayList<String> returns = problem.getReturns_string();
         Test test = new Test();
@@ -193,12 +180,10 @@ public class SolutionService {
         boolean isCorrect ;
         //Se aumenta el valor del numero de exitosos o fallidos segun corresponda.
         if(test.isCorrect()){
-            System.out.println("Es correcto");
             solution.addSucc();
             solution.setSuccess(true);
 
         }else{
-            System.out.println("Es incorrecto");
             solution.addFails();
             solution.setSuccess(false);
         }
@@ -221,12 +206,10 @@ public class SolutionService {
                 this.solutionRepository.save(solution);
                 response.put("status",CLOSED);
                 response.put(CLOSED,true);
-                System.out.println("Cerrada");
             }else{
                 //No hay cambios y la solucion aun no se cierra.
                 response.put("status","not success, not closed");
                 response.put(CLOSED,false);
-                System.out.println("No cerrada");
             }
 
         }catch (Exception error){

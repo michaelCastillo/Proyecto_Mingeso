@@ -28,7 +28,6 @@ public class ResultsService {
     @ResponseBody
     public void deleteResult(@PathVariable Long id){
         this.resultsRepository.deleteById(id);
-        System.out.println("Se ha borrado.  ");
     }
 
     @CrossOrigin

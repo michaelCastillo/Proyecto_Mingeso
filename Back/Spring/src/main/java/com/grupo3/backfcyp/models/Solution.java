@@ -76,13 +76,13 @@ public class Solution {
 
     public String codeGet(CodeRepository codeRepository){
 
-        List<Test> tests = this.tests;
-        if(!tests.isEmpty()){
-            if(tests.size()>1){
-                Collections.sort(tests,new SortByDate());
+        List<Test> testsAux = this.tests;
+        if(!testsAux.isEmpty()){
+            if(testsAux.size()>1){
+                Collections.sort(testsAux,new SortByDate());
             }
-            if(tests.size() > 0){
-                return tests.get(0).getCode(codeRepository);
+            if(!testsAux.isEmpty()){
+                return testsAux.get(0).getCode(codeRepository);
             }
             return "ingrese codigo";
         }else{
@@ -97,7 +97,7 @@ public class Solution {
         if(tests.size()>1){
             Collections.sort(tests,new SortByDate());
         }
-        if(tests.size() > 0){
+        if(!tests.isEmpty()){
             return tests.get(0);
         }
         return null;

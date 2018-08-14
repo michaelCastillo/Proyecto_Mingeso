@@ -117,11 +117,11 @@ public class Problem {
     }
 
     public ArrayList<String> getReturns_string() {
-        ArrayList<String> returns = new ArrayList<>();
+        ArrayList<String> returnsAux = new ArrayList<>();
         for(Return return_: this.returns){
-            returns.add(return_.getName());
+            returnsAux.add(return_.getName());
         }
-        return returns;
+        return returnsAux;
     }
 
     public List<Parameter> obtenerParametersObj(){
