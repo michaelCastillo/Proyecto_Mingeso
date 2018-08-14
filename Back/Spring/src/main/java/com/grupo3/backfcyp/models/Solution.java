@@ -2,7 +2,6 @@ package com.grupo3.backfcyp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;

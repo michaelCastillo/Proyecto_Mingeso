@@ -15,11 +15,6 @@ public class Statement {
 
     }
 
-    public Statement(String prueba, String prueba2)
-    {
-        this.id = "9";
-        this.statement = "Estado";
-    }
 
     public Statement(String statement)
     {
@@ -42,14 +37,7 @@ public class Statement {
         this.statement = statement;
     }
 
-    /*
-    @Override
-    public String toString() {
-        return String.format(
-                "Customer[id=%s, firstName='%s', lastName='%s']",
-                id, statement);
-    }
-    */
+
 
 
 }

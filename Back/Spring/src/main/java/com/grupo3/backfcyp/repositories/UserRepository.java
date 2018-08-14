@@ -1,6 +1,5 @@
 package com.grupo3.backfcyp.repositories;
 
-import com.grupo3.backfcyp.models.Class;
 import com.grupo3.backfcyp.models.Role;
 import com.grupo3.backfcyp.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -219,7 +219,7 @@ public class UserService {
         Map<String,String> user_data = new HashMap<String,String>();
         System.out.println("Usuario:   " + user.getEmail() + "  " + user.getPassword());
         Map<String,Object> response = new HashMap<String,Object>();
-        User userFronRepo = this.userRepository.findUserByEmailAndPasswordIgnoreCase(user.getEmail(),user.getPassword().toString());
+        User userFronRepo = this.userRepository.findUserByEmailAndPasswordIgnoreCase(user.getEmail(),user.getPassword());
         if(userFronRepo != null){
             user_data.put("logged","in");
             user_data.put("id",userFronRepo.getId().toString());
