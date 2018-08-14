@@ -15,10 +15,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class StrategyJava implements Strategy {
     private static final String STATUS = "status";
     
+    private static Logger LOGGER = Logger.getLogger("InfoLogging");
 
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {

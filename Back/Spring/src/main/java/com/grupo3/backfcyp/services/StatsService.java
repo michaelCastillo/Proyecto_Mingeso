@@ -11,6 +11,7 @@ import com.grupo3.backfcyp.repositories.CoordinationRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.logging.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ public class StatsService {
     private static final String NUMBERSOLVED = "numberSolved";
     private static final String TIMETRUE = "Tiempo calculado correctamente";
     private static final String TIMEFALSE = "No hay un estudiante asociado a la id";
+    private static Logger LOGGER = Logger.getLogger("InfoLogging");
 
     @Autowired
     private CareerRepository careerRepository;

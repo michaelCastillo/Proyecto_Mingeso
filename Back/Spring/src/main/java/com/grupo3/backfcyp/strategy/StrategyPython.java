@@ -12,8 +12,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class StrategyPython implements Strategy {
+    private static Logger LOGGER = Logger.getLogger("InfoLogging");
 
     private static final String STATUS = "status";
 
