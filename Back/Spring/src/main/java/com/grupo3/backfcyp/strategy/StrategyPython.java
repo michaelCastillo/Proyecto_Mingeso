@@ -12,12 +12,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class StrategyPython implements Strategy {
-    private static Logger LOGGER = Logger.getLogger("InfoLogging");
 
-    private static final String STATUS = "status";
 
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
@@ -86,8 +83,11 @@ public class StrategyPython implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
+            return null;
         } catch (JsonMappingException e) {
+            return null;
         } catch (IOException e) {
+            return null;
         }
         return results;
     }

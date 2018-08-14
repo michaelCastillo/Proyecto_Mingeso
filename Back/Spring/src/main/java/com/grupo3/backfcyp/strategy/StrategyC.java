@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StrategyC implements Strategy {
-    private static final String STATUS = "status";
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
         List<Results> results = new ArrayList<>();
@@ -77,8 +76,11 @@ public class StrategyC implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
+            return null;
         } catch (JsonMappingException e) {
+            return null;
         } catch (IOException e) {
+            return null;
         }
         return results;
     }

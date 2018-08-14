@@ -161,7 +161,6 @@ public class UserService {
                 for(Class teacherClass: classes){
                     this.classRepository.findClassById(teacherClass.getId()).getTeachers().add(user);
                 }
-                //this.classRepository.saveAll(classes);
             }
 
         }

@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class StrategyJava implements Strategy {
-    private static final String STATUS = "status";
     
 
     @Override
@@ -81,8 +80,11 @@ public class StrategyJava implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
+            return null;
         } catch (JsonMappingException e) {
+            return null;
         } catch (IOException e) {
+            return null;
         }
         return results;
     }

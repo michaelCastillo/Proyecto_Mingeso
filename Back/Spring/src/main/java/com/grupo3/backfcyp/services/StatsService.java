@@ -53,9 +53,9 @@ public class StatsService {
     @RequestMapping(value = "/users/{id}/totalTime")
     @ResponseBody
     public Map<String,Object> getTimeByUser(@PathVariable Long id){
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         User student = this.userRepository.findUserById(id);
-        Long totalTime = new Long(0);
+        Long totalTime = 0;
         if(student != null){
             List<Solution> solutions = student.getSolutions();
             for(Solution solution: solutions){
@@ -76,9 +76,9 @@ public class StatsService {
     @RequestMapping(value = "/classes/{id}/totalTime")
     @ResponseBody
     public Map<String,Object> getTimeByClass(@PathVariable Long id){
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         Class classToStat = this.classRepository.findClassById(id);
-        Long totalTime = new Long(0);
+        Long totalTime = 0;
         if(classToStat != null){
             List<User> students = classToStat.getStudents();
             if(students != null){
@@ -106,8 +106,8 @@ public class StatsService {
     @ResponseBody
     public Map<String,Object> getTimeByCoordination(@PathVariable Long id){
         Coordination coordination = coordinationRepository.findCoordinationById(id);
-        Map<String,Object> response = new HashMap<>();
-        Long totalTime = new Long(0);
+        Map<String,Object> response;
+        Long totalTime = 0;;
         if(coordination != null){
             List<Class> classes = coordination.getClasses();
             if(!classes.isEmpty()){
@@ -142,7 +142,7 @@ public class StatsService {
     @RequestMapping(value = "/career/{id}/totalTime",method = RequestMethod.GET)
     @ResponseBody
     public Map<String,Object> getTimeByCareer(@PathVariable Long id){
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         Career career = this.careerRepository.findCareerById(id);
         //Se toman los estudiantes
         List<User> students = career.getUsers();
@@ -169,7 +169,7 @@ public class StatsService {
     @RequestMapping(value = "/student/{id}/problemsSolved",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getProblemsSolvedByStudent(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         User student = this.userRepository.findUserById(id);
 
         List<Solution> solutions = student.getSolutions();
@@ -191,7 +191,7 @@ public class StatsService {
     @ResponseBody
     public Map<String,Object> getNumberProblemsByCoordination(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
         Coordination coordination = this.coordinationRepository.findCoordinationById(id);
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
         Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
         if(coordination != null){
@@ -219,7 +219,7 @@ public class StatsService {
     public Map<String,Object> getNumberProblemsByCareer(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
 
         Career career = this.careerRepository.findCareerById(id);
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
         Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
         if(career != null){
@@ -232,7 +232,7 @@ public class StatsService {
     }
 
     private Map<String,Object> getResult(List<User> students, Date dateLimit) throws ParseException {
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         List<Solution> solutions = new ArrayList<>();
 
         if(students != null){
@@ -258,7 +258,7 @@ public class StatsService {
     @ResponseBody
     public Map<String,Object> getNumberProblemsByClass(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
         Class classToStats = this.classRepository.findClassById(id);
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
         Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
         if(classToStats != null){
