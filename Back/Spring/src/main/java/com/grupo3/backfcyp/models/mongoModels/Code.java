@@ -14,7 +14,11 @@ public class Code {
 
     }
 
-
+    public Code(String prueba)
+    {
+        this.code = prueba;
+        this.id = "9";
+}
 
 
 

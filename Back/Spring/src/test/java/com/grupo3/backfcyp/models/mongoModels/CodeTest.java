@@ -12,7 +12,7 @@ public class CodeTest
     @Before
     public void setUp() throws Exception
     {
-        codigo = new Code("Prueba");
+        codigo = new Code("09");
     }
 
     /*

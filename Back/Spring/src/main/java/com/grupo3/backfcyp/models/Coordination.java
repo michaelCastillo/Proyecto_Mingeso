@@ -3,6 +3,8 @@ package com.grupo3.backfcyp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,6 +31,14 @@ public class Coordination
     {
 
     }
+
+    public Coordination(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.code = prueba;
+        this.coordinator = new User();
+        this.classes = new ArrayList<Class>();
+}
 
     public List<Class> getClasses() {
         return classes;

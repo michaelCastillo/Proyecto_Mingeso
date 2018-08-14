@@ -15,7 +15,11 @@ public class Statement {
 
     }
 
-
+    public Statement(String prueba, String prueba2)
+    {
+        this.id = prueba;
+        this.statement = prueba2;
+}
     public Statement(String statement)
     {
         this.statement = statement;

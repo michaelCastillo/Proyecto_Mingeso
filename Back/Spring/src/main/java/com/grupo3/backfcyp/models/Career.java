@@ -30,6 +30,16 @@ public class Career
     }
 
 
+    public Career(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = prueba;
+        this.code = "09";
+
+        List<User> lista = new ArrayList<User>();
+
+        this.users = lista;
+    }
 
     public Long getId() {
         return id;

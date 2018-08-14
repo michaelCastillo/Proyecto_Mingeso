@@ -38,7 +38,16 @@ public class Class {
         this.teachers = new ArrayList<>();
         this.students = new ArrayList<>();
     }
+    public Class(String prueba)
+    {
+        this.teachers = new ArrayList<User>();
+        this.students = new ArrayList<User>();
 
+        this.id = Long.valueOf(999);
+        this.classRoom = prueba;
+        this.code = "09";
+        this.coordination = new Coordination();
+}
 
 
     public Coordination getCoordination() {
