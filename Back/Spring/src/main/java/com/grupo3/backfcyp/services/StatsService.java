@@ -24,8 +24,10 @@ public class StatsService {
     private static final String YYYYMMDD = "yyyy-MM-dd";
     private static final String DATELIMIT = "dateLimit";
     private static final String RESULT = "result";
+    private static final String TIME = "time";
     private static final String NUMBERSOLVED = "numberSolved";
-
+    private static final String TIMETRUE = "Tiempo calculado correctamente";
+    private static final String TIMEFALSE = "No hay un estudiante asociado a la id";
 
     @Autowired
     private CareerRepository careerRepository;
@@ -38,6 +40,14 @@ public class StatsService {
 
 
     /*** Estadisticas de tiempo total invertido para resolver un problema. ***/
+    private Map<String,Object> responseInit(String status, Object o1, String response, Object o2, String message, Object o3 ){
+        Map<String,Object> response = new HashMap<>();
+        response.put(status, o1);
+        response.put(response, o2);
+        response.put(message, o3);
+        return response;
+
+    }
 
     @CrossOrigin
     @RequestMapping(value = "/users/{id}/totalTime")
@@ -51,13 +61,11 @@ public class StatsService {
             for(Solution solution: solutions){
                 totalTime += solution.getTime();
             }
-            response.put(STATUS,200);
-            response.put(MESSAGE,"Tiempo calculado correctamente");
-            response.put("time",totalTime);
+            response = responseInit(STATUS, 200, MESSAGE, TIMETRUE, TIME, totalTime);
+            
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"No hay un estudiante asociado a la id");
-            response.put("time",0);
+            response = responseInit(STATUS, 204, MESSAGE, TIMEFALSE, TIME, 0);
+           
         }
         return response;
         
@@ -80,19 +88,15 @@ public class StatsService {
                         totalTime += solution.getTime();
                     }
                 }
-                response.put(STATUS,200);
-                response.put(MESSAGE,"Tiempo total calculado correctamente");
-                response.put("time",totalTime);
+                response = responseInit(STATUS, 200, MESSAGE, TIMETRUE, TIME, totalTime);
+                
             }else{
-                response.put(STATUS,204);
-                response.put(MESSAGE,"No se encuentran estudiantes asociados a la clase");
-                response.put("time",0);
+                response = responseInit(STATUS, 204, MESSAGE, TIMEFALSE, TIME, 0);
+
             }
 
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"No se encuentra clase asociada a la id");
-            response.put("time",0);
+            response = responseInit(STATUS, 204, MESSAGE, TIMEFALSE, TIME, 0);
         }
         return response;
     }
@@ -120,18 +124,15 @@ public class StatsService {
                     }
                     students.addAll(classWithStudents.getStudents());//Se agregan los usuarios.
                 }
-                response.put(STATUS,200);
-                response.put("messsage","Tiempo calculado correctamente");
-                response.put("time",totalTime);
+                response = responseInit(STATUS, 200, MESSAGE, TIMETRUE, TIME, totalTime);
+                
             }else{
-                response.put(STATUS,204);
-                response.put(MESSAGE,"No hay clases asociadas a la coordinación");
-                response.put("time",0);
+                response = responseInit(STATUS, 204, MESSAGE, "No hay clases asociadas a la coordinación", TIME, 0);
+                
             }
         }else{
-            response.put("time",0);
-            response.put(MESSAGE,"No existe una coordinacion asociada a dicha id.");
-            response.put(STATUS,204);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe una coordinacion asociada a dicha id.", TIME, 0);
+
         }
         return response;
 
@@ -154,13 +155,10 @@ public class StatsService {
                     totalTime += solution.getTime();
                 }
             }
-            response.put(STATUS,200);
-            response.put(MESSAGE,"Solicitud aceptada, se entrega el tiempo total");
-            response.put("totalTime",totalTime);
+            response = responseInit(STATUS, 200, MESSAGE, "Solicitud aceptada, se entrega el tiempo total", TIME, totalTime);
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"La carrera no tiene estudiantes.");
-            response.put("totalTime",0);
+            response = responseInit(STATUS, 204, MESSAGE, "La carrera no tiene estudiantes.", TIME, totalTime);
+
         }
         return response;
     }
@@ -178,16 +176,12 @@ public class StatsService {
         if(!solutions.isEmpty()){ //Si el estudiante tiene soluciones asociadas
             SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
             Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
-            String dateLimitFormated = new SimpleDateFormat(YYYYMMDD).format(dateLimit);
             solutions = sortDescAndFiltreByDate(solutions,dateLimit);
             List<Map<String,Object>> results = getNumberProblemsByDate(solutions);
-            response.put(RESULT,results);
-            response.put(STATUS,200);
-            response.put(MESSAGE,"Numero se soluciones calculadas correctamente");
+            response = responseInit(STATUS, 200, MESSAGE, "Numero se soluciones calculadas correctamente", RESULT, results);
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"No se encuentran soluciones en las que haya trabajado el estudiante");
-            response.put(RESULT,null);
+            
+            response = responseInit(STATUS, 204, MESSAGE, "No se encuentran soluciones en las que haya trabajado el estudiante", RESULT, null);
         }
         return response;
     }
@@ -209,14 +203,12 @@ public class StatsService {
                 }
                 response = getResult(students,dateLimit);
             }else{
-                response.put(STATUS,204);
-                response.put(MESSAGE,"No existen clases asociada a la coordinacion");
-                response.put(RESULT,null);
+                response = responseInit(STATUS, 204, MESSAGE, "No hay clases asociadas a la coordinación", RESULT, null);
+
             }
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"No existe coordination asociada a la id");
-            response.put(RESULT,null);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe una coordinacion asociada a dicha id.", RESULT, null);
+
         }
         return response;
     }
@@ -234,9 +226,7 @@ public class StatsService {
             List<User> students = career.getUsers();
             response = getResult(students,dateLimit);
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"No existe clase asociada a la id");
-            response.put(RESULT,null);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe clase asociada a la id", RESULT, null);
         }
         return response;
     }
@@ -251,14 +241,12 @@ public class StatsService {
             }
             solutions = sortDescAndFiltreByDate(solutions,dateLimit);
             List<Map<String,Object>> results = getNumberProblemsByDate(solutions);
-            response.put(RESULT,results);
-            response.put(STATUS,200);
-            response.put(MESSAGE,"Numero se soluciones calculadas correctamente");
-
+            response = responseInit(STATUS, 200, MESSAGE, "Numero se soluciones calculadas correctamente", RESULT, results);
+            
+            
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"No hay estudiantes asignados.");
-            response.put(RESULT,null);
+            response = responseInit(STATUS, 204, MESSAGE, "No hay estudiantes asignados.", RESULT, null);
+
         }
         return response;
     }
@@ -277,9 +265,8 @@ public class StatsService {
             List<User> students = classToStats.getStudents();
             response = getResult(students,dateLimit);
         }else{
-            response.put(STATUS,204);
-            response.put(MESSAGE,"No existe clase asociada a la id");
-            response.put(RESULT,null);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe clase asociada a la id", RESULT, null);
+
         }
         return response;
     }

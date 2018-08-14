@@ -15,6 +15,7 @@ import java.util.List;
 
 public class StrategyPython implements Strategy {
 
+    private static final String STATUS = "status";
 
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
@@ -66,10 +67,10 @@ public class StrategyPython implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                LOGGER.log(STATUS, e);
                 return Collections.emptyList(); //Se retorna un mensaje por JSON
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(STATUS, e);
                 return Collections.emptyList(); //Se retorna un mensaje por JSON
             }
         }
@@ -85,11 +86,11 @@ public class StrategyPython implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            e.printStackTrace();
+            LOGGER.log(STATUS, e);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            LOGGER.log(STATUS, e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(STATUS, e);
         }
         return results;
     }

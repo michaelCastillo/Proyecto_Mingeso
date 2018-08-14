@@ -56,11 +56,9 @@ public class ProblemService {
                                                                                                           // profesor
                     for (Parameter parameter : problem.obtenerParametersObj()) {
                         parameter.setProblem(problem);
-                        // this.parameterReporitory.save(parameter);
                     }
                     for (Return return_ : problem.getReturns()) {
                         return_.setProblem(problem);
-                        // this.returnRepository.save(return_);
                     }
                     problem.setTeacher(user);
                     // Aqui se hace la consulta a mongo para guardar el statement

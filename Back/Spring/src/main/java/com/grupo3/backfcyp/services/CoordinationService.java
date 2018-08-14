@@ -120,17 +120,17 @@ public class CoordinationService {
                 coordination.setCoordinator(user1);
                 user1.getCoordCoordinations().add(coordination);
                 response.put(STATUS, "coordinator added");
-                response.put("coordinator", coordination);
+                response.put(COORDINATION, coordination);
                 return response;
             } else {
                 response.put(STATUS, "user have not the permission");
-                response.put("coordinator", coordination);
+                response.put(COORDINATION, coordination);
                 return response;
             }
 
         } else {
             response.put(STATUS, "the user|coordination doesn't exist");
-            response.put(STATUS, coordination);
+            response.put(COORDINATION, coordination);
             return response;
         }
 

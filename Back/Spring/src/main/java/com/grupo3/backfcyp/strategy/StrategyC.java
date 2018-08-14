@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StrategyC implements Strategy {
+    private static final String STATUS = "status";
 
     @Override
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository) {
@@ -63,10 +64,10 @@ public class StrategyC implements Strategy {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                LOGGER.log(STATUS, e);
                 return results;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(STATUS, e);
                 return results;
             }
         }
@@ -80,11 +81,11 @@ public class StrategyC implements Strategy {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            e.printStackTrace();
+            LOGGER.log(STATUS, e);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            LOGGER.log(STATUS, e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(STATUS, e);
         }
         return results;
     }
