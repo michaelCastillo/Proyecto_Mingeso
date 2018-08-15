@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ScrollArea from 'react-scrollbar';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Well, Row, Col,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
+import { Well, Row, Col,FormGroup,ControlLabel,FormControl,Button,Grid } from 'react-bootstrap';
 import moment, { relativeTimeThreshold } from 'moment';
 import axios from 'axios';
 import ChartLine from './chartsLine'
@@ -410,14 +410,14 @@ onChange = (value) => {
         )
 
   
-
-    const treeData = [{
+    const treeData1 = [{
         title: 'coordinacion(es)',
         value: 'coordinations',
         key: '0-0',
         children: cords
-      },
-      {
+      }];
+
+    const treeData = [{
         title: 'carrera(s)',
         value: 'careers',
         key: '0-1',
@@ -428,7 +428,7 @@ onChange = (value) => {
 
         return (
             <div>
-                <Row > 
+                <Row> 
                   {component}
 
                    <br/>     
@@ -436,21 +436,51 @@ onChange = (value) => {
                   {component2}
                  <br/>
                  <br/>
-                 <Col md={6} smOffset={2} xs={6} >
-                     <TreeSelect
-                        showSearch
-                        style={{ width: 300 }}
-                        value={this.state.value}
-                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                        placeholder="Please select"
-                        allowClear
-                        treeDefaultExpandAll
-                        onChange={this.onChange} 
-                        treeData={treeData}    
+
+                 <Col smOffset = {4}>
+                 <h4>
+                 <ControlLabel>Seleccione categoría de estadísticas a mostar: </ControlLabel>
+                 </h4>
+                 </Col>
+                <br/>
+                <br/>
+                 <Row smOffset = {6}>
+
+                    <Col   md={4} xs={4}  smOffset = {2}>
+                         <TreeSelect
+                            showSearch
+                            style={{ width: 300 }}
+                            value={this.state.value}
+                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                            placeholder="Seleccione carrera"
+                            allowClear
+                            onChange={this.onChange} 
+                            treeData={treeData}    
                         />
-                </Col>
+                    </Col>
             
-                 </Row> 
+           
+
+             
+                    <Col  md={4} xs={4}  smOffset = {1} >
+
+                        <TreeSelect
+                            showSearch
+                            style={{ width: 300 }}
+                            value={this.state.value}
+                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                            placeholder="Seleccione coordinación"
+                            allowClear
+                            onChange={this.onChange} 
+                            treeData={treeData1}    
+                        />
+                    </Col>
+
+                    </Row>
+                </Row>
+            
+ 
+                
 
               
             
