@@ -328,6 +328,56 @@ onChange = (value) => {
     this.state.bool = false;
     this.state.chartcomponent = false;
     this.state.value = value;
+
+    var values = value.split('-');
+    console.log(values);
+    var userId = 0;
+    var type = "";
+
+    switch(values.length){
+        case 0:
+            console.log("nada seleccionado");
+            break;
+        case 1:
+            console.log("se seleccionó una de las opciones principales");
+            break;
+        case 2:
+            console.log("se seleccionó una carrera o una coordinacion");
+                if(values[0]==='0'){
+                    console.log("Se seleccionó la carrera "+values[1]);
+                    userId= values[1];
+                    type= "careers";
+                }else if(values[0]==='1'){
+                    userId= values[1];
+                    type= "coordinations";
+                    console.log("Se seleccionó la coordinación "+values[1]);
+                }
+                
+                break;
+            case 3:
+                if(values[0]==='0'){
+                    userId= values[2];
+                    type= "student";
+                    console.log("Se seleccionó el alumno "+values[2] +" de la carrera "+values[1]);
+                }else if(values[0]==='1'){
+                    userId= values[2];
+                    type= "classes";
+                    console.log("Se seleccionó la clase "+values[2]+" de la coordinación "+values[1]);
+                }
+                break;
+            case 4:
+                userId= values[2];
+                type= "student";
+                console.log("Se seleccionó el alumno "+ values[3]+" de la clase "+values[2]+" de la coordinación "+values[1]);
+            break;
+
+    }
+    this.setState({
+        userID :userId,
+        type : type
+    });
+
+
   }    
 
   onChange1 = (value) => {
@@ -357,8 +407,8 @@ onChange = (value) => {
     const id = localStorage.getItem('userId');
     if(role === "student"){
         this.state.chartcomponent = true;
-        this.state.type = "student";   
-        this.state.userID = id;
+        //this.state.type = "student";   
+        //this.state.userID = id;
 
     }
 
@@ -374,20 +424,20 @@ onChange = (value) => {
 
    
    var cords = this.state.userCoord.map((classcoord,id) =>{
-        var idString = classcoord.id.toString()
+        var idString = '1-'+classcoord.id.toString()
         return{
             title: classcoord.code,
             value: idString,
             key: classcoord.id,
             value:this.comprobarValue(this.value,idString),
             children:this.state.classes[id].map((stu,idx) =>{
-                var idString1 = stu.id.toString()
+                var idString1 = idString+'-'+stu.id.toString()
                  return{
                      title : stu.code,
                      value: idString1,
                      key : stu.id ,
                      children:this.state.stuclass[idx].map((stud,idy) =>{
-                      var idString2 = stud.id.toString()
+                      var idString2 = idString1+'-'+stud.id.toString()
                  return{
                          title : stud.name,
                          value: idString2,    
@@ -408,7 +458,7 @@ onChange = (value) => {
     )
    console.log(cords);
     var car = this.state.userCareer.map((cards,i) =>{
-        var idString = cards.id.toString()
+        var idString = '0-'+cards.id.toString()
         return{
                title: cards.name,
                 value: idString,
@@ -418,7 +468,7 @@ onChange = (value) => {
                    
                     return{
                         title : stu.name,
-                        value: idString2,    
+                        value: idString+'-'+idString2,    
                         key : stu.id    
 
                     }
@@ -431,11 +481,20 @@ onChange = (value) => {
     console.log(car);    
   
     const treeData1 = [{
-        title: 'coordinacion(es)',
+        title: 'coordinacion',
         value: 'coordinations',
-        key: '0-0',
+        key: '1',
         children: cords
-      }];
+        },
+        {
+        title: 'Carrera',
+        value: 'coordinations',
+        key: '0',
+        children: car
+        }
+    
+    
+    ];
 
     const treeData = [{
         title: 'carrera(s)',
@@ -449,14 +508,6 @@ onChange = (value) => {
         return (
             <div>
                 <Row> 
-                  {component}
-
-                   <br/>     
-                
-                  {component2}
-                 <br/>
-                 <br/>
-
                  <Col smOffset = {4}>
                  <h4>
                  <ControlLabel>Seleccione categoría de estadísticas a mostar: </ControlLabel>
@@ -465,22 +516,6 @@ onChange = (value) => {
                 <br/>
                 <br/>
                  <Row smOffset = {6}>
-
-                    <Col   md={4} xs={4}  smOffset = {2}>
-                         <TreeSelect
-                            showSearch
-                            style={{ width: 300 }}
-                            value={this.state.value}
-                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                            placeholder="Seleccione carrera"
-                            allowClear
-                            onChange={this.onChange1} 
-                            treeData={treeData}    
-                        />
-                    </Col>
-            
-           
-
              
                     <Col  md={4} xs={4}  smOffset = {1} >
 
@@ -495,6 +530,14 @@ onChange = (value) => {
                             treeData={treeData1}    
                         />
                     </Col>
+                  {component}
+
+                   <br/>     
+                
+                  {component2}
+                 <br/>
+                 <br/>
+
 
                     </Row>
                 </Row>
