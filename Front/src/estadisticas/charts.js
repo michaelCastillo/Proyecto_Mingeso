@@ -96,12 +96,12 @@ export default class Chart extends Component {
    
 
       gets =(type) => {
-          console.log(type);
+          
         axios.get(`http://35.226.163.50:8080/Backend/` + type)
             .then(res => {
                 const userList=res.data;
                 this.setState({ userList });
-                console.log(res.data);
+              
                 this.state.type = type;
                 this.state.listItems = userList.map((userl) =>
                 <li key={userl.id}>
@@ -297,7 +297,6 @@ componentDidMount(){
              );
 
             const classes = result1 ;
-            console.log(classes);
 
             let result2 = []; 
             classes.map((stucl,id)=>
@@ -310,7 +309,6 @@ componentDidMount(){
 
             const stuclass = result2;
 
-            console.log(stuclass);
 
             //SETSTATE 
             this.setState({ userCareer,userCoord,classStudent,classes,stuclass });
@@ -331,6 +329,26 @@ onChange = (value) => {
     this.state.chartcomponent = false;
     this.state.value = value;
   }    
+
+  onChange1 = (value) => {
+    console.log(value);
+    this.state.bool = false;
+    this.state.chartcomponent = false;
+    this.state.value = value;
+  }    
+
+  comprobarValue(value,idString){
+
+    if(value != idString){
+      //  console.log( "soyid:", idString);
+        return idString;
+
+    }
+    //console.log("soyvalue:", value);
+    return value;
+
+  }
+
 
 
     render() {
@@ -354,24 +372,26 @@ onChange = (value) => {
 
     }
 
-    console.log(this.state.stuclass);
+   
    var cords = this.state.userCoord.map((classcoord,id) =>{
-    return{
-           title: classcoord.code,
-            value: classcoord.id,
-            key: id,
+        var idString = classcoord.id.toString()
+        return{
+            title: classcoord.code,
+            value: idString,
+            key: classcoord.id,
+            value:this.comprobarValue(this.value,idString),
             children:this.state.classes[id].map((stu,idx) =>{
-               // console.log(stu.id);
+                var idString1 = stu.id.toString()
                  return{
                      title : stu.code,
-                     value: stu.id,    
-                     key : idx ,
-                    children:this.state.stuclass[idx].map((stud,idy) =>{
-                    // console.log(stu.id);
+                     value: idString1,
+                     key : stu.id ,
+                     children:this.state.stuclass[idx].map((stud,idy) =>{
+                      var idString2 = stud.id.toString()
                  return{
                          title : stud.name,
-                         value: stu.id,    
-                         key : idy ,
+                         value: idString2,    
+                         key : stud.id ,
                    
 
                      }
@@ -386,21 +406,20 @@ onChange = (value) => {
     }
     
     )
-   
+   console.log(cords);
     var car = this.state.userCareer.map((cards,i) =>{
-        var ids = cards.id;
-       // console.log(ids);
+        var idString = cards.id.toString()
         return{
                title: cards.name,
-                value: ids,
-                key: i,
-                children:this.state.classStudent[i].map((stu,idx) =>{
-                 //  console.log(stu.id);
+                value: idString,
+                key: cards.id,
+                children: this.state.classStudent[i].map((stu,idx) =>{
+                    var idString2 = stu.id.toString()
                    
                     return{
                         title : stu.name,
-                        value: stu.id,    
-                        key : idx    
+                        value: idString2,    
+                        key : stu.id    
 
                     }
 
@@ -409,6 +428,7 @@ onChange = (value) => {
         }
         )
 
+    console.log(car);    
   
     const treeData1 = [{
         title: 'coordinacion(es)',
@@ -454,7 +474,7 @@ onChange = (value) => {
                             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                             placeholder="Seleccione carrera"
                             allowClear
-                            onChange={this.onChange} 
+                            onChange={this.onChange1} 
                             treeData={treeData}    
                         />
                     </Col>
