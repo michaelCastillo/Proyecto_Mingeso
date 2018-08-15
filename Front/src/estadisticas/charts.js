@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ScrollArea from 'react-scrollbar';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Well, Row, Col,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
-import moment from 'moment';
+import moment, { relativeTimeThreshold } from 'moment';
 import axios from 'axios';
 import ChartLine from './chartsLine'
 import TimeChart from './time'
@@ -29,11 +29,16 @@ export default class Chart extends Component {
           userList2:[],
           bool:false,
           bool1:true,
+          //TREESELECT
           value: undefined,
           userCoord: [],
           userCareer:[],
           classCord:[],
-          studentCareer:[]
+          studentCareer:[],
+          classStudent:[],
+          showitems:[],
+          classes:[],
+          stuclass:[]
         };
         this.startDate = React.createRef();
 
@@ -44,6 +49,8 @@ export default class Chart extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.changeComponentStatus = this.changeComponentStatus.bind(this);
         this.boolNext = this.boolNext.bind(this);
+        this.onChange = this.onChange.bind(this);
+
       }
 
       changeComponentStatus(event){
@@ -272,22 +279,45 @@ componentDidMount(){
         .then(res => {
             const userCareer=res.data.careers;
             const userCoord=res.data.coordinations;
-            this.setState({ userCareer,userCoord });
+
+            let result = []; 
+            res.data.careers.map((scareer,id)=>
+            <li key={id}>
+            {result.push(scareer.students_career)}
+             </li>     
+             );
+
+            const classStudent = result ;
+
+            let result1 = []; 
+            res.data.coordinations.map((coord,id)=>
+            <li key={id}>
+            {result1.push(coord.classes)}
+             </li>     
+             );
+
+            const classes = result1 ;
+            console.log(classes);
+
+            let result2 = []; 
+            classes.map((stucl,id)=>
+
+                stucl.map((st,idx)=>
+                {result2.push(st.students)}
+                )
+
+             );
+
+            const stuclass = result2;
+
+            console.log(stuclass);
+
+            //SETSTATE 
+            this.setState({ userCareer,userCoord,classStudent,classes,stuclass });
+             
             console.log(userCareer);
             console.log(userCoord);
-           
-          this.state.studentCareer = userCareer.map(function(scareer,id){
-                <li key={id}>
-                {scareer.name}
-                 </li>     
-           } )
-
-           this.state.classCord = userCoord.map(function(classcoord,id){
-            <li key={id}>
-            {classcoord.code}
-             </li>     
-       } )
-            
+          
 
         }).catch(error => {
             console.log(error.response)
@@ -295,35 +325,13 @@ componentDidMount(){
 
 }
 
-showTreenode(){
-    
-    if( this.state.userCareer){
-         this.state.userCareer.map((userl) => {
-            this.state.studentCareer.push( <TreeNode value={userl.id} title={userl.name} key="random" />);
-        });
-    }
-
-    if( this.state.userCoord){
-        this.state.userCoord.map((userl) => {
-           this.state.classCord.push( <TreeNode value={userl.id} title={userl.code} key="random1" />);
-       });
-   }
-    
-
-    
-
-
-
-}
-
-
 onChange = (value) => {
     console.log(value);
     this.state.bool = false;
     this.state.chartcomponent = false;
-    //this.getSimple();
-
+    this.state.value = value;
   }    
+
 
     render() {
     
@@ -339,29 +347,87 @@ onChange = (value) => {
       let component = null;
       let component2 = null;
 
-    console.log(this.state.chartcomponent);
+    //console.log(this.state.chartcomponent);
      if (this.state.chartcomponent){
         component = <ChartLine ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
         component2 = <TimeChart   ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
 
     }
+
+    console.log(this.state.stuclass);
+   var cords = this.state.userCoord.map((classcoord,id) =>{
+    return{
+           title: classcoord.code,
+            value: classcoord.id,
+            key: id,
+            children:this.state.classes[id].map((stu,idx) =>{
+               // console.log(stu.id);
+                 return{
+                     title : stu.code,
+                     value: stu.id,    
+                     key : idx ,
+                    children:this.state.stuclass[idx].map((stud,idy) =>{
+                    // console.log(stu.id);
+                 return{
+                         title : stud.name,
+                         value: stu.id,    
+                         key : idy ,
+                   
+
+                     }
+
+             })   
+
+                 }
+
+             })
+            
+         }
+    }
+    
+    )
    
-        
-        this.state.studentCareer = this.state.userCareer.map((userl) =>
-          <div class="form-check">
-          <label key = {userl.id}>
-              {userl.name}
+    var car = this.state.userCareer.map((cards,i) =>{
+        var ids = cards.id;
+       // console.log(ids);
+        return{
+               title: cards.name,
+                value: ids,
+                key: i,
+                children:this.state.classStudent[i].map((stu,idx) =>{
+                 //  console.log(stu.id);
+                   
+                    return{
+                        title : stu.name,
+                        value: stu.id,    
+                        key : idx    
 
-         
-          </label>
+                    }
 
-          </div>         
-              
-                ) 
-        
+                })
+             }
+        }
+        )
+
+  
+
+    const treeData = [{
+        title: 'coordinacion(es)',
+        value: 'coordinations',
+        key: '0-0',
+        children: cords
+      },
+      {
+        title: 'carrera(s)',
+        value: 'careers',
+        key: '0-1',
+        children: car
+      }];
+
+
+
         return (
             <div>
-                {this.showTreenode()}                
                 <Row > 
                   {component}
 
@@ -379,20 +445,11 @@ onChange = (value) => {
                         placeholder="Please select"
                         allowClear
                         treeDefaultExpandAll
-                        onChange={this.onChange}      
-                        >
-                   
-                    <TreeNode value="coordinations" title="coordinacion(es)" key="0-1-1">
-                      {this.state.classCord}  
-                    </TreeNode>
-                    <TreeNode value="careers" title="carrera(s)" key="random2">
-                    {this.state.studentCareer}
-                    </TreeNode>
-                 
-                    </TreeSelect>
-
+                        onChange={this.onChange} 
+                        treeData={treeData}    
+                        />
                 </Col>
-
+            
                  </Row> 
 
               
