@@ -88,18 +88,82 @@ export default class TimeChart extends Component {
                 
                 })
               }
-
-
-
       }  
+      handleButton(){
+        const type = this.props.type;
+      const id = this.props.userID;
+       if(type === "student"){
+        axios.get(`http://35.226.163.50:8080/Backend/stats/users/` + id + '/totalTime')
+       .then(res => {
+            console.log(res);
+            console.log(res.data);
+            console.log(res.data.time);
+            this.state.nombreTipo  = "estudiante";
+            const textTime=res.data.time;
+            this.setState({ textTime });
+
+          
+          })
+        }
+        
+        if(type === "careers"){
+          axios.get(`http://35.226.163.50:8080/Backend/stats/career/` + id + '/totalTime')
+         .then(res => {
+              console.log(res);
+              console.log(res.data);
+              console.log(res.data.totalTime);
+
+              this.state.nombreTipo  = "carrera";
+              const textTime=res.data.totalTime;
+              this.setState({ textTime });
+
+            
+
+  
+            
+            })
+          }
+
+          if(type === "classes"){
+            axios.get(`http://35.226.163.50:8080/Backend/stats/classes/` + id + '/totalTime')
+           .then(res => {
+                console.log(res);
+                console.log(res.data);
+                console.log(res.data.time);
+
+                this.state.nombreTipo  = "clase";
+                const textTime=res.data.time;
+                this.setState({ textTime });
+                
+    
+              
+              })
+            }
+
+            if(type === "coordinations"){
+                axios.get(`http://35.226.163.50:8080/Backend/stats/coordination/` + id + '/totalTime')
+             .then(res => {
+                  console.log(res);
+                  console.log(res.data);
+                  console.log(res.data.time);
+
+                 this.state.nombreTipo  = "coordinación";
+                 const textTime=res.data.time;
+                 this.setState({ textTime });   
+                  
+                
+                })
+              }
+      }
 
 
 
 render(){
+  console.log("rendesr");
     <Chart userID={this.state.userID} type = {this.state.type} />
-    console.log(this.props.userID);
-    console.log(this.props.type);
-    console.log(this.state.textTime);
+    console.log("us id=> "+this.props.userID);
+    console.log("type => "+this.props.type);
+    console.log("time => "+this.state.textTime);
     const percentage = 100;
 
 return(

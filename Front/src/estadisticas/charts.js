@@ -43,6 +43,7 @@ export default class Chart extends Component {
         this.startDate = React.createRef();
 
         this.chart =  React.createRef();
+        this.timeChart = React.createRef();
         this.handleChange = this.handleChange.bind(this);
         this.handleValue = this.handleValue.bind(this);
         this.gets = this.gets.bind(this);
@@ -50,6 +51,7 @@ export default class Chart extends Component {
         this.changeComponentStatus = this.changeComponentStatus.bind(this);
         this.boolNext = this.boolNext.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.updateCharts = this.updateCharts.bind(this);
 
       }
 
@@ -399,16 +401,22 @@ onChange = (value) => {
 
   }
 
+  updateCharts(){
+      this.chart.current.handleButton();
+      this.timeChart.current.handleButton();
+  }
+
 
 
     render() {
     
     const role = localStorage.getItem('role');
     const id = localStorage.getItem('userId');
+    this.state.chartcomponent = true;
     if(role === "student"){
-        this.state.chartcomponent = true;
-        //this.state.type = "student";   
-        //this.state.userID = id;
+        
+        this.state.type = "student";   
+        this.state.userID = id;
 
     }
 
@@ -418,7 +426,7 @@ onChange = (value) => {
     //console.log(this.state.chartcomponent);
      if (this.state.chartcomponent){
         component = <ChartLine ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
-        component2 = <TimeChart   ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
+        component2 = <TimeChart   ref = {this.timeChart} userID = {this.state.userID}  type = {this.state.type}/> ;
 
     }
 
@@ -514,6 +522,7 @@ onChange = (value) => {
                  </h4>
                  </Col>
                 <br/>
+                
                 <br/>
                  <Row smOffset = {6}>
              
@@ -530,6 +539,7 @@ onChange = (value) => {
                             treeData={treeData1}    
                         />
                     </Col>
+                    <Button bsStyle="info" onClick = {this.updateCharts}>Mostrar estadisticas</Button>
                   {component}
 
                    <br/>     
@@ -537,6 +547,8 @@ onChange = (value) => {
                   {component2}
                  <br/>
                  <br/>
+
+
 
 
                     </Row>
