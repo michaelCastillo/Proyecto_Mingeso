@@ -1,8 +1,9 @@
 package com.grupo3.backfcyp.models.mongoModels;
 
 import org.junit.Before;
+import org.junit.Test;
 
-
+import static org.junit.Assert.*;
 
 public class CodeTest
 {
@@ -24,11 +25,6 @@ public class CodeTest
         assertEquals(nombre1, nombre2);
     }
     */
-
-
-
-
-/*
 
     @Test
     public void getId()
@@ -59,5 +55,4 @@ public class CodeTest
         String codeObtenida = codigo.getId();
         assertEquals("0999", codeObtenida);
     }
-    */
 }

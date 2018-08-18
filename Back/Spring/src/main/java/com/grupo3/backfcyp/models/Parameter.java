@@ -25,6 +25,18 @@ public class Parameter {
 
     //constructores
 
+    public Parameter()
+    {
+
+    }
+
+    public Parameter(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombrePrueba";
+        this.hidden = false;
+        this.problem = new Problem();
+    }
 
     public boolean isHidden() {
         return hidden;

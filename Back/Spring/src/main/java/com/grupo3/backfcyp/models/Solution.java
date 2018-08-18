@@ -14,7 +14,8 @@ import java.util.*;
 
 @Entity
 @Table(name = "solutions")
-public class Solution {
+public class Solution
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,6 +67,24 @@ public class Solution {
         this.tests = new ArrayList<>();
     }
 
+    public Solution(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.title = "tituloPrueba";
+        this.fails = 9;
+        this.time = 9;
+        this.timestamp = new java.util.Date();
+        this.success = false;
+        this.closed = false;
+        this.successes = 9;
+        this.errors = "errorPrueba";
+        this.solvedDate = new java.util.Date();
+        //this.codeRepositoryMongo
+        this.student = new User();
+        this.problem = new Problem();
+        this.tests = new ArrayList<Test>();
+    }
+
 
 
     public void addSucc(){
@@ -94,11 +113,14 @@ public class Solution {
     public List<Test> testsGet() {
         return tests;
     }
-    public Test getTest(){
-        if(tests.size()>1){
+    public Test getTest()
+    {
+        if(tests.size()>1)
+        {
             Collections.sort(tests,new SortByDate());
         }
-        if(tests.size() > 0){
+        if(tests.size() > 0)
+        {
             return tests.get(0);
         }
         return null;
@@ -113,7 +135,8 @@ public class Solution {
         this.id = id;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
