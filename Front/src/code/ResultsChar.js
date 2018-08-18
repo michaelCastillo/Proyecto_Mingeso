@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactSvgPieChart from "react-svg-piechart";
 import {Doughnut} from 'react-chartjs-2';
 
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Grid, Row, Col, Label, Button } from 'react-bootstrap';
+import { Grid, Col, Button } from 'react-bootstrap';
 import Login from '../login/login'
 import Register from '../register/register'
 import imagen from '../images/homeImage.png';
