@@ -37,7 +37,7 @@ class Correction extends Component
 
         var flagParentesis = false;
 
-
+        /*
         var k;
         console.log("PARTO");
         for(k = 0; k < list.length; k++)
@@ -45,6 +45,7 @@ class Correction extends Component
             console.log(list[k][0]);
         }
         console.log("TERMINO");
+        */
         for(i = 0; i < list.length; i++)
         {
             if(list[i][1] == actLine)
