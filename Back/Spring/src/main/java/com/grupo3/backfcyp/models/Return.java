@@ -7,7 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "returns")
-public class Return {
+public class Return
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,12 +25,26 @@ public class Return {
     private Problem problem ;
 
 
+
     public int getPos() {
         return pos;
     }
 
     public void setPos(int pos) {
         this.pos = pos;
+
+    public Return()
+    {
+
+    }
+
+    public Return(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombrePrueba";
+        this.hidden = false;
+        this.problem = new Problem();
+
     }
 
     public boolean isHidden() {
