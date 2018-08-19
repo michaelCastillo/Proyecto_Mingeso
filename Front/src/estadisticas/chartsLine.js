@@ -6,6 +6,8 @@ import { Grid, Row, Col,Button,InputGroup } from 'react-bootstrap';
 import moment, { relativeTimeThreshold } from 'moment';
 import Chart from './charts'
 import axios from 'axios';
+import ReactLoading from "react-loading";
+
 
 
 
@@ -22,7 +24,8 @@ export default class ChartLine extends Component {
           nameDate:"",
           type : "",
           nombreTipo : "",
-          dateActual: ""
+          dateActual: "",
+          ready:false
         
         };
         this.handleChange = this.handleChange.bind(this);
@@ -52,7 +55,7 @@ export default class ChartLine extends Component {
       }
 
       handleButton(event){
-
+        
         this.handleSubmit(this.props.userID,this.props.type);
 
       }
@@ -61,6 +64,7 @@ export default class ChartLine extends Component {
         var post = {dateLimit:this.state.dateActual};
         console.log(post);
         console.log(this.state.dateActual);
+        console.log(this.state.type);
        if(type === "student"){
         axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
        .then(res => {
@@ -72,7 +76,8 @@ export default class ChartLine extends Component {
             const listItems = dateList.map(date => date.date);
             this.setState({listItems});
             const listDate = dateList.map(date => date.numberSolved);
-            this.setState({listDate});
+            this.setState({listDate,ready : true});
+            this.state.type = "";
 
           
           })
@@ -89,7 +94,8 @@ export default class ChartLine extends Component {
               const listItems = dateList.map(date => date.date);
               this.setState({listItems});
               const listDate = dateList.map(date => date.numberSolved);
-              this.setState({listDate});
+              this.setState({listDate,ready : true});
+              this.state.type = "";
 
   
             
@@ -107,7 +113,8 @@ export default class ChartLine extends Component {
                 const listItems = dateList.map(date => date.date);
                 this.setState({listItems});
                 const listDate = dateList.map(date => date.numberSolved);
-                this.setState({listDate});
+                this.setState({listDate,ready : true});
+                this.state.type = "";
 
     
               
@@ -125,11 +132,14 @@ export default class ChartLine extends Component {
                   const listItems = dateList.map(date => date.date);
                   this.setState({listItems});
                   const listDate = dateList.map(date => date.numberSolved);
-                  this.setState({listDate});
+                  this.setState({listDate,ready : true});
+                  this.state.type = "";
 
                 
                 })
               }
+
+              this.setState({ready : false});
 
 
 
@@ -166,11 +176,12 @@ export default class ChartLine extends Component {
                 }
               ]
             };
-  
-          return (
-              <div>
-                  <Row > 
-                      <Col md={10}  smOffset={2} xs={10}>
+
+          if(this.state.ready !== true){
+            
+            return(
+             <div> 
+              <Col md={10}  smOffset={1.3} xs={10}>
                           <DatePicker
                               selected={this.state.startDate}
                               onChange={this.handleChange}
@@ -182,13 +193,37 @@ export default class ChartLine extends Component {
                           />
                           <br/>
                             <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
-
+              </Col> 
+              <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
+            </div>
+            )
+          } 
+          
+          
+          return (
+              <div>
+                  <Row > 
+                      <Col md={10}  smOffset={1.3} xs={10}>
+                          <DatePicker
+                              selected={this.state.startDate}
+                              onChange={this.handleChange}
+                              dateFormat="YYYY-MM-DD"
+                              todayButton={"today"}
+                              maxDate={moment()}
+                              onYearChange = {this.handleChange}
+                              
+                          />
+                          <br/>
+                            <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
+                            <br/>
+                            <br/>
                       </Col>    
-                      <Col md={6} smOffset={2} xs={6}>
+                      <Col md={8} smOffset={1.5} xs={6}>
                           <h2>Cantidad problemas resueltos desde: {this.state.dateActual} <br/>
                               Tipo:{this.state.nombreTipo}
                           
                           </h2>
+                         
                           <Line data={data}
                           width = {600}
                           height = {400}  
