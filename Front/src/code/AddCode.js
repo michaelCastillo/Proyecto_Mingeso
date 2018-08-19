@@ -199,7 +199,7 @@ class Code extends Component{
                 const url = `http://localhost:1313/solutions/execute`;
                 console.log("post");
                 this.editor.current.isCharging(true);
-                axios.post(global_url,post_code)
+                axios.post(url,post_code)
                 .then(res => {
                     let solution = res.data.solution;
                     let local_url = `http://localhost:1313/solutions/save`;
@@ -1253,6 +1253,7 @@ class Code extends Component{
 
             }
             setOut(out,index){
+                console.log("params: "+this.state.o_inputs[index]+" - "+out.name+" - "+this.getResult(index));
                 if(!out.hidden){
                     return(
                         <tr>
