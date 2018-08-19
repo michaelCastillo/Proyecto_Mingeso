@@ -403,7 +403,7 @@ onChange = (value) => {
                 <Row> 
                  <Col smOffset = {3}>
                  <h4>
-                 <ControlLabel>Seleccione categoría de estadísticas a mostar: </ControlLabel>
+                 <ControlLabel>Seleccione categoría de alumnos, de los que desea conocer estadísticas: </ControlLabel>
                  </h4>
                  </Col>
                 <br/>

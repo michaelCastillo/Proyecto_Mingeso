@@ -26,7 +26,9 @@ export default class ChartLine extends Component {
           nombreTipo : "",
           dateActual: "",
           ready:false,
-          signal:false
+          signal:false,
+          idcurrent:0,
+          ready1:false
         
         };
         this.handleChange = this.handleChange.bind(this);
@@ -62,6 +64,7 @@ export default class ChartLine extends Component {
       }
 
       handleSubmit = (id,type) => {
+        this.state.idcurrent = this.props.userID;
         var post = {dateLimit:this.state.dateActual};
         console.log(post);
         console.log(this.state.dateActual);
@@ -140,7 +143,7 @@ export default class ChartLine extends Component {
                 })
               }
 
-              this.setState({ready : false});
+              this.setState({ready : false, ready1:false});
 
 
 
@@ -148,6 +151,10 @@ export default class ChartLine extends Component {
 
       
       render() {
+        if(this.state.idcurrent != this.props.userID){
+          this.state.ready = false;   
+          this.state.ready1=true;      
+          }  
           this.state.dateActual=this.formatDate(this.state.startDate._d);
           console.log(this.state.dateActual);
           <Chart userID={this.state.userID} type = {this.state.type} signal = {this.state.signal}/>
@@ -178,11 +185,12 @@ export default class ChartLine extends Component {
               ]
             };
 
+         //   <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
           if(this.state.ready !== true ){
-            
-            return(
-             <div> 
-              <Col md={10}  smOffset={1.3} xs={10}>
+              if(this.state.ready1===true){
+                   return(
+                          <div> 
+                          <Col md={10}  smOffset={1.3} xs={10}>
                           <DatePicker
                               selected={this.state.startDate}
                               onChange={this.handleChange}
@@ -194,10 +202,33 @@ export default class ChartLine extends Component {
                           />
                           <br/>
                             <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
-              </Col> 
-              <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
-            </div>
+                         </Col> 
+              
+                         </div>
             )
+            }
+            else{
+
+              return(
+                <div> 
+                <Col md={10}  smOffset={1.3} xs={10}>
+                <DatePicker
+                    selected={this.state.startDate}
+                    onChange={this.handleChange}
+                    dateFormat="YYYY-MM-DD"
+                    todayButton={"today"}
+                    maxDate={moment()}
+                    onYearChange = {this.handleChange}
+                    
+                />
+                <br/>
+                  <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
+               </Col> 
+               <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
+               </div>
+              )
+
+            } 
           } 
           
           

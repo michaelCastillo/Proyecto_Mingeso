@@ -137,7 +137,7 @@ return(
  
          <Col md={8} smOffset={3} xs={8} sm = {2}>
          <h4>
-         <ControlLabel>Tiempo total empleado para resolver problemas: </ControlLabel>
+         <ControlLabel>Tiempo total empleado para resolver problemas (en segundos): </ControlLabel>
         </h4>
         <br/>
         <CircularProgressbar
