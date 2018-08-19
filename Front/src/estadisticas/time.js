@@ -29,6 +29,7 @@ export default class TimeChart extends Component {
     
 
     componentDidMount() {
+
       const type = this.props.type;
       const id = this.props.userID;
       this.state.idcurrent = id;
@@ -105,6 +106,7 @@ export default class TimeChart extends Component {
 
 render(){
    if(this.state.idcurrent != this.props.userID){
+    this.setState({ ready:false });
 
     this.componentDidMount()
 
