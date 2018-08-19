@@ -18,6 +18,7 @@ export default class TimeChart extends Component {
           nombreTipo: "",
           ready:false,
           signal:false,
+          idcurrent: 0
         
         };
      
@@ -30,6 +31,8 @@ export default class TimeChart extends Component {
     componentDidMount() {
       const type = this.props.type;
       const id = this.props.userID;
+      this.state.idcurrent = id;
+      
       console.log(this.state.id);
        if(type === "student"){
         axios.get(`http://35.226.163.50:8080/Backend/stats/users/` + id + '/totalTime')
@@ -101,7 +104,14 @@ export default class TimeChart extends Component {
 
 
 render(){
-   
+   if(this.state.idcurrent != this.props.userID){
+
+    this.componentDidMount()
+
+
+   }
+
+
     <Chart userID={this.state.userID} type = {this.state.type} />
     console.log(this.props.userID);
     console.log(this.props.type);
