@@ -63,11 +63,11 @@ public class DoodleConnection {
                 String mainFileName = "";
 
                 if(this.languaje.compareTo("python") ==0){
-                    mainFileName = "main.c";
+                    mainFileName = "main.py";
                 }else if(this.languaje.compareTo("java") ==0){
                     mainFileName ="main.java";
                 }else if(this.languaje.compareTo("c") ==0){
-                    mainFileName = "main.py";
+                    mainFileName = "main.c";
                 }
                 String input = "{" + stdin + ",\"files\": [{\"name\":\""+mainFileName+"\", \"content\":  \"" + test.getCode(codeRepository) + "\"}]}";
                 System.out.println(input);

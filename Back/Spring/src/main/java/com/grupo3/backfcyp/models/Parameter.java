@@ -14,7 +14,7 @@ public class Parameter {
     @Column(name = "id")
     private Long id;
 
-
+    private int pos;
     private String name;
     private boolean hidden;
 
@@ -36,6 +36,14 @@ public class Parameter {
         this.name = "nombrePrueba";
         this.hidden = false;
         this.problem = new Problem();
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 
     public boolean isHidden() {
