@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Line} from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Grid, Row, Col,Button,InputGroup } from 'react-bootstrap';
+import { Grid, Row, Col,Button,InputGroup, Popover } from 'react-bootstrap';
 import moment, { relativeTimeThreshold } from 'moment';
 import Chart from './charts'
 import axios from 'axios';
@@ -28,7 +28,8 @@ export default class ChartLine extends Component {
           ready:false,
           signal:false,
           idcurrent:0,
-          ready1:false
+          ready1:false,
+          message:""
         
         };
         this.handleChange = this.handleChange.bind(this);
@@ -76,7 +77,8 @@ export default class ChartLine extends Component {
             console.log(res.data);
             this.state.nombreTipo  = "estudiante";
             const dateList=res.data.result;
-            this.setState({ dateList });
+            const message = res.data.message;
+            this.setState({ dateList, message });
             const listItems = dateList.map(date => date.date);
             this.setState({listItems});
             const listDate = dateList.map(date => date.numberSolved);
@@ -153,7 +155,8 @@ export default class ChartLine extends Component {
       render() {
         if(this.state.idcurrent != this.props.userID){
           this.state.ready = false;   
-          this.state.ready1=true;      
+          this.state.ready1=true;    
+          this.state.message = "";  
           }  
           this.state.dateActual=this.formatDate(this.state.startDate._d);
           console.log(this.state.dateActual);
@@ -187,10 +190,19 @@ export default class ChartLine extends Component {
 
          //   <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
           if(this.state.ready !== true ){
-              if(this.state.ready1===true){
+              if(this.state.ready1===true || this.state.message === "No se encuentran soluciones en las que haya trabajado el estudiante"){
                    return(
                           <div> 
                           <Col md={10}  smOffset={1.3} xs={10}>
+                          <Popover
+                              id="popover-basic"
+                              placement="right"
+                              positionLeft={180}
+                              positionTop={60}
+                              title=""
+                              >
+                            {this.state.message}
+                          </Popover>
                           <DatePicker
                               selected={this.state.startDate}
                               onChange={this.handleChange}
@@ -208,10 +220,10 @@ export default class ChartLine extends Component {
             )
             }
             else{
-
               return(
                 <div> 
                 <Col md={10}  smOffset={1.3} xs={10}>
+                
                 <DatePicker
                     selected={this.state.startDate}
                     onChange={this.handleChange}
@@ -236,6 +248,7 @@ export default class ChartLine extends Component {
               <div>
                   <Row > 
                       <Col md={10}  smOffset={1.3} xs={10}>
+                          
                           <DatePicker
                               selected={this.state.startDate}
                               onChange={this.handleChange}

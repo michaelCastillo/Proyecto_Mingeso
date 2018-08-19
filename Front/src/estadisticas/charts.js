@@ -237,7 +237,7 @@ onChange = (value) => {
                 }
                 break;
             case 4:
-                userId= values[2];
+                userId=values[3];
                 type= "student";
                 console.log("Se seleccionó el alumno "+ values[3]+" de la clase "+values[2]+" de la coordinación "+values[1]);
             break;
@@ -391,7 +391,7 @@ onChange = (value) => {
         return(
             
          <div>
-            <Col smOffset = {4}> 
+            <Col smOffset = {5}> 
           <ReactLoading type={"spin"} color={" #2876e1 "} height={100} width={100} />
           </Col>
         </div>
@@ -401,7 +401,7 @@ onChange = (value) => {
         return (
             <div>
                 <Row> 
-                 <Col smOffset = {3}>
+                 <Col smOffset = {4}>
                  <h4>
                  <ControlLabel>Seleccione categoría de alumnos, de los que desea conocer estadísticas: </ControlLabel>
                  </h4>
@@ -411,7 +411,7 @@ onChange = (value) => {
                 <br/>
                  <Row smOffset = {5}>
              
-                    <Col  md={4} xs={4}  smOffset = {3} >
+                    <Col  md={4} xs={4}  smOffset = {5} >
 
                         <TreeSelect
                             showSearch
