@@ -41,7 +41,7 @@ public class DoodleConnection {
         for(int i = 0; i<o_inputs.size(); i++) {
             try {
                 URL url;
-                if(this.languaje.compareTo("python") == 0){
+                if(this.languaje.compareTo("python") != 0){
                     url = new URL("https://run.glot.io/languages/"+this.languaje+"/latest");
                 }else{
                     url = new URL("https://run.glot.io/languages/python/2");
@@ -63,11 +63,11 @@ public class DoodleConnection {
                 String mainFileName = "";
 
                 if(this.languaje.compareTo("python") ==0){
-                    mainFileName = "main.c";
+                    mainFileName = "main.py";
                 }else if(this.languaje.compareTo("java") ==0){
                     mainFileName ="main.java";
                 }else if(this.languaje.compareTo("c") ==0){
-                    mainFileName = "main.py";
+                    mainFileName = "main.c";
                 }
                 String input = "{" + stdin + ",\"files\": [{\"name\":\""+mainFileName+"\", \"content\":  \"" + test.getCode(codeRepository) + "\"}]}";
                 System.out.println(input);

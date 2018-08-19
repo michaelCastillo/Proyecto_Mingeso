@@ -14,7 +14,7 @@ public class Return {
     @Column(name = "id")
 
     private Long id;
-
+    private int pos;
     private String name;
     private boolean hidden;
 
@@ -22,6 +22,15 @@ public class Return {
     @JsonIgnore
     @JoinColumn(name = "id_problem" )
     private Problem problem ;
+
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
 
     public boolean isHidden() {
         return hidden;
