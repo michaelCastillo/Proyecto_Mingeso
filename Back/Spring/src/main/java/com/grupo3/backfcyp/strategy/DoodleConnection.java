@@ -41,7 +41,7 @@ public class DoodleConnection {
         for(int i = 0; i<o_inputs.size(); i++) {
             try {
                 URL url;
-                if(this.languaje.compareTo("python") == 0){
+                if(this.languaje.compareTo("python") != 0){
                     url = new URL("https://run.glot.io/languages/"+this.languaje+"/latest");
                 }else{
                     url = new URL("https://run.glot.io/languages/python/2");
