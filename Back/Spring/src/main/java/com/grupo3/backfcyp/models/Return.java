@@ -32,7 +32,7 @@ public class Return
 
     public void setPos(int pos) {
         this.pos = pos;
-
+    }
     public Return()
     {
 
