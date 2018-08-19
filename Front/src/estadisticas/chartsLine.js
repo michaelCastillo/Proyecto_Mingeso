@@ -25,7 +25,8 @@ export default class ChartLine extends Component {
           type : "",
           nombreTipo : "",
           dateActual: "",
-          ready:false
+          ready:false,
+          signal:false
         
         };
         this.handleChange = this.handleChange.bind(this);
@@ -149,7 +150,7 @@ export default class ChartLine extends Component {
       render() {
           this.state.dateActual=this.formatDate(this.state.startDate._d);
           console.log(this.state.dateActual);
-          <Chart userID={this.state.userID} type = {this.state.type}/>
+          <Chart userID={this.state.userID} type = {this.state.type} signal = {this.state.signal}/>
              const data = {
               labels: this.state.listItems,
               datasets: [
@@ -177,7 +178,7 @@ export default class ChartLine extends Component {
               ]
             };
 
-          if(this.state.ready !== true){
+          if(this.state.ready !== true ){
             
             return(
              <div> 

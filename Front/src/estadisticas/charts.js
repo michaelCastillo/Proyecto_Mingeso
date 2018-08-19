@@ -41,7 +41,8 @@ export default class Chart extends Component {
           showitems:[],
           classes:[],
           stuclass:[],
-          ready:false
+          ready:false,
+          signal:false
         };
         this.startDate = React.createRef();
 
@@ -196,16 +197,17 @@ onChange = (value) => {
     this.state.bool = false;
     this.state.chartcomponent = false;
     this.state.value = value;
-
+    
   if(value){  
     var values = value.split('-');
     console.log(values);
     var userId = 0;
     var type = "";
-  }
+  
     switch(values.length){
         case 0:
             console.log("nada seleccionado");
+            
             break;
         case 1:
             console.log("se seleccionó una de las opciones principales");
@@ -239,7 +241,7 @@ onChange = (value) => {
                 type= "student";
                 console.log("Se seleccionó el alumno "+ values[3]+" de la clase "+values[2]+" de la coordinación "+values[1]);
             break;
-
+            }            
     }
     this.setState({
         userID :userId,
@@ -298,8 +300,8 @@ onChange = (value) => {
        console.log(this.state.chartcomponent);
 
      if (this.state.chartcomponent){
-        component = <ChartLine ref = {this.chart} userID = {this.state.userID}  type = {this.state.type}/> ;
-        component2 = <TimeChart   ref = {this.timeChart} userID = {this.state.userID}  type = {this.state.type}/> ;
+        component = <ChartLine ref = {this.chart} userID = {this.state.userID}  type = {this.state.type} signal={this.state.signal} /> ;
+        component2 = <TimeChart   ref = {this.timeChart} userID = {this.state.userID}  type = {this.state.type} signal={this.state.signal}/> ;
 
     }
 
@@ -384,11 +386,14 @@ onChange = (value) => {
         children: car
       }];
 
-      if(this.state.ready !== true){
+      if(this.state.ready !== true ){
             
         return(
-         <div> 
+            
+         <div>
+            <Col smOffset = {4}> 
           <ReactLoading type={"spin"} color={" #2876e1 "} height={100} width={100} />
+          </Col>
         </div>
         )
       } 
@@ -396,7 +401,7 @@ onChange = (value) => {
         return (
             <div>
                 <Row> 
-                 <Col smOffset = {1}>
+                 <Col smOffset = {3}>
                  <h4>
                  <ControlLabel>Seleccione categoría de estadísticas a mostar: </ControlLabel>
                  </h4>
@@ -404,9 +409,9 @@ onChange = (value) => {
                 <br/>
                 
                 <br/>
-                 <Row smOffset = {6}>
+                 <Row smOffset = {5}>
              
-                    <Col  md={4} xs={4}  smOffset = {1} >
+                    <Col  md={4} xs={4}  smOffset = {3} >
 
                         <TreeSelect
                             showSearch
@@ -419,18 +424,23 @@ onChange = (value) => {
                             treeData={treeData1}    
                         />
                     </Col>
-                   
-                    <Col  md={7} xs={7}  smOffset = {1.8} >
+                   <br/>
+                   <br/>
+                   <br/>
+                   <br/>
+                   <br/>
+                   <br/>
+                   <br/>
+                <Col  md={5} xs={5}  smOffset = {1} >
+                  
                   {component}
 
-                   <br/>     
-                
-                  {component2}
-                 <br/>
-                 <br/>
+                   
                  </Col>
 
-
+                <Col  md={4} xs={4}  smOffset = {1} >
+                    {component2}
+                </Col>
 
                     </Row>
                 </Row>

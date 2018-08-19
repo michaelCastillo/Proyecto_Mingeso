@@ -3,7 +3,9 @@ import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,F
 import axios from 'axios';
 import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Chart from './charts'
+import Chart from './charts';
+import ReactLoading from "react-loading";
+
 
 export default class TimeChart extends Component {
     
@@ -13,7 +15,9 @@ export default class TimeChart extends Component {
           userID : 0,
           type : "",
           textTime :0,
-          nombreTipo: ""
+          nombreTipo: "",
+          ready:false,
+          signal:false,
         
         };
      
@@ -26,6 +30,7 @@ export default class TimeChart extends Component {
     componentDidMount() {
       const type = this.props.type;
       const id = this.props.userID;
+      console.log(this.state.id);
        if(type === "student"){
         axios.get(`http://35.226.163.50:8080/Backend/stats/users/` + id + '/totalTime')
        .then(res => {
@@ -34,7 +39,7 @@ export default class TimeChart extends Component {
             console.log(res.data.time);
             this.state.nombreTipo  = "estudiante";
             const textTime=res.data.time;
-            this.setState({ textTime });
+            this.setState({ textTime,ready:true });
 
           
           })
@@ -49,7 +54,7 @@ export default class TimeChart extends Component {
 
               this.state.nombreTipo  = "carrera";
               const textTime=res.data.totalTime;
-              this.setState({ textTime });
+              this.setState({ textTime,ready:true});
 
             
 
@@ -67,7 +72,7 @@ export default class TimeChart extends Component {
 
                 this.state.nombreTipo  = "clase";
                 const textTime=res.data.time;
-                this.setState({ textTime });
+                this.setState({ textTime ,ready:true });
                 
     
               
@@ -83,35 +88,44 @@ export default class TimeChart extends Component {
 
                  this.state.nombreTipo  = "coordinación";
                  const textTime=res.data.time;
-                 this.setState({ textTime });   
+                 this.setState({ textTime ,ready:true});   
                   
                 
                 })
               }
 
-
+           
 
       }  
 
 
 
 render(){
+   
     <Chart userID={this.state.userID} type = {this.state.type} />
     console.log(this.props.userID);
     console.log(this.props.type);
     console.log(this.state.textTime);
     const percentage = 100;
+    if(this.state.ready !== true ){
 
+      return(
+
+        <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
+
+      )
+
+      
+    }
 return(
 
     <div>
 
         <Row>
  
-         <Col md={3} smOffset={3} xs={3} sm = {2}>
-      
+         <Col md={8} smOffset={3} xs={8} sm = {2}>
          <h4>
-             <Label>Tiempo total empleado para resolver problemas:</Label>
+         <ControlLabel>Tiempo total empleado para resolver problemas: </ControlLabel>
         </h4>
         <br/>
         <CircularProgressbar
