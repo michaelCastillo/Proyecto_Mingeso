@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import {Button, Grid,Row,Col,Panel,Collapse,Well, Label} from 'react-bootstrap';
+import {Button, Grid,Row,Col,Panel,Collapse,Well, Label,OverlayTrigger,Tooltip} from 'react-bootstrap';
 import axios from 'axios';
 import {trashO} from 'react-icons-kit/fa/trashO';
 import {publish} from 'react-icons-kit/entypo/publish';
+import {info} from 'react-icons-kit/icomoon/info'
 import './ShowProblems.css';
 import ReactLoading from "react-loading";
+import {buttonQuestion} from 'react-icons-kit/metrize/buttonQuestion'
+
 
 
 import Icon from 'react-icons-kit';
@@ -62,7 +65,7 @@ class ShowProblems extends Component{
         navbarlinks(problemid){
             const role = localStorage.getItem('role');
             
-            if (this.props.authenticated   && role == "su") {
+            if (this.props.authenticated   && role === "su") {
                 return[
                     <div>
                         
@@ -87,7 +90,12 @@ class ShowProblems extends Component{
                 ] 
             }
 
-            if (this.props.authenticated   && role == "student") {
+            if (this.props.authenticated   && role === "student") {
+                const tooltip = (
+                    <Tooltip id="tooltip">
+                      <strong>Resumen problema</strong>
+                    </Tooltip>
+                  ); 
                 return[
                     <div>
                         <Col md={1} sm={6}>                                    
@@ -95,9 +103,10 @@ class ShowProblems extends Component{
                         A programar! 
                         </Button>
                         </Col>   
-                        <Col md={1} sm={6} >
-                        <a href={`/problemsProfile/${problemid}`}><span class="glyphicon glyphicon-eye-open"></span></a>
-                                                        
+                        <Col md={1} sm={4} smOffset = {1} >
+                        <OverlayTrigger placement="top" overlay={tooltip}>
+                        <a href={`/problemsProfile/${problemid}`}> <Icon icon={info} size={25}  style={{color:'#415171'}} /></a>
+                        </OverlayTrigger>                                
                         </Col>  
                     </div>
 
@@ -105,18 +114,41 @@ class ShowProblems extends Component{
                 ] 
             }
 
-            if (this.props.authenticated   && (role == "teacher" || role ==="coordination")) {
+            if (this.props.authenticated   && (role === "teacher" || role ==="coordination")) {
+                const tooltip = (
+                    <Tooltip id="tooltip">
+                      <strong>Resumen problema</strong>
+                    </Tooltip>
+                  ); 
+                  const tooltip1 = (
+                    <Tooltip id="tooltip">
+                      <strong>Eliminar problema</strong>
+                    </Tooltip>
+                  ); 
+
+                  const tooltip2 = (
+                    <Tooltip id="tooltip">
+                      <strong>Publicar problema</strong>
+                    </Tooltip>
+                  );
+
                 return[
                     <div>
                       
                         <Col md={1} sm={6} mdOffset={1}>
+                        <OverlayTrigger placement="top" overlay={tooltip2}>
                         <Icon icon={publish} size={25}/>
+                        </OverlayTrigger>
                         </Col>
                         <Col md={1} sm={6} >
-                        <a href={`/problemsProfile/${problemid}`}><span class="glyphicon glyphicon-eye-open"></span></a>
+                        <OverlayTrigger placement="top" overlay={tooltip}>
+                        <a href={`/problemsProfile/${problemid}`}><Icon icon={info} size={25}  style={{color:'#415171'}} /></a>
+                        </OverlayTrigger>
                         </Col>
                         <Col md={1} sm={6}>
+                        <OverlayTrigger placement="top" overlay={tooltip1}>
                         <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
+                        </OverlayTrigger>
                         </Col>  
                             
                     </div>
@@ -132,6 +164,14 @@ class ShowProblems extends Component{
 
     render(){
         console.log(this.state.problems.length );
+        const tooltip1 = (
+            <Tooltip id="tooltip">
+              <strong>Aquí puedes conocer todos los problemas que se encuentran disponibles,
+                      si deseas conocer más sobre cada uno, puedes presionar el icono a la derecha  
+                      del mismo o bien presionar su título.      
+              </strong>
+            </Tooltip>
+          );
         if(this.state.ready === false ){
             return (
                 <Col md={12} xs={12} smOffset={4}>
@@ -161,15 +201,24 @@ class ShowProblems extends Component{
             else{
                 return(
                     <div id="problems" className = "problems">
-                    <br/>
-                    <br/>
+                    
                     <br/>
                     <Grid>
-                        <Row > 
-                        <Col md={12} xs={12}>
+                        <Row >
+
+                        <Col md={1} sm={6} smOffset={10}>
+                        <OverlayTrigger placement="left" overlay={tooltip1}>
+                        <Icon icon={buttonQuestion} size={25}  style={{color:'#2f2f37'}}  />
+                        </OverlayTrigger>
+                        </Col>       
+            
+                        <Col md={12} xs={12}>                       
                         <h1  className="center"><Label id="title">Problemas a realizar:</Label></h1>
                         </Col>
                         </Row>
+                        <br/>
+                        <br/>
+                        <br/>
                         {
 
                         /* Aqui se mapean todos los problemas y se envian a la id según corresponda. */ 
