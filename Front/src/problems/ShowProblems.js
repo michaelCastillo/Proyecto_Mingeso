@@ -4,6 +4,7 @@ import axios from 'axios';
 import {trashO} from 'react-icons-kit/fa/trashO';
 import {publish} from 'react-icons-kit/entypo/publish';
 import './ShowProblems.css';
+import ReactLoading from "react-loading";
 
 
 import Icon from 'react-icons-kit';
@@ -20,6 +21,7 @@ class ShowProblems extends Component{
         this.state={
             problems:[],
             opened:[],
+            ready:false,
         }
         this.collapse = this.collapse.bind(this);
     }
@@ -32,7 +34,7 @@ class ShowProblems extends Component{
                     const problems = res.data;
                     //Se asigna falso para opened, para el collapse
                     problems.map( (problem) => {problem.opened = false});
-                    this.setState({problems});
+                    this.setState({problems,ready:true});
                 }).catch(error => {
                     console.log(error.response)
                 });
@@ -129,18 +131,46 @@ class ShowProblems extends Component{
 
 
     render(){
-        return(
-            <div id="problems" className = "problems">
-                <br/>
-                <br/>
-                <br/>
-                <Grid>
-                    <Row > 
+        console.log(this.state.problems.length );
+        if(this.state.ready === false ){
+            return (
+                <Col md={12} xs={12} smOffset={4}>
+                <ReactLoading type={"spin"} color={"#428cf3"} height={500} width={300} />
+                </Col>
+            );
+
+        }
+        else{
+
+            if(this.state.problems.length === 0){
+
+            return(
+
+                <div>
+
+                <Col md={12} xs={12}>
+                        <h1  className="center"><Label id="title">No hay problemas disponibles:</Label></h1>
+                        </Col>
+
+               </div>     
+
+
+            )
+             }
+
+            else{
+                return(
+                    <div id="problems" className = "problems">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <Grid>
+                        <Row > 
                         <Col md={12} xs={12}>
                         <h1  className="center"><Label id="title">Problemas a realizar:</Label></h1>
                         </Col>
-                    </Row>
-                    {
+                        </Row>
+                        {
 
                         /* Aqui se mapean todos los problemas y se envian a la id según corresponda. */ 
                         this.state.problems.map((problem) => {return (
@@ -153,7 +183,7 @@ class ShowProblems extends Component{
                                             {/* Cabecera de cada panel */}
                                             <Row>
                                                 <Col md={7} ms={12} onClick={this.collapse(problem.id)}>
-                                                    <Panel.Title componentClass="h3">{problem.name}</Panel.Title>
+                                                    <Panel.Title toggle componentClass="h3">{problem.name}</Panel.Title>
                                                 </Col>
                                                {this.navbarlinks(problem.id)}
                                             </Row>
@@ -187,6 +217,8 @@ class ShowProblems extends Component{
                 </Grid>
             </div>
         );
+        }
+    }
     }
 
     
