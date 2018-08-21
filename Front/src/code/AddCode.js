@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Alert,Well,Grid,Form,FormControl, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar, FormGroup, ControlLabel} from 'react-bootstrap';
 import Timer from './Timer';
+import {arrowLeftLight} from 'react-icons-kit/metrize/arrowLeftLight'
+import Icon from 'react-icons-kit';
 
 //React Login
 import ReactLoading from "react-loading";
@@ -1315,11 +1317,15 @@ class Code extends Component{
                 <ReactLoading type={"spin"} color={"#000"} height={667} width={375} />
             );
         }else{
-
-            
-
             return(
                 <Grid>
+                     <Col md={1} sm={4} smOffset = {0.1} >
+                        <a href={`/problems/show`}> <Icon icon={arrowLeftLight} size={25}  style={{color:'#415171'}} /></a>                                
+                     </Col>
+                     <br/>
+                     <br/>
+                     <br/>
+                     <br/>
                     <Row>
                         <Well>{this.state.statement}</Well>
                     </Row>

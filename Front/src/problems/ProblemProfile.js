@@ -4,6 +4,9 @@ import axios from 'axios';
 import ShowUser from './VisualizeProblem'
 import EditUser from './EditProblem'
 import { Grid, Row, Col, Button } from 'react-bootstrap';
+import ReactLoading from "react-loading";
+import {arrowLeftLight} from 'react-icons-kit/metrize/arrowLeftLight'
+import Icon from 'react-icons-kit';
 
 class ProblemProfile extends Component {
 
@@ -16,6 +19,7 @@ class ProblemProfile extends Component {
             name: '',
             statement: '',
             language: '',
+            ready:false
         };
         this.showUser = React.createRef();
         this.editUser = React.createRef();
@@ -34,12 +38,14 @@ class ProblemProfile extends Component {
                     name: problem.name,
                     statement: problem.statement,
                     language: problem.language,
+                    ready:true
                 });
                 console.log(problem);
             }).catch(error => {
                 console.log(error.response);
             });
     }
+
     handleComponent() {
         let item;
         if (this.state.componentState) {
@@ -74,15 +80,23 @@ class ProblemProfile extends Component {
     }
 
     render() {
+        
+       
         return (
             <Grid>
                 <Row>
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
+                            <Col md={1} sm={4} smOffset = {0.1} >
+                                        <a href={`/problems/show`}> <Icon icon={arrowLeftLight} size={25}  style={{color:'#415171'}} /></a>                                
+                                        </Col>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>        
                                 <div class="well well-sm">
                                     <Row>
-                                       
                                         <Col md={9} sm={9}>
 
                                             {this.handleComponent()}
