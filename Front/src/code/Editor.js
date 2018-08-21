@@ -23,6 +23,8 @@ class Editor extends Component{
         this.handleCode = this.handleCode.bind(this);
     }
 
+    
+
 
     handleCode(newValue){
         console.log("Valor! => " + newValue);

@@ -108,11 +108,13 @@ class Code extends Component{
                     id_problem:id_problem,
                     id_user:id_user
                 };
-                let sol_resp = axios.post(global_url+`/solutions/create`,solution).
+                let sol_resp = axios.post(local_url+`/solutions/create`,solution).
                 then(res => {
                     var solution = res.data.solution;
-                    console.log("test => ");
+                    console.log("Data => ");
+                    console.log(res.data);
                     var codeDeformed = this.deformCode(res.data.code);
+                    console.log("CODE DEFORM =>"+codeDeformed);
                     this.setState({code:codeDeformed});
                     this.setState({solution:solution});
                     this.setState({ready:true});
@@ -1384,7 +1386,7 @@ class Code extends Component{
                                     </FormGroup>
                                 </Form>
                             </Row>*/}
-                            <Editor ref={this.editor} handleCode={this.handleCode} ide={this.state.ide} funcion={this.handleIde} />    
+                            <Editor ref={this.editor} code={this.state.code} handleCode={this.handleCode} ide={this.state.ide} funcion={this.handleIde} />    
                             <Row>
                                 
                                 <Col  md={12}>
