@@ -108,7 +108,7 @@ class Code extends Component{
                     id_problem:id_problem,
                     id_user:id_user
                 };
-                let sol_resp = axios.post(local_url+`/solutions/create`,solution).
+                let sol_resp = axios.post(global_url+`/solutions/create`,solution).
                 then(res => {
                     var solution = res.data.solution;
                     console.log("Data => ");
