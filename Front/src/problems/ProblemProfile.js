@@ -4,7 +4,6 @@ import axios from 'axios';
 import ShowUser from './VisualizeProblem'
 import EditUser from './EditProblem'
 import { Grid, Row, Col, Button } from 'react-bootstrap';
-import ReactLoading from "react-loading";
 import {arrowLeftLight} from 'react-icons-kit/metrize/arrowLeftLight'
 import Icon from 'react-icons-kit';
 
@@ -25,9 +24,11 @@ class ProblemProfile extends Component {
         this.editUser = React.createRef();
         this.handleComponentChange = this.handleComponentChange.bind(this);
         this.handleComponent = this.handleComponent.bind(this);
+
     }
     componentDidMount() {
         let id_problem = this.state.idProblem;
+        console.log(id_problem);
         //Por ahora es la id 6, cuando este el login bien se cambia por aquel que
         //esté logueado.
         let global_url = `http://35.226.163.50:8080/Backend`;
@@ -80,9 +81,42 @@ class ProblemProfile extends Component {
     }
 
     render() {
-        
-       
-        return (
+        const role = localStorage.getItem('role');
+        console.log(role);
+        if ( role === "student"){ 
+                    return(  
+                        <Grid>
+                            <Row>
+                            <div class="container">
+                            <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                            <Col md={1} sm={4} smOffset = {0.1} >
+                                        <a href={`/problems/show`}> <Icon icon={arrowLeftLight} size={25}  style={{color:'#415171'}} /></a>                                
+                                        </Col>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>        
+                                <div class="well well-sm">
+                                    <Row>
+                                        <Col md={9} sm={9}>
+
+                                            {this.handleComponent()}
+                                           
+                                        </Col>
+                                    </Row>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                </Row>
+
+                             </Grid>
+                            )  
+                                
+        }
+        else{    
+            return (
             <Grid>
                 <Row>
                     <div class="container">
@@ -114,7 +148,8 @@ class ProblemProfile extends Component {
                 </Row>
 
             </Grid>
-        );
+            );
+        }   
     }
 
 

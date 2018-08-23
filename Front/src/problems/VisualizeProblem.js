@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Grid, Row, Col, Label, ListGroup, ListGroupItem } from 'react-bootstrap';
+import ReactLoading from "react-loading";
+
 
 class VisualizeProblem extends Component {
 
@@ -13,7 +15,8 @@ class VisualizeProblem extends Component {
             name: '',
             statement: '',
             language: '',
-            solutions: []
+            solutions: [],
+            ready:false
         };
       
         this.showSolutions = this.showSolutions.bind(this);
@@ -31,7 +34,8 @@ class VisualizeProblem extends Component {
                     name: problem.name,
                     statement: problem.statement,
                     language: problem.language,
-                    solutions: problem.solutions
+                    solutions: problem.solutions,
+                    ready:true
                 });
                 console.log(problem);
             }).catch(error => {
@@ -52,6 +56,17 @@ class VisualizeProblem extends Component {
 
 
     render() {
+
+        if(this.state.ready === false){
+            return(  
+              <div>
+                  <Col md={12} xs={12} smOffset={4}>
+                <ReactLoading type={"spin"} color={"#428cf3"} height={500} width={300} />
+                </Col>
+              </div>
+            )    
+
+          }
         return (
             <Grid>
                 <Row>
