@@ -96,7 +96,8 @@ export default class ChartLine extends Component {
               console.log(res.data);
               this.state.nombreTipo  = "carrera";
               const dateList=res.data.result;
-              this.setState({ dateList });
+              const message = res.data.message;
+              this.setState({ dateList, message });
               const listItems = dateList.map(date => date.date);
               this.setState({listItems});
               const listDate = dateList.map(date => date.numberSolved);
@@ -115,7 +116,8 @@ export default class ChartLine extends Component {
                 console.log(res.data);
                 this.state.nombreTipo  = "clase";
                 const dateList=res.data.result;
-                this.setState({ dateList });
+                const message = res.data.message;
+                this.setState({ dateList, message });
                 const listItems = dateList.map(date => date.date);
                 this.setState({listItems});
                 const listDate = dateList.map(date => date.numberSolved);
@@ -134,7 +136,8 @@ export default class ChartLine extends Component {
                   console.log(res.data);
                   this.state.nombreTipo  = "coordinación";
                   const dateList=res.data.result;
-                  this.setState({ dateList });
+                  const message = res.data.message;
+                  this.setState({ dateList, message });
                   const listItems = dateList.map(date => date.date);
                   this.setState({listItems});
                   const listDate = dateList.map(date => date.numberSolved);
@@ -265,7 +268,7 @@ export default class ChartLine extends Component {
                       </Col>    
                       <Col md={8} smOffset={1.5} xs={6}>
                           <h2>Cantidad problemas resueltos desde: {this.state.dateActual} <br/>
-                              Tipo:{this.state.nombreTipo}
+                              Categoría:{this.state.nombreTipo}
                           
                           </h2>
                          

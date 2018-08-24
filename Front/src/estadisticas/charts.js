@@ -91,56 +91,6 @@ export default class Chart extends Component {
     }
 
 
-
-
-    
-
-    rolesComponent(){
-
-        const role = localStorage.getItem('role');
-       if(role != "student"){
-        return[
-
-
-            <Col md={6} smOffset={2} xs={6} >
-            <FormGroup controlId="formControlsSelect">
-            <ControlLabel>Seleccione gráfico a mostrar</ControlLabel>
-            <FormControl componentClass="select" // onChange={this.handleValue} 
-              >
-              
-             <option disabled="true" selected ="true">...</option>
-             <option  value="coordinations" key ={1}>coordinación(nes)</option>
-             <option value="careers" key = {2} >carrera(s)</option>
-            </FormControl>
-            </FormGroup>
-            
-            <ScrollArea speed={0.8} className="area2" contentClassName="content"
-             horizontal={false} style={{ height: 200 , width:500 }}  >
-        
-            <Well>
-            {this.state.listItems}
-            </Well>
-            
-            </ScrollArea>
-            
-
-            <br/>
-            <Button bsStyle="info" onClick = {this.changeComponentStatus} disabled = {!this.state.bool}>Mostrar estadística</Button>
-            <Col md={3} smOffset={1} xs={6} >
-            <Button onClick = {this.boolNext} disabled = {!this.state.bool1}>Siguiente</Button>
-
-            </Col>
-            </Col>
-
-            
-        ]
-
-
-       }
-      
-
-    }
-
 // TRESELECT
 
 componentDidMount(){
@@ -385,7 +335,30 @@ onChange = (value) => {
         key: '0-1',
         children: car
       }];
+if(role === "student"){
 
+    return(
+        <div>
+            <Col  md={5} xs={5}  smOffset = {1} >
+            <h4>
+           <ControlLabel>Mis estadísticas: </ControlLabel>
+            </h4>
+            <br/>
+            <br/>
+            {component}
+
+ 
+            </Col>
+
+            <Col  md={4} xs={4}  smOffset = {1} >
+            {component2}
+            </Col>
+        </div>
+    )
+
+}
+
+else{
       if(this.state.ready !== true ){
             
         return(
@@ -401,9 +374,9 @@ onChange = (value) => {
         return (
             <div>
                 <Row> 
-                 <Col smOffset = {4}>
+                 <Col smOffset = {3}>
                  <h4>
-                 <ControlLabel>Seleccione categoría de alumnos, de los que desea conocer estadísticas: </ControlLabel>
+                 <ControlLabel>Seleccione categoría de alumnos, de los cuales desea conocer estadísticas: </ControlLabel>
                  </h4>
                  </Col>
                 <br/>
@@ -453,6 +426,7 @@ onChange = (value) => {
               </div>
 
             );
+        }   
           }
         }
         
