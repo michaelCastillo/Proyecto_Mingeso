@@ -73,10 +73,9 @@ class CreateProblem extends Component{
         axios.post(url,problem)
         .then(res => {
             //Se toma la id del problema.
-            this.state.ready=true;
+            this.setState({ready:true});
             var id_problem = res.data.id;
             alert("Se ha agregado el problema junto con sus parametros y retornos.");
-
             window.location.href="/problems/show";
            
         }).catch(error => {
