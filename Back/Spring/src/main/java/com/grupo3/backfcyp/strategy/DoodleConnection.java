@@ -93,10 +93,8 @@ public class DoodleConnection {
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
                 return results;
             } catch (IOException e) {
-                e.printStackTrace();
                 return results;
             }
         }
@@ -111,11 +109,8 @@ public class DoodleConnection {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            e.printStackTrace();
         } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return results;
     }
