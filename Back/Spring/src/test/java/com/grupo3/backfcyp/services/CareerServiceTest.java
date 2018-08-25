@@ -1,13 +1,9 @@
 package com.grupo3.backfcyp.services;
 
-import com.grupo3.backfcyp.models.Career;
-import com.grupo3.backfcyp.models.Coordination;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
 
-import static org.junit.Assert.*;
 
 public class CareerServiceTest
 {
