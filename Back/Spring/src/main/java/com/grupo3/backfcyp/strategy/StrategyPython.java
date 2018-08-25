@@ -1,6 +1,6 @@
 package com.grupo3.backfcyp.strategy;
 
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 
 import java.util.ArrayList;
 import java.util.List;

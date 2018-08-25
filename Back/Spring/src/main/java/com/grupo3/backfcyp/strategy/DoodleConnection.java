@@ -3,7 +3,7 @@ package com.grupo3.backfcyp.strategy;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonParseException;
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;

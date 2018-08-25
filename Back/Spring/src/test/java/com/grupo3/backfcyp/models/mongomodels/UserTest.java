@@ -1,4 +1,4 @@
-package com.grupo3.backfcyp.models.mongoModels;
+package com.grupo3.backfcyp.models.mongomodels;
 
 import com.grupo3.backfcyp.models.User;
 import com.grupo3.backfcyp.repositories.*;

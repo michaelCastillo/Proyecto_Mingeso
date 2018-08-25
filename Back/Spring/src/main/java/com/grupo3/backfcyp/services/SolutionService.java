@@ -2,9 +2,9 @@ package com.grupo3.backfcyp.services;
 
 import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.*;
-import com.grupo3.backfcyp.models.mongoModels.Code;
+import com.grupo3.backfcyp.models.mongomodels.Code;
 import com.grupo3.backfcyp.repositories.*;
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
