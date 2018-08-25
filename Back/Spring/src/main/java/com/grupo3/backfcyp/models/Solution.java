@@ -69,14 +69,14 @@ public class Solution
     public Solution(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.title = "tituloPrueba";
+        this.title = "titulo"+prueba;
         this.fails = 9;
         this.time = 9;
         this.timestamp = new java.util.Date();
         this.success = false;
         this.closed = false;
         this.successes = 9;
-        this.errors = "errorPrueba";
+        this.errors = "error"+prueba;
         this.solvedDate = new java.util.Date();
         //this.codeRepositoryMongo
         this.student = new User();

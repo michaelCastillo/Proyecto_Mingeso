@@ -46,9 +46,9 @@ public class Problem
     public Problem(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.name = "nombrePrueba";
-        this.statement = "statePrueba";
-        this.language = "lenguajePrueba";
+        this.name = "nombre"+prueba;
+        this.statement = "state"+prueba;
+        this.language = "lenguaje"+prueba;
         this.difficulty = 999;
         this.publish = false;
         this.teacher = new User();

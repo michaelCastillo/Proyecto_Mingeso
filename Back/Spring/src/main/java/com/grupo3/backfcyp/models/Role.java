@@ -32,7 +32,7 @@ public class Role
     public Role(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.role = "rolPrueba";
+        this.role = "rol"+prueba;
         this.users = new ArrayList<User>();
     }
 

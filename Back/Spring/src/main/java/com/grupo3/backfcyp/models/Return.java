@@ -41,7 +41,7 @@ public class Return
     public Return(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.name = "nombrePrueba";
+        this.name = "nombre"+prueba;
         this.hidden = false;
         this.problem = new Problem();
 

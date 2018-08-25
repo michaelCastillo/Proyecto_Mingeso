@@ -72,9 +72,9 @@ public class User
         this.classes_teachers = new ArrayList<Class>();
 
         this.id = Long.valueOf(999);
-        this.name = "nombrePrueba";
-        this.password = "passPrueba";
-        this.email = "emailPrueba";
+        this.name = "nombre"+prueba;
+        this.password = "pass"+prueba;
+        this.email = "email"+prueba;
         this.bloqued = false;
     }
 
