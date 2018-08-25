@@ -46,16 +46,16 @@ public class Problem
     public Problem(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.name = "nombrePrueba";
-        this.statement = "statePrueba";
-        this.language = "lenguajePrueba";
+        this.name = "nombre"+prueba;
+        this.statement = "state"+prueba;
+        this.language = "lenguaje"+prueba;
         this.difficulty = 999;
         this.publish = false;
         this.teacher = new User();
 
-        this.parameters = new ArrayList<Parameter>();
-        this.returns = new ArrayList<Return>();
-        this.solutions = new ArrayList<Solution>();
+        this.parameters = new ArrayList<>();
+        this.returns = new ArrayList<>();
+        this.solutions = new ArrayList<>();
     }
 
     public boolean isPublish() {

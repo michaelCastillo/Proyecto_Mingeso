@@ -16,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/users")
 public class UserService {
+    private static final String STATUS = "status";
 
     @Autowired
     public UserRepository userRepository;
@@ -120,19 +121,19 @@ public class UserService {
         Map<String,Object> response = new HashMap<>();
 
         if(this.userRepository.findUserByEmail(user.getEmail()) != null){
-            response.put("status",101); //el mail del usuario ya existe
+            response.put(STATUS,101); //el mail del usuario ya existe
             response.put("user",null);
             return response;
         }
         if(this.userRepository.findUserByName(user.getName())!=null){
-            response.put("status",102); //el nombre del usuario ya existe
+            response.put(STATUS,102); //el nombre del usuario ya existe
             response.put("user",null);
             return response;
         }
         /* desde el front debe elegir si o si un rol*/
         roleList = user.getRoles();
         if(roleList.isEmpty()) {
-            response.put("status","El usuario no tiene roles seleccionados, vuelva a registrar uno valido");
+            response.put(STATUS,"El usuario no tiene roles seleccionados, vuelva a registrar uno valido");
             response.put("user",null);
             return response;
         }
@@ -180,7 +181,7 @@ public class UserService {
             }
         }
         this.userRepository.save(user);
-        response.put("status","Usuario agregado correctamente a la base de datos");
+        response.put(STATUS,"Usuario agregado correctamente a la base de datos");
         response.put("user",user);
         return response;
 
@@ -192,9 +193,8 @@ public class UserService {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> login(@RequestBody User user){
-        Map<String,String> user_data = new HashMap<String,String>();
-        System.out.println("Usuario:   " + user.getEmail() + "  " + user.getPassword());
-        Map<String,Object> response = new HashMap<String,Object>();
+        Map<String,String> user_data = new HashMap<>();
+        Map<String,Object> response = new HashMap<>();
         User userFronRepo = this.userRepository.findUserByEmailAndPasswordIgnoreCase(user.getEmail(),user.getPassword());
         if(userFronRepo != null){
             user_data.put("logged","in");

@@ -83,7 +83,7 @@ public class CoordinationTest
     public void getCode()
     {
         String codeObtenida = coordinacion.getCode();
-        assertEquals("09", codeObtenida);
+        assertEquals("Prueba", codeObtenida);
     }
 
     @Test

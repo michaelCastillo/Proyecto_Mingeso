@@ -1,4 +1,4 @@
-package com.grupo3.backfcyp.models.mongoModels;
+package com.grupo3.backfcyp.models.mongomodels;
 
 import javax.persistence.Id;
 

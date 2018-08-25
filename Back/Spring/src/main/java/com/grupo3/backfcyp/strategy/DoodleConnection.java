@@ -3,7 +3,7 @@ package com.grupo3.backfcyp.strategy;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonParseException;
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,9 +34,8 @@ public class DoodleConnection {
 
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository){
         List<Results> results = new ArrayList<>();
-        String clientId = "9cf4866b-8e10-4e3a-84bf-2ee26e40c992"; //Replace with your client ID
-        ArrayList<String> outputs = new ArrayList<String>();
-        String output = new String();
+        ArrayList<String> outputs = new ArrayList<>();
+        String output;
         ArrayList<String> inputs = o_inputs;
         for(int i = 0; i<o_inputs.size(); i++) {
             try {
@@ -70,7 +69,6 @@ public class DoodleConnection {
                     mainFileName = "main.c";
                 }
                 String input = "{" + stdin + ",\"files\": [{\"name\":\""+mainFileName+"\", \"content\":  \"" + test.getCode(codeRepository) + "\"}]}";
-                System.out.println(input);
 
                 OutputStream outputStream = connection.getOutputStream();
                 outputStream.write(input.getBytes());
@@ -90,16 +88,13 @@ public class DoodleConnection {
                 while ((output = bufferedReader.readLine()) != null) {
                     results.add(parseResults(output));
                     outputs.add(output);
-                    System.out.println(output);
                 }
 
                 connection.disconnect();
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
                 return results;
             } catch (IOException e) {
-                e.printStackTrace();
                 return results;
             }
         }
@@ -114,11 +109,8 @@ public class DoodleConnection {
             results = mapper.readValue(resultsOnJson, Results.class);
 
         } catch (JsonParseException e) {
-            e.printStackTrace();
         } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return results;
     }

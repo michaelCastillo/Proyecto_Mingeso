@@ -3,8 +3,8 @@ package com.grupo3.backfcyp.strategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupo3.backfcyp.models.Solution;
-import com.grupo3.backfcyp.models.mongoModels.Code;
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.models.mongomodels.Code;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.grupo3.backfcyp.models.mongoModels;
+package com.grupo3.backfcyp.models.mongomodels;
 
 import com.grupo3.backfcyp.models.User;
 import com.grupo3.backfcyp.repositories.*;
@@ -56,7 +56,6 @@ public class UserTest {
 
     @Before
     public void prepare(){
-        userReal = userRepository.findUserById(new Long(11));
 
         userTest = new User();
         userTest.setName(name);
