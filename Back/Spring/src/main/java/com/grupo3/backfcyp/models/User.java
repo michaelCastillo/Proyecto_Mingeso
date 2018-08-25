@@ -63,7 +63,7 @@ public class User
 
     public User(String prueba)
     {
-        this.coordCoordinations = new ArrayList<Coordination>();
+        this.coordCoordinations = new ArrayList<>();
         this.roles = new ArrayList<>();
         this.careers = new ArrayList<>();
         this.solutions = new ArrayList<>();

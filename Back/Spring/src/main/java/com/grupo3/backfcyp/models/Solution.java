@@ -118,7 +118,7 @@ public class Solution
         {
             Collections.sort(tests,new SortByDate());
         }
-        if(tests.size() > 0)
+        if(tests.isEmpty())
         {
 
             return tests.get(0);

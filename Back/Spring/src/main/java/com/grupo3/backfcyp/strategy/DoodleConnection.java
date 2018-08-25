@@ -34,8 +34,8 @@ public class DoodleConnection {
 
     public List<Results> executeProgram(Test test, ArrayList<String> o_inputs, CodeRepository codeRepository){
         List<Results> results = new ArrayList<>();
-        ArrayList<String> outputs = new ArrayList<String>();
-        String output = new String();
+        ArrayList<String> outputs = new ArrayList<>();
+        String output;
         ArrayList<String> inputs = o_inputs;
         for(int i = 0; i<o_inputs.size(); i++) {
             try {
@@ -69,7 +69,6 @@ public class DoodleConnection {
                     mainFileName = "main.c";
                 }
                 String input = "{" + stdin + ",\"files\": [{\"name\":\""+mainFileName+"\", \"content\":  \"" + test.getCode(codeRepository) + "\"}]}";
-                System.out.println(input);
 
                 OutputStream outputStream = connection.getOutputStream();
                 outputStream.write(input.getBytes());
@@ -89,7 +88,6 @@ public class DoodleConnection {
                 while ((output = bufferedReader.readLine()) != null) {
                     results.add(parseResults(output));
                     outputs.add(output);
-                    System.out.println(output);
                 }
 
                 connection.disconnect();

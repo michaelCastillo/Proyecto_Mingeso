@@ -193,9 +193,8 @@ public class UserService {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> login(@RequestBody User user){
-        Map<String,String> user_data = new HashMap<String,String>();
-        System.out.println("Usuario:   " + user.getEmail() + "  " + user.getPassword());
-        Map<String,Object> response = new HashMap<String,Object>();
+        Map<String,String> user_data = new HashMap<>();
+        Map<String,Object> response = new HashMap<>();
         User userFronRepo = this.userRepository.findUserByEmailAndPasswordIgnoreCase(user.getEmail(),user.getPassword());
         if(userFronRepo != null){
             user_data.put("logged","in");

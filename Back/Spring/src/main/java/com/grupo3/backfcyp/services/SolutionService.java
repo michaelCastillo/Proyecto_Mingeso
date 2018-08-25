@@ -139,7 +139,7 @@ public class SolutionService {
             //Se almacena el test.
 
             //Se genera un objeto para retornar al front.
-            Map<String,Object> return_to_front = new HashMap<String,Object>();
+            Map<String,Object> return_to_front = new HashMap<>();
             return_to_front.put("time",time);
             return_to_front.put(SOLUTION,solution);
             return_to_front.put("code",codeFromFront);
@@ -155,7 +155,7 @@ public class SolutionService {
             this.testRepository.save(testToFront);
             solution.setSuccess(testToFront.isCorrect());
             //Se genera un objeto para retornar al front.
-            Map<String,Object> return_to_front = new HashMap<String,Object>();
+            Map<String,Object> return_to_front = new HashMap<>();
             return_to_front.put("time",time);
             return_to_front.put(SOLUTION,solution);
             return_to_front.put("code",codeFromFront);
@@ -167,8 +167,8 @@ public class SolutionService {
     private Test execute(String codeId, Problem problem, Solution solution){
         List<String> paramsAux = problem.getParameters();
         List<String> returnsAux = problem.getReturns_string();
-        ArrayList<String> params = new ArrayList<String>(paramsAux);
-        ArrayList<String> returns = new ArrayList<String>(returnsAux);
+        ArrayList<String> params = new ArrayList<>(paramsAux);
+        ArrayList<String> returns = new ArrayList<>(returnsAux);
         Test test = new Test();
         test.codeIdSet(codeId);
         test.setSolution(solution);

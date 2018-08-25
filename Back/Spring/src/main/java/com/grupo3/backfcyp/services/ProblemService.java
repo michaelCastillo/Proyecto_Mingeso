@@ -51,21 +51,18 @@ public class ProblemService {
     @ResponseBody
     public Map<String, Object> createProblem(@PathVariable Long id, @Valid @RequestBody Problem problem) {
         User user = this.userRepository.findUserById(id);
-        Map<String,Object> response = new HashMap<String,Object>();
+        Map<String,Object> response = new HashMap<>();
         int index =0;
-        if(user != null){ //Si el usuario existe.
-            if(!user.getRoles().isEmpty()){ //Si tiene roles asignados.
+        if((user != null)&&(!user.getRoles().isEmpty())){ //Si el usuario existe.
                 for(Role role : user.getRoles()){
                     if((role.getRole().compareTo("teacher") == 0) || (role.getRole().compareTo("su") == 0)){//Si es profesor
                         for(Parameter parameter: problem.obtenerParametersObj()){
                             parameter.setProblem(problem);
                             parameter.setPos(index);
-                            //this.parameterReporitory.save(parameter);
                         }
                         for(Return return_: problem.getReturns()){
                             return_.setProblem(problem);
                             return_.setPos(index);
-                            //this.returnRepository.save(return_);
                         }
                         problem.setTeacher(user);
                         //Aqui se hace la consulta a mongo para guardar el statement
@@ -90,7 +87,6 @@ public class ProblemService {
                     response.put(STATUS, "added");
                     response.put(PROBLEM, problem);
                     return response;
-                }
             }
         }
         response.put(STATUS, "error");
