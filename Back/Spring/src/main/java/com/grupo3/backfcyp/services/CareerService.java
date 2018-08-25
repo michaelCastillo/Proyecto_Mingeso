@@ -11,7 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/careers")
-public class CareerService {
+public class CareerService
+{
 
     @Autowired
     private CareerRepository careerRepository;

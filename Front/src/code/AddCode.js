@@ -49,21 +49,16 @@ class Code extends Component{
             results:[],
             comparison:[],
             solution:[],
-            ide:"python",
+            ide:"",
             simplCode:[],
             letrasMinusculas: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
             letrasMayusculas: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
             digito: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
             javaModifiers: ["private", "public", "protected", "static", "final", "abstract", "synchronized"],
 
-
-       
-            ide:"",
             nsucc :0,
             nfails :0,
             statement:"",
-
-
         }
 
         this.handleCode = this.handleCode.bind(this);
@@ -95,7 +90,8 @@ class Code extends Component{
                         language:problem.language,
                         o_inputs:problem.parameters,
                         o_outputs:problem.returns,
-                        
+                        ide:problem.language,
+
                     });
                 }).catch(error => {
                     console.log(error.response)
@@ -115,8 +111,10 @@ class Code extends Component{
                 let sol_resp = axios.post(global_url+`/solutions/create`,solution).
                 then(res => {
                     var solution = res.data.solution;
-                    console.log("test => ");
+                    console.log("Data => ");
+                    console.log(res.data);
                     var codeDeformed = this.deformCode(res.data.code);
+                    console.log("CODE DEFORM =>"+codeDeformed);
                     this.setState({code:codeDeformed});
                     this.setState({solution:solution});
                     this.setState({ready:true});
@@ -354,7 +352,7 @@ class Code extends Component{
                         return true;
                     }
                 }
-                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
+                else if(this.state.ide == "java" || this.state.ide == "c")
                 {
                     if(VarLine.length >= 2)
                     {
@@ -384,7 +382,7 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
+                else if(this.state.ide == "java" || this.state.ide == "c")
                 {
                     if(VarLine.length >= 2)
                     {
@@ -416,7 +414,7 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
+                else if(this.state.ide == "java" || this.state.ide == "c")
                 {
                     if(VarLine.length >= 2)
                     {
@@ -448,7 +446,7 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
+                else if(this.state.ide == "java" || this.state.ide == "c")
                 {
                     if(VarLine.length >= 2)
                     {
@@ -602,7 +600,7 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "c_cpp")
+                else if(this.state.ide == "c")
                 {
                     var i = 0;
                     if(VarLine.length > 0)
@@ -762,7 +760,7 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "c_cpp")
+                else if(this.state.ide == "c")
                 {
                     var i = 0;
                     if(VarLine.length > 0)
@@ -821,7 +819,7 @@ class Code extends Component{
 
             handleFindWhile(VarLine)
             {
-                if(this.state.ide == "python" || this.state.ide == "c_cpp")
+                if(this.state.ide == "python" || this.state.ide == "c")
                 {
 
                     if(VarLine.length >= 5)
@@ -870,7 +868,7 @@ class Code extends Component{
                         }
                     }
                 }
-                else if(this.state.ide == "java" || this.state.ide == "c_cpp")
+                else if(this.state.ide == "java" || this.state.ide == "c")
                 {
                     if(VarLine.length >= 7)
                     {
@@ -1253,6 +1251,7 @@ class Code extends Component{
 
             }
             setOut(out,index){
+                
                 if(!out.hidden){
                     return(
                         <tr>
@@ -1387,13 +1386,7 @@ class Code extends Component{
                                     </FormGroup>
                                 </Form>
                             </Row>*/}
-                            <Editor
-                                ref = {this.editor}
-                                handleCode = {this.handleCode}
-                                >
-
-                            </Editor>
-                            
+                            <Editor ref={this.editor} code={this.state.code} handleCode={this.handleCode} ide={this.state.ide} funcion={this.handleIde} />    
                             <Row>
                                 
                                 <Col  md={12}>

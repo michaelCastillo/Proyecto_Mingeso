@@ -56,7 +56,7 @@ public class UserTest {
 
     @Before
     public void prepare(){
-        //userReal = userRepository.findUserById(new Long(11));
+        userReal = userRepository.findUserById(new Long(11));
 
         userTest = new User();
         userTest.setName(name);
@@ -97,7 +97,7 @@ public class UserTest {
 
         System.out.println(userService.getUsers());
         assertThat(userService.getUsers().equals(userRepository.findAll()));
-        //userService.getUserById(new Long(1));
+        userService.getUserById(new Long(1));
 
 
     }

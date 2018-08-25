@@ -17,16 +17,28 @@ class Editor extends Component{
         this.state ={
             code:this.props.code,
             charge: false,
+            ide:"",
         };
         //this.handleCode = props.handleCode;
         this.handleCode = this.handleCode.bind(this);
     }
+
+    
 
 
     handleCode(newValue){
         console.log("Valor! => " + newValue);
         this.state.code = newValue;
         this.props.handleCode(newValue);
+        if(this.props.ide == "c")
+        {
+            this.state.ide = "c_cpp";
+        }
+        else
+        {
+            this.state.ide = this.props.ide;
+        }
+        
     }
 
     isCharging(value){
@@ -43,12 +55,13 @@ class Editor extends Component{
                 <ReactLoading type={"cylon"} color="#42b6f4" height={500} width={300} />
             );
         }else{
+            console.log(this.props);
             return(
                 <div>
                     <Row>
                         <Col md = {12}>
                         <AceEditor
-                            mode={this.state.ide}
+                            mode={this.props.ide}
                             theme="monokai"
                             name="blah2"
                             onLoad={this.onLoad}
