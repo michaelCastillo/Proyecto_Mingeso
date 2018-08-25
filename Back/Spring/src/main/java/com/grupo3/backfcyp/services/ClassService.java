@@ -13,9 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping(value = "/classes")
 public class ClassService {
+    private static final String STATUS = "status";
+    private static final String STUDENTS = "students";
+    private static final String CLASS = "class";
 
     @Autowired
     private ClassRepository classRepository;
@@ -55,11 +59,11 @@ public class ClassService {
         Class classToFront;
         Map<String,Object> response = new HashMap<>();
         if((classToFront = this.classRepository.findClassById(id)) != null){
-            response.put("status","class exist");
-            response.put("students",classToFront.getStudents());
+            response.put(STATUS,"class exist");
+            response.put(STUDENTS,classToFront.getStudents());
         }else{
-            response.put("status","class doesn't exist");
-            response.put("students",null);
+            response.put(STATUS,"class doesn't exist");
+            response.put(STUDENTS,null);
         }
         return response;
 
@@ -86,22 +90,22 @@ public class ClassService {
                         //si es profesor
                         user1.getClasses_teachers().add(classToEdit);
                         classToEdit.getTeachers().add(user);
-                        response.put("status","teacher added");
+                        response.put(STATUS,"teacher added");
                     } else {
-                        response.put("status", "user have not the permissions");
+                        response.put(STATUS, "user have not the permissions");
 
                     }
-                    response.put("class", classToEdit);
+                    response.put(CLASS, classToEdit);
                 }
 
 
             } else {
-                response.put("status","user doesn't exist");
-                response.put("class",classToEdit);
+                response.put(STATUS,"user doesn't exist");
+                response.put(CLASS,classToEdit);
             }
         }else{
-            response.put("status","class doesn't exist");
-            response.put("class",classToEdit);
+            response.put(STATUS,"class doesn't exist");
+            response.put(CLASS,classToEdit);
         }
         return response;
     }

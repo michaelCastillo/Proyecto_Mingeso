@@ -16,19 +16,10 @@ public class Code {
 
     public Code(String prueba)
     {
-        this.code = "09";
+        this.code = prueba;
         this.id = "9";
-    }
+}
 
-    /*
-    @Override
-    public String toString()
-    {
-        return String.format(
-                "Customer[id=%s, firstName='%s', lastName='%s']",
-                id, code);
-    }
-    */
 
 
 

@@ -12,7 +12,7 @@ public class StatementTest
     @Before
     public void setUp() throws Exception
     {
-        state = new Statement("Prueba", "Prueba");
+        state = new Statement("9", "Estado");
     }
 
     @Test

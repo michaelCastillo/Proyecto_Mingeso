@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StrategyPython implements Strategy {
@@ -20,6 +21,7 @@ public class StrategyPython implements Strategy {
         DoodleConnection doodleConnection = DoodleConnection.getInstance();
         doodleConnection.setLanguaje("python");
         return doodleConnection.executeProgram(test,o_inputs,codeRepository);
+
     }
 
 }
