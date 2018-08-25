@@ -53,9 +53,9 @@ public class Problem
         this.publish = false;
         this.teacher = new User();
 
-        this.parameters = new ArrayList<Parameter>();
-        this.returns = new ArrayList<Return>();
-        this.solutions = new ArrayList<Solution>();
+        this.parameters = new ArrayList<>();
+        this.returns = new ArrayList<>();
+        this.solutions = new ArrayList<>();
     }
 
     public boolean isPublish() {

@@ -81,7 +81,7 @@ public class Solution
         //this.codeRepositoryMongo
         this.student = new User();
         this.problem = new Problem();
-        this.tests = new ArrayList<Test>();
+        this.tests = new ArrayList<>();
     }
 
 
