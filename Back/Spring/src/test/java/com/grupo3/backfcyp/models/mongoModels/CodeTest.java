@@ -45,7 +45,7 @@ public class CodeTest
     public void getCode()
     {
         String codeObtenida = codigo.getCode();
-        assertEquals("09", codeObtenida);
+        assertEquals("Prueba", codeObtenida);
     }
 
     @Test
