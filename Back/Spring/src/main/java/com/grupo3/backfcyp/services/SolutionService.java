@@ -157,7 +157,7 @@ public class SolutionService {
             //Se genera un objeto para retornar al front.
             Map<String,Object> return_to_front = new HashMap<String,Object>();
             return_to_front.put("time",time);
-            return_to_front.put("solution",solution);
+            return_to_front.put(SOLUTION,solution);
             return_to_front.put("code",codeFromFront);
             this.solutionRepository.save(solution);
             return return_to_front;

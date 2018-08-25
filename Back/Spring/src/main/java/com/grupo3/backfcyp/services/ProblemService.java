@@ -14,6 +14,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/problems")
 public class ProblemService {
+    private static final String STATUS = "status";
+    private static final String PROBLEM = "problem";
 
     @Autowired
     private ProblemRepository problemRepository;
@@ -73,8 +75,8 @@ public class ProblemService {
                         List<Problem> problems = user.getProblems();
                         problems.add(problem);
                         user.setProblems(problems);
-                        response.put("status","added");
-                        response.put("problem",problem);
+                        response.put(STATUS,"added");
+                        response.put(PROBLEM,problem);
                         return response;
 
                     }
@@ -85,14 +87,14 @@ public class ProblemService {
                     List<Problem> problems = user.getProblems();
                     problems.add(problem);
                     user.setProblems(problems);
-                    response.put("status", "added");
-                    response.put("problem", problem);
+                    response.put(STATUS, "added");
+                    response.put(PROBLEM, problem);
                     return response;
                 }
             }
         }
-        response.put("status", "error");
-        response.put("problem", null);
+        response.put(STATUS, "error");
+        response.put(PROBLEM, null);
         return response;
     }
 
