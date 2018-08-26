@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import {ControlLabel} from 'react-bootstrap';
+import {ControlLabel, Row, Col, Label } from 'react-bootstrap';
+
 import axios from 'axios';
 import "./time.css";
 import CircularProgressbar from 'react-circular-progressbar';

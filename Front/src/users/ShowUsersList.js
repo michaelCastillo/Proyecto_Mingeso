@@ -52,7 +52,18 @@ class ShowUsersList extends Component {
             }).catch(error => {
                 console.log(error.response)
             });
-        
+
+        axios.get(`http://35.226.163.50:8080/Backend/sections/`)
+            .then(res => {
+                const sections = res.data;
+                //Se asigna falso para opened, para el collapse
+                sections.map((section) => { section.opened = false });
+                this.setState({ sections });
+            }).catch(error => {
+              //  alert("Error con conexion a base de datos de secciones");
+                console.log(error.response)
+            });
+
         axios.get(`http://35.226.163.50:8080/Backend/roles`)
             .then(res => {
                 const roles = res.data;
