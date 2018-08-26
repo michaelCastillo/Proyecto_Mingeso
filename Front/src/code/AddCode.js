@@ -5,8 +5,16 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Well,Grid ,Row, Col, Label ,Table, ButtonGroup,Button} from 'react-bootstrap';
 import Timer from './Timer';
+
+import {arrowLeftLight} from 'react-icons-kit/metrize/arrowLeftLight'
+import Icon from 'react-icons-kit';
+
+//React Login
+import ReactLoading from "react-loading";
+
 import {Alert,  Spin } from 'antd';
 import "./AddCode.css";
+
 
 //React ACE!
 import brace from 'brace';
@@ -1340,11 +1348,15 @@ class Code extends Component{
                 </div>
             );
         }else{
-
-            
-
             return(
                 <Grid>
+                     <Col md={1} sm={4} smOffset = {0.1} >
+                        <a href={`/problems/show`}> <Icon icon={arrowLeftLight} size={25}  style={{color:'#415171'}} /></a>                                
+                     </Col>
+                     <br/>
+                     <br/>
+                     <br/>
+                     <br/>
                     <Row>
                         <Well>{this.state.statement}</Well>
                     </Row>
