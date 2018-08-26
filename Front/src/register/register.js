@@ -345,7 +345,7 @@ class Register extends Component {
     const url = 'http://35.226.163.50:8080/Backend/users/create';
     const local = 'http://localhost:1313/users/create';
     console.log("URL! => "+local);
-    axios.post(local  , user)
+    axios.post(url  , user)
       .then(res => {
         let userResponse = res.data;
         alert("Usuario agregado exitosamente!");
