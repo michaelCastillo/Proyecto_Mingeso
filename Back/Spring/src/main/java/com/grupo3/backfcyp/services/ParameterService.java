@@ -32,28 +32,7 @@ public class ParameterService {
         return parameter;
 
     }
-    //Agregar un parametro con un problema asociado
-    /*
-    @CrossOrigin(origins = {"http://localhost:3000"})
-    @RequestMapping(value = "/{id_problem}/createParameter",method = RequestMethod.POST)
-    @ResponseBody
-    public Parameter createParameterAndLink(@PathVariable Long id_problem, @RequestBody Parameter parameter ){
-
-        Problem problem = problemRepository.findProblemById(id_problem);
-        problem.addParameter(parameter);
-        parameter.setProblem(problemRepository.findProblemById(id_problem));
-        parameterReporitory.save(parameter);
-        return parameter;
-    }
-*/
-
-    /* Hay que enviarle un Json como este
-
-    [
-        {        parametro 1        },
-        {        parametro 2        }
-    ]
-     */
+  
     @CrossOrigin(origins = {"http://localhost:3000"})
     @RequestMapping(value = "/{id_problem}/createParameters", method = RequestMethod.POST)
     @ResponseBody

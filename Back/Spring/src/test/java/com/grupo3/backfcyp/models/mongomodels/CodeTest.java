@@ -1,4 +1,4 @@
-package com.grupo3.backfcyp.models.mongoModels;
+package com.grupo3.backfcyp.models.mongomodels;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class CodeTest
     public void getCode()
     {
         String codeObtenida = codigo.getCode();
-        assertEquals("09", codeObtenida);
+        assertEquals("Prueba", codeObtenida);
     }
 
     @Test
@@ -56,3 +56,4 @@ public class CodeTest
         assertEquals("0999", codeObtenida);
     }
 }
+

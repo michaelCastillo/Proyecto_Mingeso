@@ -15,7 +15,7 @@ public class ClassTest
     @Before
     public void setUp() throws Exception
     {
-        clase = new Class("Prueba");
+        clase = new Class("ClasePrueba");
     }
 
     @Test
@@ -28,7 +28,7 @@ public class ClassTest
     @Test
     public void setCoordination()
     {
-        Coordination coordinacion = new Coordination("Prueba");
+        Coordination coordinacion = new Coordination("09");
         clase.setCoordination(coordinacion);
         assertEquals(coordinacion, clase.getCoordination());
     }

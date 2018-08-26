@@ -1,7 +1,5 @@
 package com.grupo3.backfcyp.services;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.Career;
 import com.grupo3.backfcyp.models.Class;
 import com.grupo3.backfcyp.models.Coordination;
@@ -11,15 +9,9 @@ import com.grupo3.backfcyp.repositories.CareerRepository;
 import com.grupo3.backfcyp.repositories.ClassRepository;
 import com.grupo3.backfcyp.repositories.CoordinationRepository;
 import com.grupo3.backfcyp.repositories.UserRepository;
-import com.grupo3.backfcyp.strategy.Test;
-import com.sun.tracing.dtrace.ProviderAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import javax.annotation.security.PermitAll;
-import java.math.BigInteger;
-import java.security.AlgorithmConstraints;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,7 +19,15 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/stats")
 public class StatsService {
-
+    private static final String STATUS = "status";
+    private static final String MESSAGE = "message";
+    private static final String YYYYMMDD = "yyyy-MM-dd";
+    private static final String DATELIMIT = "dateLimit";
+    private static final String RESULT = "result";
+    private static final String TIME = "time";
+    private static final String NUMBERSOLVED = "numberSolved";
+    private static final String TIMETRUE = "Tiempo calculado correctamente";
+    private static final String TIMEFALSE = "No hay un estudiante asociado a la id";
 
     @Autowired
     private CareerRepository careerRepository;
@@ -40,26 +40,32 @@ public class StatsService {
 
 
     /*** Estadisticas de tiempo total invertido para resolver un problema. ***/
+    private Map<String,Object> responseInit(String status, Object o1, String responseAux, Object o2, String message, Object o3 ){
+        Map<String,Object> response = new HashMap<>();
+        response.put(status, o1);
+        response.put(responseAux, o2);
+        response.put(message, o3);
+        return response;
+
+    }
 
     @CrossOrigin
     @RequestMapping(value = "/users/{id}/totalTime")
     @ResponseBody
     public Map<String,Object> getTimeByUser(@PathVariable Long id){
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         User student = this.userRepository.findUserById(id);
-        Long totalTime = new Long(0);
+        Long totalTime = 0L;
         if(student != null){
             List<Solution> solutions = student.getSolutions();
             for(Solution solution: solutions){
                 totalTime += solution.getTime();
             }
-            response.put("status",200);
-            response.put("message","Tiempo calculado correctamente");
-            response.put("time",totalTime);
+            response = responseInit(STATUS, 200, MESSAGE, TIMETRUE, TIME, totalTime);
+            
         }else{
-            response.put("status",204);
-            response.put("message","No hay un estudiante asociado a la id");
-            response.put("time",0);
+            response = responseInit(STATUS, 204, MESSAGE, TIMEFALSE, TIME, 0);
+           
         }
         return response;
         
@@ -70,9 +76,9 @@ public class StatsService {
     @RequestMapping(value = "/classes/{id}/totalTime")
     @ResponseBody
     public Map<String,Object> getTimeByClass(@PathVariable Long id){
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         Class classToStat = this.classRepository.findClassById(id);
-        Long totalTime = new Long(0);
+        Long totalTime = 0L;
         if(classToStat != null){
             List<User> students = classToStat.getStudents();
             if(students != null){
@@ -82,19 +88,15 @@ public class StatsService {
                         totalTime += solution.getTime();
                     }
                 }
-                response.put("status",200);
-                response.put("message","Tiempo total calculado correctamente");
-                response.put("time",totalTime);
+                response = responseInit(STATUS, 200, MESSAGE, TIMETRUE, TIME, totalTime);
+                
             }else{
-                response.put("status",204);
-                response.put("message","No se encuentran estudiantes asociados a la clase");
-                response.put("time",0);
+                response = responseInit(STATUS, 204, MESSAGE, TIMEFALSE, TIME, 0);
+
             }
 
         }else{
-            response.put("status",204);
-            response.put("message","No se encuentra clase asociada a la id");
-            response.put("time",0);
+            response = responseInit(STATUS, 204, MESSAGE, TIMEFALSE, TIME, 0);
         }
         return response;
     }
@@ -104,8 +106,8 @@ public class StatsService {
     @ResponseBody
     public Map<String,Object> getTimeByCoordination(@PathVariable Long id){
         Coordination coordination = coordinationRepository.findCoordinationById(id);
-        Map<String,Object> response = new HashMap<>();
-        Long totalTime = new Long(0);
+        Map<String,Object> response;
+        Long totalTime = 0L;
         if(coordination != null){
             List<Class> classes = coordination.getClasses();
             if(!classes.isEmpty()){
@@ -113,7 +115,6 @@ public class StatsService {
                 for(Class classWithStudents: classes){
 
                     for(User student : classWithStudents.getStudents()){
-                        System.out.println("usuario: "+student.getName());
                         if(!students.contains(student)){
                             List<Solution> solutions = student.getSolutions();
                             for(Solution sol: solutions){
@@ -123,18 +124,15 @@ public class StatsService {
                     }
                     students.addAll(classWithStudents.getStudents());//Se agregan los usuarios.
                 }
-                response.put("status",200);
-                response.put("messsage","Tiempo calculado correctamente");
-                response.put("time",totalTime);
+                response = responseInit(STATUS, 200, MESSAGE, TIMETRUE, TIME, totalTime);
+                
             }else{
-                response.put("status",204);
-                response.put("message","No hay clases asociadas a la coordinación");
-                response.put("time",0);
+                response = responseInit(STATUS, 204, MESSAGE, "No hay clases asociadas a la coordinación", TIME, 0);
+                
             }
         }else{
-            response.put("time",0);
-            response.put("message","No existe una coordinacion asociada a dicha id.");
-            response.put("status",204);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe una coordinacion asociada a dicha id.", TIME, 0);
+
         }
         return response;
 
@@ -144,12 +142,12 @@ public class StatsService {
     @RequestMapping(value = "/career/{id}/totalTime",method = RequestMethod.GET)
     @ResponseBody
     public Map<String,Object> getTimeByCareer(@PathVariable Long id){
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         Career career = this.careerRepository.findCareerById(id);
         //Se toman los estudiantes
         List<User> students = career.getUsers();
         if(!students.isEmpty()){
-            Long totalTime = new Long(0);
+            Long totalTime = 0L;
             for(User user: students){
                 List<Solution> solutionsUser = user.getSolutions();
                 for(Solution solution: solutionsUser){
@@ -157,13 +155,10 @@ public class StatsService {
                     totalTime += solution.getTime();
                 }
             }
-            response.put("status",200);
-            response.put("message","Solicitud aceptada, se entrega el tiempo total");
-            response.put("totalTime",totalTime);
+            response = responseInit(STATUS, 200, MESSAGE, "Solicitud aceptada, se entrega el tiempo total", TIME, totalTime);
         }else{
-            response.put("status",204);
-            response.put("message","La carrera no tiene estudiantes.");
-            response.put("totalTime",0);
+            response = responseInit(STATUS, 204, MESSAGE, "La carrera no tiene estudiantes.", TIME, 0);
+
         }
         return response;
     }
@@ -174,26 +169,19 @@ public class StatsService {
     @RequestMapping(value = "/student/{id}/problemsSolved",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getProblemsSolvedByStudent(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         User student = this.userRepository.findUserById(id);
 
         List<Solution> solutions = student.getSolutions();
         if(!solutions.isEmpty()){ //Si el estudiante tiene soluciones asociadas
-            //Date dateTest = new Date(jsonIn.get("dateLimit"));
-            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-            Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
-            System.out.println("limite Sin formateo => "+dateLimit.toString());
-            String dateLimitFormated = new SimpleDateFormat("yyyy-MM-dd").format(dateLimit);
-            System.out.println("date limit => "+dateLimitFormated);
+            SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
+            Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
             solutions = sortDescAndFiltreByDate(solutions,dateLimit);
             List<Map<String,Object>> results = getNumberProblemsByDate(solutions);
-            response.put("result",results);
-            response.put("status",200);
-            response.put("message","Numero se soluciones calculadas correctamente");
+            response = responseInit(STATUS, 200, MESSAGE, "Numero se soluciones calculadas correctamente", RESULT, results);
         }else{
-            response.put("status",204);
-            response.put("message","No se encuentran soluciones en las que haya trabajado el estudiante");
-            response.put("result",null);
+            
+            response = responseInit(STATUS, 204, MESSAGE, "No se encuentran soluciones en las que haya trabajado el estudiante", RESULT, null);
         }
         return response;
     }
@@ -203,9 +191,9 @@ public class StatsService {
     @ResponseBody
     public Map<String,Object> getNumberProblemsByCoordination(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
         Coordination coordination = this.coordinationRepository.findCoordinationById(id);
-        Map<String,Object> response = new HashMap<>();
-        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
+        Map<String,Object> response;
+        SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
+        Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
         if(coordination != null){
             List<Class> classes = coordination.getClasses();
             if(classes != null){
@@ -215,14 +203,12 @@ public class StatsService {
                 }
                 response = getResult(students,dateLimit);
             }else{
-                response.put("status",204);
-                response.put("message","No existen clases asociada a la coordinacion");
-                response.put("result",null);
+                response = responseInit(STATUS, 204, MESSAGE, "No hay clases asociadas a la coordinación", RESULT, null);
+
             }
         }else{
-            response.put("status",204);
-            response.put("message","No existe coordination asociada a la id");
-            response.put("result",null);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe una coordinacion asociada a dicha id.", RESULT, null);
+
         }
         return response;
     }
@@ -233,23 +219,20 @@ public class StatsService {
     public Map<String,Object> getNumberProblemsByCareer(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
 
         Career career = this.careerRepository.findCareerById(id);
-        Map<String,Object> response = new HashMap<>();
-        List<Solution> solutions = new ArrayList<>();
-        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
+        Map<String,Object> response;
+        SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
+        Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
         if(career != null){
             List<User> students = career.getUsers();
             response = getResult(students,dateLimit);
         }else{
-            response.put("status",204);
-            response.put("message","No existe clase asociada a la id");
-            response.put("result",null);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe clase asociada a la id", RESULT, null);
         }
         return response;
     }
 
     private Map<String,Object> getResult(List<User> students, Date dateLimit) throws ParseException {
-        Map<String,Object> response = new HashMap<>();
+        Map<String,Object> response;
         List<Solution> solutions = new ArrayList<>();
 
         if(students != null){
@@ -258,14 +241,12 @@ public class StatsService {
             }
             solutions = sortDescAndFiltreByDate(solutions,dateLimit);
             List<Map<String,Object>> results = getNumberProblemsByDate(solutions);
-            response.put("result",results);
-            response.put("status",200);
-            response.put("message","Numero se soluciones calculadas correctamente");
-
+            response = responseInit(STATUS, 200, MESSAGE, "Numero se soluciones calculadas correctamente", RESULT, results);
+            
+            
         }else{
-            response.put("status",204);
-            response.put("message","No hay estudiantes asignados.");
-            response.put("result",null);
+            response = responseInit(STATUS, 204, MESSAGE, "No hay estudiantes asignados.", RESULT, null);
+
         }
         return response;
     }
@@ -277,16 +258,15 @@ public class StatsService {
     @ResponseBody
     public Map<String,Object> getNumberProblemsByClass(@PathVariable Long id, @RequestBody Map<String,Object> jsonIn) throws ParseException {
         Class classToStats = this.classRepository.findClassById(id);
-        Map<String,Object> response = new HashMap<>();
-        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateLimit = formater.parse(jsonIn.get("dateLimit").toString());
+        Map<String,Object> response;
+        SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
+        Date dateLimit = formater.parse(jsonIn.get(DATELIMIT).toString());
         if(classToStats != null){
             List<User> students = classToStats.getStudents();
             response = getResult(students,dateLimit);
         }else{
-            response.put("status",204);
-            response.put("message","No existe clase asociada a la id");
-            response.put("result",null);
+            response = responseInit(STATUS, 204, MESSAGE, "No existe clase asociada a la id", RESULT, null);
+
         }
         return response;
     }
@@ -297,27 +277,26 @@ public class StatsService {
         if(!solutions.isEmpty()){
 
             //Se toma la primera para iniciar las comparaciones
-            String dateLoop = new SimpleDateFormat("yyyy-MM-dd").format(solutions.get(0).getSolvedDate());
+            String dateLoop = new SimpleDateFormat(YYYYMMDD).format(solutions.get(0).getSolvedDate());
             int indexPointer = 0;
             int acum = 0;
             int x = 0;
-            System.out.println("solutions size => "+solutions.size());
             for(Solution solution: solutions){
                 x++;
-                String actualDateFormatted =  new SimpleDateFormat("yyyy-MM-dd").format(solution.getSolvedDate());
+                String actualDateFormatted =  new SimpleDateFormat(YYYYMMDD).format(solution.getSolvedDate());
                 if(actualDateFormatted.compareTo(dateLoop) == 0){//Son iguales
                     acum++;
                     if(x == solutions.size()){//Si llegamos al ultimo
 
                         result.add(new HashMap<>());
                         result.get(indexPointer).put("date",dateLoop);
-                        result.get(indexPointer).put("numberSolved",acum);
+                        result.get(indexPointer).put(NUMBERSOLVED,acum);
                     }
                 }else{
                     //Se setean los valores anteriores
                     result.add(new HashMap<>());
                     result.get(indexPointer).put("date",dateLoop);
-                    result.get(indexPointer).put("numberSolved",acum);
+                    result.get(indexPointer).put(NUMBERSOLVED,acum);
                     dateLoop = actualDateFormatted;//Se cambia la fecha a la nueva.
                     indexPointer++; //Se cambia al siguiente valor del arreglo de respuesta.
                     acum = 1;
@@ -325,13 +304,13 @@ public class StatsService {
 
                         result.add(new HashMap<>());
                         result.get(indexPointer).put("date",dateLoop);
-                        result.get(indexPointer).put("numberSolved",acum);
+                        result.get(indexPointer).put(NUMBERSOLVED,acum);
                     }
                 }
             }
             if(indexPointer == 0){ //Es decir que nunca hubo alguna de otra fecha.
                 result.get(indexPointer).put("date",dateLoop);
-                result.get(indexPointer).put("numberSolved",acum);
+                result.get(indexPointer).put(NUMBERSOLVED,acum);
             }
             return result;
         }
@@ -343,24 +322,19 @@ public class StatsService {
         for(Solution solution: solutions){
 
             if(solution.getSolvedDate() != null) {
-                System.out.println("solution id: "+solution.getId());
-                System.out.println("date sin format => "+solution.getSolvedDate());
-                System.out.println("fecha: "+new SimpleDateFormat("yyyy-MM-dd").format(solution.getSolvedDate()));
                 solutionsFinished.add(solution);
             }
         }
         Collections.sort(solutionsFinished,new SolutionByDate());
         List<Solution> validSolutions = new ArrayList<>();
 
-        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formater = new SimpleDateFormat(YYYYMMDD);
         for(Solution solution: solutionsFinished){
             //Es la primera aparicion de una solucion más antigua que el limite.
             String dateDays = formater.format(solution.getSolvedDate());
             Date actualDate = formater.parse(dateDays);
             if(dateLimit.compareTo(actualDate) <= 0){
                 validSolutions.add(solution);
-            }else{
-                System.out.println(actualDate+" Es más antigua que "+dateLimit.toString());
             }
         }
         return validSolutions;

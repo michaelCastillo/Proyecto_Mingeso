@@ -50,10 +50,10 @@ public class User
 
     @JsonIgnore
     @ManyToMany(mappedBy = "students")
-    private List<Class> classes_students;
+    private List<Class> classesStudents;
     @JsonIgnore
     @ManyToMany(mappedBy = "teachers")
-    private List<Class> classes_teachers;
+    private List<Class> classesTeachers;
 
 
     public User()
@@ -63,18 +63,18 @@ public class User
 
     public User(String prueba)
     {
-        this.coordCoordinations = new ArrayList<Coordination>();
-        this.roles = new ArrayList<Role>();
-        this.careers = new ArrayList<Career>();
-        this.solutions = new ArrayList<Solution>();
-        this.problems = new ArrayList<Problem>();
-        this.classes_students = new ArrayList<Class>();
-        this.classes_teachers = new ArrayList<Class>();
+        this.coordCoordinations = new ArrayList<>();
+        this.roles = new ArrayList<>();
+        this.careers = new ArrayList<>();
+        this.solutions = new ArrayList<>();
+        this.problems = new ArrayList<>();
+        this.classesStudents = new ArrayList<>();
+        this.classesTeachers = new ArrayList<>();
 
         this.id = Long.valueOf(999);
-        this.name = "nombrePrueba";
-        this.password = "passPrueba";
-        this.email = "emailPrueba";
+        this.name = "nombre"+prueba;
+        this.password = "pass"+prueba;
+        this.email = "email"+prueba;
         this.bloqued = false;
     }
 
@@ -88,26 +88,26 @@ public class User
     }
 
     public List<Class> getClasses_students() {
-        return classes_students;
+        return classesStudents;
     }
 
     public void addClasse_student(Class classs){
-        this.classes_students.add(classs);
+        this.classesStudents.add(classs);
     }
 
     public List<Class> getClasses_teachers() {
-        return classes_teachers;
+        return classesTeachers;
     }
     public void addClasse_teacher(Class classs){
-        this.classes_teachers.add(classs);
+        this.classesTeachers.add(classs);
     }
 
-    public void setClasses_teachers(List<Class> classes_teachers) {
-        this.classes_teachers = classes_teachers;
+    public void setClasses_teachers(List<Class> classesTeachers) {
+        this.classesTeachers = classesTeachers;
     }
 
-    public void setClasses_students(List<Class> classes_students) {
-        this.classes_students = classes_students;
+    public void setClasses_students(List<Class> classesStudents) {
+        this.classesStudents = classesStudents;
     }
 
     public List<Career> getCareers() {
