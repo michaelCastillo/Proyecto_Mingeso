@@ -22,17 +22,18 @@ public class User
     private boolean bloqued;
 
 
-    @JsonIgnore
+
     @ManyToMany(mappedBy = "users")
     private List<Role> roles;
 
-    @JsonIgnore
+
     @ManyToMany(mappedBy = "users")
     private List<Career> careers;
 
     /* El alumno tiene soluciones */
-    @JsonIgnore
+
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Solution> solutions;
 
     /* El profesor tiene problemas */
@@ -41,17 +42,17 @@ public class User
     private List<Problem> problems;
 
     /* El coordinador tiene coordinaciones que manda */
-    @JsonIgnore
+
     @OneToMany(mappedBy = "coordinator")
     private List<Coordination> coordCoordinations;
 
     /* El alumno está en varias clases y las clases tienen varios alumnos.  */
     /* Para el caso del profesor */
 
-    @JsonIgnore
+
     @ManyToMany(mappedBy = "students")
     private List<Class> classesStudents;
-    @JsonIgnore
+    
     @ManyToMany(mappedBy = "teachers")
     private List<Class> classesTeachers;
 
@@ -59,13 +60,7 @@ public class User
     public User()
     {
 
-        this.coordCoordinations = new ArrayList<>();
-        this.roles = new ArrayList<>();
-        this.careers = new ArrayList<>();
-        this.solutions = new ArrayList<>();
-        this.problems = new ArrayList<>();
-        this.classesStudents = new ArrayList<>();
-        this.classesTeachers = new ArrayList<>();
+
     }
 
     public User(String prueba)
