@@ -1,8 +1,7 @@
+
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid, Row, FormControl, Col, Label, Panel, ListGroup, ListGroupItem, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
-import UserProfile from './UserProfile';
+import { Grid, Row, Col, Label, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 class ShowUser extends Component {
 
@@ -17,10 +16,18 @@ class ShowUser extends Component {
             state: '',
             sections: [],
             roles: [],
+            careers: [],
+            cordinations: [],
+            studentClasses: [],
+            teacherClasses: [],
         };
         this.showSection = this.showSection.bind(this);
         this.showRole = this.showRole.bind(this);
         this.handleState = this.handleState.bind(this);
+        this.showCoordinations = this.showCoordinations.bind(this);
+        this.showClassesStudent = this.showClassesStudent.bind(this);
+        this.showClassesTeacher = this.showClassesTeacher.bind(this);
+        this.showCareers = this.showCareers.bind(this);
 
     }
     componentDidMount() {
@@ -37,18 +44,66 @@ class ShowUser extends Component {
                     password: user.password,
                     state: user.bloqued,
                     sections: user.sections,
-                    roles: user.roles
+                    roles: user.roles,
+                    careers: user.careers,
+                    cordinations: user.coordCoordinations,
+                    studentClasses: user.classes_students,
+                    teacherClasses: user.classes_teachers
                 });
+                console.log(user);
             }).catch(error => {
                 console.log(error.response);
             });
     }
-
+    showCareers(){
+        let items = [];
+        if(this.state.careers.length>0){
+            items.push(<Label bsStyle="info">Carrera</Label>);
+            this.state.careers.map((careersAux) => {
+                items.push(<ListGroupItem bsStyle="info"> {careersAux.name} </ListGroupItem>);
+            });
+        }
+        
+        return items;
+    }
     showSection() {
         let items = [];
         if(this.state.sections){
             this.state.sections.map((section) => {
                 items.push(<ListGroupItem bsStyle="info"> {section.code} </ListGroupItem>);
+            });
+        }
+        
+        return items;
+    }
+    showClassesStudent() {
+        let items = [];
+        if(this.state.studentClasses.length>0){
+            items.push(<Label bsStyle="info">Clases</Label>);
+            this.state.studentClasses.map((myClass) => {
+                items.push(<ListGroupItem bsStyle="info"> {myClass.classRoom} </ListGroupItem>);
+            });
+        }
+        
+        return items;
+    }
+    showClassesTeacher() {
+        let items = [];
+        if(this.state.teacherClasses.length>0){
+            items.push(<Label bsStyle="info">Clases a cargo</Label>);
+            this.state.teacherClasses.map((myClass) => {
+                items.push(<ListGroupItem bsStyle="info"> {myClass.classRoom} </ListGroupItem>);
+            });
+        }
+        
+        return items;
+    }
+    showCoordinations() {
+        let items = [];
+        if(this.state.cordinations.length>0){
+            items.push(<Label bsStyle="info">Coordinaciones a cargo</Label>);
+            this.state.cordinations.map((coord) => {
+                items.push(<ListGroupItem bsStyle="info"> {coord.code} </ListGroupItem>);
             });
         }
         
@@ -113,15 +168,7 @@ class ShowUser extends Component {
                             </Col>
                             <Col md={3} sm={6}>
                                 
-                                <h3>
-                                    <Label bsStyle="info">Secciones</Label></h3>
-                                <br />
-                                <h4>
-                                    <ListGroup>
-                                        {this.showSection()}
-                                    </ListGroup>
-                                </h4>
-                                <br />
+                                
                                 <h3>
                                     <Label bsStyle="info">Roles</Label></h3>
                                 <br />
@@ -131,7 +178,37 @@ class ShowUser extends Component {
                                     </ListGroup>
                                 </h4>
                                 <br />
-                            </Col>
+
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.showCoordinations()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.showCareers()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.showClassesStudent()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+
+                                <br />
+                                <h4>
+                                    <ListGroup>
+                                        {this.showClassesTeacher()}
+                                    </ListGroup>
+                                </h4>
+                                <br />
+                             </Col>
 
                         </div>
                     </div>
@@ -145,8 +222,4 @@ class ShowUser extends Component {
 
 
 }
-
-
-
-
 export default ShowUser;                

@@ -3,12 +3,15 @@ package com.grupo3.backfcyp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Inheritance
 @Table(name = "users")
-public class User {
+public class User
+{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,59 +20,108 @@ public class User {
     private String password;
     private String email;
     private boolean bloqued;
-    private String career;
 
-    @ManyToMany(mappedBy = "users")
+
     @JsonIgnore
+    @ManyToMany(mappedBy = "users")
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "users")
     @JsonIgnore
-    private List<User> users;
+    @ManyToMany(mappedBy = "users")
+    private List<Career> careers;
 
-    @OneToMany(mappedBy = "student")
+    /* El alumno tiene soluciones */
     @JsonIgnore
+    @OneToMany(mappedBy = "student")
     private List<Solution> solutions;
 
+    /* El profesor tiene problemas */
     @OneToMany(mappedBy = "teacher")
     @JsonIgnore
     private List<Problem> problems;
 
-    @ManyToMany(mappedBy = "users")
+    /* El coordinador tiene coordinaciones que manda */
     @JsonIgnore
-    private List<Section> sections;
+    @OneToMany(mappedBy = "coordinator")
+    private List<Coordination> coordCoordinations;
 
-    @OneToMany(mappedBy = "students")
+    /* El alumno está en varias clases y las clases tienen varios alumnos.  */
+    /* Para el caso del profesor */
+
     @JsonIgnore
-    private List<Class> classUser;
+    @ManyToMany(mappedBy = "students")
+    private List<Class> classesStudents;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "teachers")
+    private List<Class> classesTeachers;
 
-    public List<Class> getClassUser() {
-        return classUser;
+
+    public User()
+    {
+        this.coordCoordinations = new ArrayList<>();
     }
 
-    public void setClassUser(List<Class> classUser) {
-        this.classUser = classUser;
+    public User(String prueba)
+    {
+        this.coordCoordinations = new ArrayList<>();
+        this.roles = new ArrayList<>();
+        this.careers = new ArrayList<>();
+        this.solutions = new ArrayList<>();
+        this.problems = new ArrayList<>();
+        this.classesStudents = new ArrayList<>();
+        this.classesTeachers = new ArrayList<>();
+
+        this.id = Long.valueOf(999);
+        this.name = "nombre"+prueba;
+        this.password = "pass"+prueba;
+        this.email = "email"+prueba;
+        this.bloqued = false;
     }
 
-    public String getCareer() {
-        return career;
+
+    public List<Coordination> getCoordCoordinations() {
+        return coordCoordinations;
     }
 
-    public void setCareer(String career) {
-        this.career = career;
+    public void setCoordCoordinations(List<Coordination> coordCoordinations) {
+        this.coordCoordinations = coordCoordinations;
+    }
+
+    public List<Class> getClasses_students() {
+        return classesStudents;
+    }
+
+    public void addClasse_student(Class classs){
+        this.classesStudents.add(classs);
+    }
+
+    public List<Class> getClasses_teachers() {
+        return classesTeachers;
+    }
+    public void addClasse_teacher(Class classs){
+        this.classesTeachers.add(classs);
+    }
+
+    public void setClasses_teachers(List<Class> classesTeachers) {
+        this.classesTeachers = classesTeachers;
+    }
+
+    public void setClasses_students(List<Class> classesStudents) {
+        this.classesStudents = classesStudents;
+    }
+
+    public List<Career> getCareers() {
+        return careers;
+    }
+
+    public void setCareers(List<Career> careers) {
+        this.careers = careers;
     }
 
     public boolean isBloqued() {
         return bloqued;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 
     public void setBloqued(boolean bloqued) {
         this.bloqued = bloqued;
@@ -131,12 +183,6 @@ public class User {
         this.problems = problems;
     }
 
-    public List<Section> getSections() {
-        return sections;
-    }
 
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
-    }
 
 }

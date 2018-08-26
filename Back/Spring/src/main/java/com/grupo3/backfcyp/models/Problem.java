@@ -9,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "problems")
-public class Problem {
+public class Problem
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,6 +37,26 @@ public class Problem {
 
     @OneToMany(mappedBy = "problem")
     private List<Solution> solutions;
+
+    public Problem()
+    {
+
+    }
+
+    public Problem(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombre"+prueba;
+        this.statement = "state"+prueba;
+        this.language = "lenguaje"+prueba;
+        this.difficulty = 999;
+        this.publish = false;
+        this.teacher = new User();
+
+        this.parameters = new ArrayList<>();
+        this.returns = new ArrayList<>();
+        this.solutions = new ArrayList<>();
+    }
 
     public boolean isPublish() {
         return publish;
@@ -93,7 +114,7 @@ public class Problem {
         this.teacher = teacher;
     }
 
-    public ArrayList<String> getParameters() {
+    public List<String> getParameters() {
         ArrayList<String> params = new ArrayList<>();
         for(Parameter param: this.parameters){
             params.add(param.getName());
@@ -105,18 +126,18 @@ public class Problem {
         this.parameters = parameters;
     }
 
-    public ArrayList<String> getReturns() {
-        ArrayList<String> returns = new ArrayList<>();
+    public List<String> getReturns_string() {
+        ArrayList<String> returnsAux = new ArrayList<>();
         for(Return return_: this.returns){
-            returns.add(return_.getName());
+            returnsAux.add(return_.getName());
         }
-        return returns;
+        return returnsAux;
     }
 
     public List<Parameter> obtenerParametersObj(){
         return this.parameters;
     }
-    public List<Return> obtenerReturnsObj(){
+    public List<Return> getReturns(){
         return this.returns;
     }
 

@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role
+{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,6 +23,18 @@ public class Role {
     @Nullable
     @JoinTable(name="users_roles",joinColumns = @JoinColumn(name = "id_roles"), inverseJoinColumns = @JoinColumn(name = "id_users"))
     private List<User> users;
+
+    public Role()
+    {
+
+    }
+
+    public Role(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.role = "rol"+prueba;
+        this.users = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;

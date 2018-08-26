@@ -2,21 +2,22 @@ package com.grupo3.backfcyp.services;
 
 import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.*;
-import com.grupo3.backfcyp.models.mongoModels.Code;
+import com.grupo3.backfcyp.models.mongomodels.Code;
 import com.grupo3.backfcyp.repositories.*;
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 
-import com.grupo3.backfcyp.strategy.Results;
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 @RestController
 @RequestMapping(value = "/solutions")
 public class SolutionService {
+    private static final String CLOSED = "closed";
+    private static final String SOLUTION = "solution";
+    private static final String STATUS = "status";
 
     @Autowired
     public SolutionRepository solutionRepository;
@@ -50,8 +51,6 @@ public class SolutionService {
         Problem problem = this.problemRepository.findProblemById(id_problem);
         Solution solution = this.solutionRepository.findSolutionByStudentAndProblem(student,problem);
         if(solution != null){
-            System.out.println("Solucion: ");
-            System.out.println(solution);
             return solution;
         }else{
             return null;
@@ -78,22 +77,19 @@ public class SolutionService {
             solution.setProblem(problem);
             solution.setTitle(jsonIn.get("title").toString());
             solution.setErrors(jsonIn.get("errors").toString());
-            solution.setClosed((boolean) jsonIn.get("closed"));
+            solution.setClosed((boolean) jsonIn.get(CLOSED));
             solution.setSuccess((boolean) jsonIn.get("success"));
             solution.setSuccesses(Integer.parseInt(jsonIn.get("successes").toString()));
             solution.setFails(0);
             solution.setTime(0);
             //Se setea la fecha de hoy.
             Date today = new Date();
-            System.out.println(today);
             solution.setTimestamp(today);
-            System.out.println(solution.getTimestamp());
             response.put("code",solution.codeGet(codeRepository));
-            response.put("solution",this.solutionRepository.save(solution));
+            response.put(SOLUTION,this.solutionRepository.save(solution));
             return response;
         }else{
-            System.out.println("La solución ya existe.");
-            response.put("solution",solutionFromRepo);
+            response.put(SOLUTION,solutionFromRepo);
             response.put("code",solutionFromRepo.codeGet(codeRepository));
             return response;
         }
@@ -106,7 +102,6 @@ public class SolutionService {
     @RequestMapping(value = "/execute",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> executeCode(@RequestBody Map<String,Object> jsonIn){
-        System.out.println(jsonIn);
         //Se extraen los valores del post.
         //Solution
         Long id_solution = Long.parseLong(jsonIn.get("id_solution").toString());
@@ -121,7 +116,6 @@ public class SolutionService {
 
 
         String codeFromFront = jsonIn.get("code").toString();
-        System.out.println("Codigo =>"+codeFromFront);
         Test testToFront = null;
 
         List<Test> old_results = solution.testsGet();
@@ -136,48 +130,45 @@ public class SolutionService {
         Code code = new Code();
         code.setCode(codeFromFront);
         code = this.codeRepository.save(code);
-        System.out.println("Code id => "+code.getId());
 
         if(testToFront == null){
-            System.out.println("El test es nulo, por ende no hay codigo que se le parezca en la bd.");
             testToFront = execute(code.getId(),problem,solution);
             testToFront.setSolution(solution);
             testToFront.codeIdSet(code.getId());
+            testToFront.setTime(time);//Se añade el tiempo parcial.
             //Se almacena el test.
-            //this.testRepository.save(test);
 
             //Se genera un objeto para retornar al front.
-            Map<String,Object> return_to_front = new HashMap<String,Object>();
+            Map<String,Object> return_to_front = new HashMap<>();
             return_to_front.put("time",time);
-            return_to_front.put("solution",solution);
+            return_to_front.put(SOLUTION,solution);
             return_to_front.put("code",codeFromFront);
-            System.out.println(return_to_front);
             solution.testsGet().add(testToFront);
             this.solutionRepository.save(solution);
             return return_to_front;
         }else{
-            System.out.println("El codigo ya existe");
             //Se cambian ciertos parametros de solution con los actuales
             //El codigo ya existe por lo tanto solo se actualiza su fecha.
             testToFront.setCreated(new Date());
 
+            testToFront.setTime(time);
             this.testRepository.save(testToFront);
-
+            solution.setSuccess(testToFront.isCorrect());
             //Se genera un objeto para retornar al front.
-            Map<String,Object> return_to_front = new HashMap<String,Object>();
+            Map<String,Object> return_to_front = new HashMap<>();
             return_to_front.put("time",time);
-            return_to_front.put("solution",solution);
+            return_to_front.put(SOLUTION,solution);
             return_to_front.put("code",codeFromFront);
-            System.out.println(return_to_front);
             this.solutionRepository.save(solution);
             return return_to_front;
         }
     }
 
     private Test execute(String codeId, Problem problem, Solution solution){
-        System.out.println("EXECUTE! ");
-        ArrayList<String> params = problem.getParameters();
-        ArrayList<String> returns = problem.getReturns();
+        List<String> paramsAux = problem.getParameters();
+        List<String> returnsAux = problem.getReturns_string();
+        ArrayList<String> params = new ArrayList<>(paramsAux);
+        ArrayList<String> returns = new ArrayList<>(returnsAux);
         Test test = new Test();
         test.codeIdSet(codeId);
         test.setSolution(solution);
@@ -189,19 +180,14 @@ public class SolutionService {
         this.testRepository.save(test);
         this.resultsRepository.saveAll(test.getResults()); //Se guardan los resultados.
         //Si esta correcto
-        boolean isCorrect ;
         //Se aumenta el valor del numero de exitosos o fallidos segun corresponda.
-        if(isCorrect = test.isCorrect()){
-            System.out.println("Es correcto");
+        if(test.isCorrect()){
             solution.addSucc();
             solution.setSuccess(true);
-            //this.solutionRepository.save(solution);
 
         }else{
-            System.out.println("Es incorrecto");
             solution.addFails();
             solution.setSuccess(false);
-            //this.solutionRepository.save(solution);
         }
         return test;
     }
@@ -211,24 +197,25 @@ public class SolutionService {
     @CrossOrigin
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> saveSolution(@RequestBody Map<String,String> jsonIn){
-        Map<String,String> response = new HashMap<>();
+    public Map<String, Object> saveSolution(@RequestBody Map<String,String> jsonIn){
+        Map<String,Object> response = new HashMap<>();
         try{
             Long idSol = Long.parseLong(jsonIn.get("id_solution"));
             Solution solution = this.solutionRepository.findSolutionById(idSol);
             if(solution.isSuccess()){
                 solution.setClosed(true);
+                solution.setSolvedDate(new Date());
                 this.solutionRepository.save(solution);
-                response.put("status","closed");
-                System.out.println("Cerrada");
+                response.put(STATUS,CLOSED);
+                response.put(CLOSED,true);
             }else{
                 //No hay cambios y la solucion aun no se cierra.
-                response.put("status","not success, not closed");
-                System.out.println("No cerrada");
+                response.put(STATUS,"not success, not closed");
+                response.put(CLOSED,false);
             }
 
         }catch (Exception error){
-            response.put("status",error.toString());
+            response.put(STATUS,error.toString());
         }
         return response;
     }
@@ -243,7 +230,7 @@ public class SolutionService {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/deleteAll",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/all",method = RequestMethod.DELETE)
     @ResponseBody
     public void deleteAll(){
         this.solutionRepository.deleteAll();
@@ -260,7 +247,6 @@ public class SolutionService {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public void test(){
-        System.out.println("Test!");
     }
 
 

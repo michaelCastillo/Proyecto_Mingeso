@@ -1,8 +1,7 @@
+
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import { Grid, Row, FormControl, Col, Label, Panel, Checkbox, ListGroup, ListGroupItem, DropdownButton, MenuItem, Table, ButtonGroup, Button, ButtonToolbar } from 'react-bootstrap';
-import UserProfile from './UserProfile';
+import { Grid, Row, FormControl, Col, Label, Checkbox, Button } from 'react-bootstrap';
 
 class EditUser extends Component {
 
@@ -60,14 +59,7 @@ class EditUser extends Component {
             }).catch(error => {
                 console.log(error.response)
             });
-        axios.get(`http://35.226.163.50:8080/Backend/sections/`)
-            .then(res => {
-                const sections = res.data;
-                //Se asigna falso para opened, para el collapse
-                this.setState({ allSections: sections });
-            }).catch(error => {
-                console.log(error.response)
-            });
+        
     }
     updateUser = (event) => {
         event.preventDefault();
@@ -330,26 +322,7 @@ class EditUser extends Component {
                             </p>
                         </Col>
 
-                        <Col md={3} sm={6}>
-                            <h3>
-                                <Label bsStyle="danger">Secciones</Label></h3>
-                            <br />
-                            <h4>
-                                <ListGroup>
-                                    {this.createSelectOptionsSection()}
-                                </ListGroup>
-                            </h4>
-                            <br />
-                            <h3>
-                                <Label bsStyle="danger">Roles</Label></h3>
-                            <br />
-                            <h4>
-                                <ListGroup>
-                                    {this.createSelectOptions()}
-                                </ListGroup>
-                            </h4>
-                            <br />
-                        </Col>
+                       
                     </Row>
                     <Row>
                     <Col md={5} xs={5}>
@@ -370,6 +343,7 @@ class EditUser extends Component {
 
 
 }
+
 
 
 

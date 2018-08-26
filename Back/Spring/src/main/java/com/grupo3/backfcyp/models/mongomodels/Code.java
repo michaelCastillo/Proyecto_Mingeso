@@ -1,4 +1,4 @@
-package com.grupo3.backfcyp.models.mongoModels;
+package com.grupo3.backfcyp.models.mongomodels;
 
 import javax.persistence.Id;
 
@@ -9,13 +9,19 @@ public class Code {
 
     private String code;
 
+    public Code()
+    {
 
-    @Override
-    public String toString() {
-        return String.format(
-                "Customer[id=%s, firstName='%s', lastName='%s']",
-                id, code);
     }
+
+    public Code(String prueba)
+    {
+        this.code = prueba;
+        this.id = "9";
+}
+
+
+
 
     public String getId() {
         return id;

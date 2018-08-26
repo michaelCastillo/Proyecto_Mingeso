@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Grid,Row,Col,Panel,Collapse,Well, Label} from 'react-bootstrap';
 import axios from 'axios';
-import {bullhorn} from 'react-icons-kit/icomoon/bullhorn';
-import {lock} from 'react-icons-kit/icomoon/lock';
 import {trashO} from 'react-icons-kit/fa/trashO';
-import {ic_unarchive} from 'react-icons-kit/md/ic_unarchive';
-import {newspaper} from 'react-icons-kit/icomoon/newspaper';
-import {edit} from 'react-icons-kit/fa/edit';
 import {publish} from 'react-icons-kit/entypo/publish';
-import {ic_code} from 'react-icons-kit/md/ic_code';
-import {  Link } from "react-router-dom";
 import './ShowProblems.css';
 
 
@@ -33,6 +26,7 @@ class ShowProblems extends Component{
 
     componentDidMount() {
             let global = `http://35.226.163.50:8080/Backend/problems/`;
+            let local = `http://localhost:1313/problems`;
             axios.get(global)
                 .then(res => {
                     const problems = res.data;
@@ -65,10 +59,11 @@ class ShowProblems extends Component{
 
         navbarlinks(problemid){
             const role = localStorage.getItem('role');
-          
+            
             if (this.props.authenticated   && role == "su") {
                 return[
                     <div>
+                        
                         <Col md={1} sm={6}>                                    
                         <Button href={`/code/${problemid}`} >
                         A programar! 
@@ -78,7 +73,7 @@ class ShowProblems extends Component{
                         <Icon icon={publish} size={25}/>
                         </Col>
                         <Col md={1} sm={6} >
-                        <Icon icon ={edit} size={25} />
+                                                        
                         </Col>
                         <Col md={1} sm={6}>
                         <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
@@ -97,7 +92,11 @@ class ShowProblems extends Component{
                         <Button href={`/code/${problemid}`} >
                         A programar! 
                         </Button>
-                        </Col>     
+                        </Col>   
+                        <Col md={1} sm={6} >
+                        <a href={`/problemsProfile/${problemid}`}><span class="glyphicon glyphicon-eye-open"></span></a>
+                                                        
+                        </Col>  
                     </div>
 
                     
@@ -112,7 +111,7 @@ class ShowProblems extends Component{
                         <Icon icon={publish} size={25}/>
                         </Col>
                         <Col md={1} sm={6} >
-                        <Icon icon ={edit} size={25} />
+                        <a href={`/problemsProfile/${problemid}`}><span class="glyphicon glyphicon-eye-open"></span></a>
                         </Col>
                         <Col md={1} sm={6}>
                         <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />

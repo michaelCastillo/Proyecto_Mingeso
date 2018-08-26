@@ -7,7 +7,7 @@ import ProblemRoutes from '../problems/ProblemRoutes';
 import UserRoutes from '../users/UserRoutes';
 import Login from '../login/login'
 import Register from '../register/register'
-
+import ProblemProfile from '../problems/ProblemProfile';
 
 
 class Routes extends Component{
@@ -31,6 +31,7 @@ class Routes extends Component{
                 } />
                 <Route path="/code/:id" component={Code}/>
                 <Route path="/users/:id" component={UserProfile}/>
+                <Route path="/problemsProfile/:id" component={ProblemProfile}/>
                 <Route path="/createProblem" component /> 
                 <Route path="/home" component ={Home}/>
                 <Route path="/login" component ={Login}/>

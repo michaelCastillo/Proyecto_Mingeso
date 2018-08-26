@@ -14,9 +14,9 @@ public class Parameter {
     @Column(name = "id")
     private Long id;
 
-
+    private int pos;
     private String name;
-
+    private boolean hidden;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_problem")
@@ -25,8 +25,34 @@ public class Parameter {
 
     //constructores
 
+    public Parameter()
+    {
 
+    }
 
+    public Parameter(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombre"+prueba;
+        this.hidden = false;
+        this.problem = new Problem();
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
 
     public Long getId() {
         return id;

@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import { Label } from 'react-bootstrap';
 
 
 
@@ -51,7 +50,7 @@ class Timer extends Component{
         
         return(
             <div> 
-                <Label> Han pasado {this.state.time} segundos.</Label>
+                
 
             </div>
         );
