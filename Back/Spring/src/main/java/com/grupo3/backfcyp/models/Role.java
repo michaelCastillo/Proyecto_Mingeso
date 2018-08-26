@@ -32,8 +32,8 @@ public class Role
     public Role(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.role = "rolPrueba";
-        this.users = new ArrayList<User>();
+        this.role = "rol"+prueba;
+        this.users = new ArrayList<>();
     }
 
     public Long getId() {

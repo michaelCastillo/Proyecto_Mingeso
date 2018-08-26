@@ -1,6 +1,5 @@
 package com.grupo3.backfcyp.models;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.Before;
 import org.junit.Test;
 

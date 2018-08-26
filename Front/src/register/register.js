@@ -249,7 +249,8 @@ class Register extends Component {
     return items;
   }
 
-  handleName(event) {
+  handleName(event) 
+  {
     this.setState({ name: event.target.value });
   };
 
@@ -271,7 +272,7 @@ class Register extends Component {
   };
 
   componentDidMount() {
-    axios.get(`http://35.226.163.50:8080/Backend/roles/`)
+    axios.get(`http://35.226.163.50:8080/Backend/roles/`) 
       .then(res => {
         const roles = res.data;
         //Se asigna falso para opened, para el collapse
@@ -386,12 +387,12 @@ class Register extends Component {
 
   };
 
+  //############################### RENDER ######################################
+
   render() {
     return (
       <div className="Register"  >
         <row>
-
-
           <form onSubmit={this.handleSubmit}>
             <FormGroup controlId="name" bsSize="large">
               <ControlLabel>Nombre</ControlLabel>
@@ -419,7 +420,7 @@ class Register extends Component {
               />
             </FormGroup>
             <FormGroup controlId="email" bsSize="large">
-              <ControlLabel>E-mail</ControlLabel>
+              <ControlLabel>Correo</ControlLabel>
               <FormControl
                 autoFocus
                 type="text"

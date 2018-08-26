@@ -1,9 +1,7 @@
 package com.grupo3.backfcyp.repositories;
 
 
-import com.google.gson.JsonObject;
 import com.grupo3.backfcyp.models.Problem;
-import com.grupo3.backfcyp.models.SimpleProblem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

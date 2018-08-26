@@ -1,4 +1,4 @@
-package com.grupo3.backfcyp.models.mongoModels;
+package com.grupo3.backfcyp.models.mongomodels;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class StatementTest
     @Before
     public void setUp() throws Exception
     {
-        state = new Statement("Prueba", "Prueba");
+        state = new Statement("9", "Estado");
     }
 
     @Test

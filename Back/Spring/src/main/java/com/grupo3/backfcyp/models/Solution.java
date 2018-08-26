@@ -2,8 +2,7 @@ package com.grupo3.backfcyp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -70,19 +69,19 @@ public class Solution
     public Solution(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.title = "tituloPrueba";
+        this.title = "titulo"+prueba;
         this.fails = 9;
         this.time = 9;
         this.timestamp = new java.util.Date();
         this.success = false;
         this.closed = false;
         this.successes = 9;
-        this.errors = "errorPrueba";
+        this.errors = "error"+prueba;
         this.solvedDate = new java.util.Date();
         //this.codeRepositoryMongo
         this.student = new User();
         this.problem = new Problem();
-        this.tests = new ArrayList<Test>();
+        this.tests = new ArrayList<>();
     }
 
 
@@ -96,13 +95,13 @@ public class Solution
 
     public String codeGet(CodeRepository codeRepository){
 
-        List<Test> tests = this.tests;
-        if(!tests.isEmpty()){
-            if(tests.size()>1){
-                Collections.sort(tests,new SortByDate());
+        List<Test> testsAux = this.tests;
+        if(!testsAux.isEmpty()){
+            if(testsAux.size()>1){
+                Collections.sort(testsAux,new SortByDate());
             }
-            if(tests.size() > 0){
-                return tests.get(0).getCode(codeRepository);
+            if(!testsAux.isEmpty()){
+                return testsAux.get(0).getCode(codeRepository);
             }
             return "ingrese codigo";
         }else{
@@ -121,6 +120,7 @@ public class Solution
         }
         if(tests.size() > 0)
         {
+
             return tests.get(0);
         }
         return null;

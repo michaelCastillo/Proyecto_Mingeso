@@ -46,16 +46,16 @@ public class Problem
     public Problem(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.name = "nombrePrueba";
-        this.statement = "statePrueba";
-        this.language = "lenguajePrueba";
+        this.name = "nombre"+prueba;
+        this.statement = "state"+prueba;
+        this.language = "lenguaje"+prueba;
         this.difficulty = 999;
         this.publish = false;
         this.teacher = new User();
 
-        this.parameters = new ArrayList<Parameter>();
-        this.returns = new ArrayList<Return>();
-        this.solutions = new ArrayList<Solution>();
+        this.parameters = new ArrayList<>();
+        this.returns = new ArrayList<>();
+        this.solutions = new ArrayList<>();
     }
 
     public boolean isPublish() {
@@ -114,7 +114,7 @@ public class Problem
         this.teacher = teacher;
     }
 
-    public ArrayList<String> getParameters() {
+    public List<String> getParameters() {
         ArrayList<String> params = new ArrayList<>();
         for(Parameter param: this.parameters){
             params.add(param.getName());
@@ -126,12 +126,12 @@ public class Problem
         this.parameters = parameters;
     }
 
-    public ArrayList<String> getReturns_string() {
-        ArrayList<String> returns = new ArrayList<>();
+    public List<String> getReturns_string() {
+        ArrayList<String> returnsAux = new ArrayList<>();
         for(Return return_: this.returns){
-            returns.add(return_.getName());
+            returnsAux.add(return_.getName());
         }
-        return returns;
+        return returnsAux;
     }
 
     public List<Parameter> obtenerParametersObj(){

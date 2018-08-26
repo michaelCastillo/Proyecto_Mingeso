@@ -15,7 +15,7 @@ public class CareerTest
     @Before
     public void setUp() throws Exception
     {
-        carrer = new Career("Prueba");
+        carrer = new Career("nombrePrueba");
     }
 
     @Test

@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import {Line} from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import {Row, Col,Button} from 'react-bootstrap';
-import moment from 'moment';
+
+import { Grid, Row, Col,Button,InputGroup, Popover } from 'react-bootstrap';
+import moment, { relativeTimeThreshold } from 'moment';
+
 import Chart from './charts'
 import axios from 'axios';
+import {Spin } from 'antd';
+import "./time.css";
 
 
 
@@ -22,7 +26,12 @@ export default class ChartLine extends Component {
           nameDate:"",
           type : "",
           nombreTipo : "",
-          dateActual: ""
+          dateActual: "",
+          ready:false,
+          signal:false,
+          idcurrent:0,
+          ready1:false,
+          message:""
         
         };
         this.handleChange = this.handleChange.bind(this);
@@ -31,13 +40,10 @@ export default class ChartLine extends Component {
       }
 
       formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
+            var month = "01",
+            day = "01",
+            year = "1996";
     
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
     
         return [year, month, day].join('-');
     }
@@ -52,15 +58,17 @@ export default class ChartLine extends Component {
       }
 
       handleButton(event){
-
+        
         this.handleSubmit(this.props.userID,this.props.type);
 
       }
 
       handleSubmit = (id,type) => {
+        this.state.idcurrent = this.props.userID;
         var post = {dateLimit:this.state.dateActual};
         console.log(post);
         console.log(this.state.dateActual);
+        console.log(this.state.type);
        if(type === "student"){
         axios.post(`http://35.226.163.50:8080/Backend/stats/student/` + id + '/problemsSolved' ,post)
        .then(res => {
@@ -68,11 +76,13 @@ export default class ChartLine extends Component {
             console.log(res.data);
             this.state.nombreTipo  = "estudiante";
             const dateList=res.data.result;
-            this.setState({ dateList });
+            const message = res.data.message;
+            this.setState({ dateList, message });
             const listItems = dateList.map(date => date.date);
             this.setState({listItems});
             const listDate = dateList.map(date => date.numberSolved);
-            this.setState({listDate});
+            this.setState({listDate,ready : true});
+            this.state.type = "";
 
           
           })
@@ -85,11 +95,13 @@ export default class ChartLine extends Component {
               console.log(res.data);
               this.state.nombreTipo  = "carrera";
               const dateList=res.data.result;
-              this.setState({ dateList });
+              const message = res.data.message;
+              this.setState({ dateList, message });
               const listItems = dateList.map(date => date.date);
               this.setState({listItems});
               const listDate = dateList.map(date => date.numberSolved);
-              this.setState({listDate});
+              this.setState({listDate,ready : true});
+              this.state.type = "";
 
   
             
@@ -103,11 +115,13 @@ export default class ChartLine extends Component {
                 console.log(res.data);
                 this.state.nombreTipo  = "clase";
                 const dateList=res.data.result;
-                this.setState({ dateList });
+                const message = res.data.message;
+                this.setState({ dateList, message });
                 const listItems = dateList.map(date => date.date);
                 this.setState({listItems});
                 const listDate = dateList.map(date => date.numberSolved);
-                this.setState({listDate});
+                this.setState({listDate,ready : true});
+                this.state.type = "";
 
     
               
@@ -121,15 +135,19 @@ export default class ChartLine extends Component {
                   console.log(res.data);
                   this.state.nombreTipo  = "coordinación";
                   const dateList=res.data.result;
-                  this.setState({ dateList });
+                  const message = res.data.message;
+                  this.setState({ dateList, message });
                   const listItems = dateList.map(date => date.date);
                   this.setState({listItems});
                   const listDate = dateList.map(date => date.numberSolved);
-                  this.setState({listDate});
+                  this.setState({listDate,ready : true});
+                  this.state.type = "";
 
                 
                 })
               }
+
+              this.setState({ready : false, ready1:false});
 
 
 
@@ -137,9 +155,14 @@ export default class ChartLine extends Component {
 
       
       render() {
+        if(this.state.idcurrent != this.props.userID){
+          this.state.ready = false;   
+          this.state.ready1=true;    
+          this.state.message = "";  
+          }  
           this.state.dateActual=this.formatDate(this.state.startDate._d);
           console.log(this.state.dateActual);
-          <Chart userID={this.state.userID} type = {this.state.type}/>
+          <Chart userID={this.state.userID} type = {this.state.type} signal = {this.state.signal}/>
              const data = {
               labels: this.state.listItems,
               datasets: [
@@ -166,42 +189,38 @@ export default class ChartLine extends Component {
                 }
               ]
             };
-  
-          return (
-              <div>
-                  <Row > 
-                      <Col md={10}  smOffset={2} xs={10}>
-                          <DatePicker
-                              selected={this.state.startDate}
-                              onChange={this.handleChange}
-                              dateFormat="YYYY-MM-DD"
-                              todayButton={"today"}
-                              maxDate={moment()}
-                              onYearChange = {this.handleChange}
-                              
-                          />
-                          <br/>
-                            <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
 
-                      </Col>    
-                      <Col md={6} smOffset={2} xs={6}>
-                          <h2>Cantidad problemas resueltos desde: {this.state.dateActual} <br/>
-                              Tipo:{this.state.nombreTipo}
-                          
-                          </h2>
+         //   <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
+          if(this.state.ready !== true ){
+              if(this.state.ready1===true ){
+                   return(
+                    <div>                   
+                    <Line data={data}
+                    width = {600}
+                    height = {530}  
+                    />
+                  </div>
+            )}
+            else{
+              return(
+                <div  className="querySpin">
+                  <Spin tip="" size="large">
+                  </Spin>
+                </div>
+               
+              )
+            } 
+          } 
+          return (
+            <div>
                           <Line data={data}
                           width = {600}
-                          height = {400}  
+                          height = {530}  
                           />
-                      </Col>
-                      
-  
-                  
-                  </Row> 
                 </div>
-  
               );
             }
+
 
 
 

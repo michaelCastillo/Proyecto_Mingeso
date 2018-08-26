@@ -1,12 +1,9 @@
 package com.grupo3.backfcyp;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @JsonAutoDetect

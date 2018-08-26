@@ -3,13 +3,18 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert,Well,Grid,Form,FormControl, Row, Col, Label, Panel ,DropdownButton,MenuItem ,Table, ButtonGroup,Button,ButtonToolbar, FormGroup, ControlLabel} from 'react-bootstrap';
+import { Well,Grid ,Row, Col, Label ,Table, ButtonGroup,Button} from 'react-bootstrap';
 import Timer from './Timer';
+
 import {arrowLeftLight} from 'react-icons-kit/metrize/arrowLeftLight'
 import Icon from 'react-icons-kit';
 
 //React Login
 import ReactLoading from "react-loading";
+
+import {Alert,  Spin } from 'antd';
+import "./AddCode.css";
+
 
 //React ACE!
 import brace from 'brace';
@@ -217,12 +222,14 @@ class Code extends Component{
                         let closeSol = {
                             id_solution:this.state.solution.id
                         }
+
                         axios.post(global_url,closeSol)
                         .then(res => {
                             let solution = this.state.solution;
                             solution.closed = res.data.closed;
                             this.setState({solution:solution});
                             if(!res.data.closed){
+                                
                                 alert("Tu solución aún no resuelve el problema, vuelve a intentarlo!");
                             }
                         }).catch(error => {
@@ -232,6 +239,7 @@ class Code extends Component{
                     this.editor.current.isCharging(false);
                     //Aqui se cambia el chart.
                     this.setNumSuccFails();
+                    alert("Tu código ha sido ejecutado exitosamente");
                 }).catch(error => {
                     alert("Error");
                     alert(error.response);
@@ -1272,34 +1280,55 @@ class Code extends Component{
                     var total = this.state.nsucc + this.state.nfails;
                     if(err != null){
                         if(err != ""){
-
+                            
+                            var error = "Tu codigo ha resultado en estado de error: "+err;
                             return(
-                                <Alert bsStyle="danger">
-                                <strong>Error: </strong> {err}
-                            </Alert>
+                                <div className="codeAlert">
+                                <Alert
+                                message="Error"
+                                description= {error}
+                                type="error"
+                                showIcon
+                              />
+                              </div>
+                                
                         );
                     }else{
                         if(total == this.state.nsucc){
                             console.log("closed ",this.state.solution.closed);
                             if(this.state.solution.closed){
                                 return(
-                                    <Alert bsStyle="success">
-                                        <strong>   Problema resuelto! y cerrado </strong>
-                                    </Alert>
+                                    <div className="codeAlert">
+                                        <Alert
+                                        message="Problema solucionado y enviado"
+                                        description="Tu solucion ha resuelto el problema y ha sido finalizado y cerrada."
+                                        type="success"
+                                        showIcon
+                                    />
+                                  </div>
                                     );
                             }
 
                             return(
-                                <Alert bsStyle="success">
-                                    <strong>   Problema resuelto!  </strong>
-                                </Alert>
-                            );
+                                    <div className="codeAlert">
+                                        <Alert
+                                        message="Problema resuelto"
+                                        description="Tu codigo ha resuelto el problema pero aun no ha sido cerrado, para hacerlo presiona enviar."
+                                        type="success"
+                                        showIcon
+                                    />
+                                  </div>                            );
                             
                             }else{
                                 return(
-                                    <Alert bsStyle="danger">
-                                        <strong>   Tu solución aún no resuelve el problema, sigue intentandolo!  </strong>
-                                    </Alert>
+                                    <div className="codeAlert">
+                                        <Alert
+                                        message="Problema NO resuelto"
+                                        description= "Tu solución aún no resuelve el problema, sigue intentandolo! " 
+                                        type="error"
+                                        showIcon
+                                    />
+                                    </div>
                                 );  
                             }
                         }
@@ -1314,7 +1343,9 @@ class Code extends Component{
         console.log(this.props);
         if(!this.state.ready){
             return (
-                <ReactLoading type={"spin"} color={"#000"} height={667} width={375} />
+                <div className="spinLoadingAddCode">
+                    <Spin size="large" tip="Cargando el editor del problema ..."></Spin>
+                </div>
             );
         }else{
             return(

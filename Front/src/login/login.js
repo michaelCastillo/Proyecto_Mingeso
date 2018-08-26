@@ -31,30 +31,30 @@ render(){
               <div className="Login">
                 <form onSubmit={ handleSubmit(this.submit) } >
                  <FormGroup controlId="name"  bsSize="large">
-                 <ControlLabel>Email: </ControlLabel>
+                 <ControlLabel>Correo: </ControlLabel>
                  <br/>
                  <Field name="email"
                    component="input"
                    type="text"
-                   placeholder="Email" 
+                   placeholder="Correo" 
                  />
                 </FormGroup>
                 <FormGroup controlId="password" bsSize="large">
-                  <ControlLabel>Password: </ControlLabel>
+                  <ControlLabel>Contraseña: </ControlLabel>
                   <br/>
                   <Field 
                    
                    name="password" 
                    component="input"
                    type="password"
-                   placeholder="Password" 
+                   placeholder="Contraseña" 
                 />
                 </FormGroup>
                
                 <Button             
                   type="submit" 
                 >
-                  Login
+                  Iniciar Sesión
                 </Button>
 
               </form>

@@ -29,13 +29,14 @@ public class Career
         this.users = new ArrayList<>();
     }
 
+
     public Career(String prueba)
     {
         this.id = Long.valueOf(999);
-        this.name = "nombrePrueba";
+        this.name = prueba;
         this.code = "09";
 
-        List<User> lista = new ArrayList<User>();
+        List<User> lista = new ArrayList<>();
 
         this.users = lista;
     }

@@ -6,7 +6,6 @@ import com.grupo3.backfcyp.strategy.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,7 +28,6 @@ public class ResultsService {
     @ResponseBody
     public void deleteResult(@PathVariable Long id){
         this.resultsRepository.deleteById(id);
-        System.out.println("Se ha borrado.  ");
     }
 
     @CrossOrigin
