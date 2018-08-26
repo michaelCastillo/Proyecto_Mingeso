@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Label,ListGroup, ListGroupItem,FormGroup,ControlLabel,FormControl,Button } from 'react-bootstrap';
+import {ControlLabel} from 'react-bootstrap';
 import axios from 'axios';
+import "./time.css";
 import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Chart from './charts';
-import ReactLoading from "react-loading";
 
+import {Spin } from 'antd';
 
 export default class TimeChart extends Component {
     
@@ -14,15 +15,15 @@ export default class TimeChart extends Component {
         this.state = {
           userID : 0,
           type : "",
-          textTime :0,
+          textTime :"--",
           nombreTipo: "",
-          ready:false,
+          ready:true,
           signal:false,
           idcurrent: 0
         
         };
      
-
+        this.handleButton = this.handleButton.bind(this);
     }
    
   
@@ -30,83 +31,88 @@ export default class TimeChart extends Component {
 
     componentDidMount() {
 
-      const type = this.props.type;
-      const id = this.props.userID;
-      this.state.idcurrent = id;
+      this.setState({
+        type:this.props.type,
+        id:this.props.userID,
+        idcurrent:this.props.userID,
       
-      console.log(this.state.id);
-       if(type === "student"){
-        axios.get(`http://35.226.163.50:8080/Backend/stats/users/` + id + '/totalTime')
-       .then(res => {
-            console.log(res);
-            console.log(res.data);
-            console.log(res.data.time);
-            this.state.nombreTipo  = "estudiante";
-            const textTime=res.data.time;
-            this.setState({ textTime,ready:true });
-
-          
-          })
-        }
-        
-        if(type === "careers"){
-          axios.get(`http://35.226.163.50:8080/Backend/stats/career/` + id + '/totalTime')
+      });
+      }
+      
+      postTime(){
+        this.setState({ ready:false });
+        var type = this.state.type;
+        var id = this.state.id;
+        if(type === "student"){
+          axios.get(`http://35.226.163.50:8080/Backend/stats/users/` + id + '/totalTime')
          .then(res => {
               console.log(res);
               console.log(res.data);
-              console.log(res.data.totalTime);
-
-              this.state.nombreTipo  = "carrera";
-              const textTime=res.data.totalTime;
-              this.setState({ textTime,ready:true});
-
-            
-
+              console.log(res.data.time);
+              this.state.nombreTipo  = "estudiante";
+              const textTime=res.data.time;
+              this.setState({ textTime,ready:true });
   
             
             })
           }
-
-          if(type === "classes"){
-            axios.get(`http://35.226.163.50:8080/Backend/stats/classes/` + id + '/totalTime')
+          
+          if(type === "careers"){
+            axios.get(`http://35.226.163.50:8080/Backend/stats/career/` + id + '/totalTime')
            .then(res => {
                 console.log(res);
                 console.log(res.data);
                 console.log(res.data.time);
-
-                this.state.nombreTipo  = "clase";
+  
+                this.state.nombreTipo  = "carrera";
                 const textTime=res.data.time;
-                this.setState({ textTime ,ready:true });
-                
-    
-              
+                this.setState({ textTime,ready:true});          
               })
             }
-
-            if(type === "coordinations"){
-                axios.get(`http://35.226.163.50:8080/Backend/stats/coordination/` + id + '/totalTime')
+  
+            if(type === "classes"){
+              axios.get(`http://35.226.163.50:8080/Backend/stats/classes/` + id + '/totalTime')
              .then(res => {
                   console.log(res);
                   console.log(res.data);
                   console.log(res.data.time);
-
-                 this.state.nombreTipo  = "coordinación";
-                 const textTime=res.data.time;
-                 this.setState({ textTime ,ready:true});   
+  
+                  this.state.nombreTipo  = "clase";
+                  const textTime=res.data.time;
+                  this.setState({ textTime ,ready:true });
                   
+      
                 
                 })
               }
-
-           
-
-      }  
-
+  
+              if(type === "coordinations"){
+                  axios.get(`http://35.226.163.50:8080/Backend/stats/coordination/` + id + '/totalTime')
+               .then(res => {
+                    console.log(res);
+                    console.log(res.data);
+                    console.log(res.data.time);
+  
+                   this.state.nombreTipo  = "coordinación";
+                   const textTime=res.data.time;
+                   this.setState({ textTime ,ready:true});   
+                    
+                  
+                  })
+                }
+  
+             
+  
+      }
+      
+      handleButton(){
+        this.postTime();
+      }
 
 
 render(){
    if(this.state.idcurrent != this.props.userID){
-    this.setState({ ready:false });
+    
 
     this.componentDidMount()
 
@@ -122,9 +128,10 @@ render(){
     if(this.state.ready !== true ){
 
       return(
-
-        <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
-
+         <div className="querySpinTime">
+            <Spin tip="" size="large">
+            </Spin>
+          </div>
       )
 
       
@@ -133,9 +140,7 @@ return(
 
     <div>
 
-        <Row>
  
-         <Col md={8} smOffset={3} xs={8} sm = {2}>
          <h4>
          <ControlLabel>Tiempo total empleado en resolver problemas (segundos): </ControlLabel>
         </h4>
@@ -145,8 +150,6 @@ return(
              percentage={percentage}
              text={`${this.state.textTime} s`}
         />   
-        </Col>
-        </Row>
          </div>
 
 

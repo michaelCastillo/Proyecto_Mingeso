@@ -1,0 +1,43 @@
+
+
+.treeSelect{
+    margin-left: 30%;
+    margin-top: 2%;
+    width: 40%;
+}
+.aceptButton{
+    margin-left: 5%;
+    margin-bottom: 1%;
+    width: 20%;
+}
+.title{
+    margin-left: 20%;
+}
+
+.lineChart{
+    margin-left: 5%
+}
+
+.firstSpin{
+    margin-top: 10%;
+    margin-left: 45%;
+    width: 100px;
+    height: 100px;
+}
+
+.timeCircle{
+    width: 350px;
+    height: 350px;
+    margin-left: 15%
+
+}
+
+.containerStatics{
+    margin-top: 3%;
+}
+
+
+
+.rowCharts{
+    margin-top: 5%;
+}

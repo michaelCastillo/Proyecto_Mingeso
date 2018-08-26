@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ScrollArea from 'react-scrollbar';
+import './charts.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Well, Row, Col,FormGroup,ControlLabel,FormControl,Button,Grid } from 'react-bootstrap';
 import moment, { relativeTimeThreshold } from 'moment';
@@ -7,7 +8,7 @@ import axios from 'axios';
 import ChartLine from './chartsLine'
 import TimeChart from './time'
 
-import { TreeSelect } from 'antd';
+import { TreeSelect, Spin } from 'antd';
 import 'antd/dist/antd.css';
 import ReactLoading from "react-loading";
 
@@ -221,6 +222,7 @@ onChange = (value) => {
   }
 
   updateCharts(){
+    this.state.chartcomponent=true;
       this.chart.current.handleButton();
       this.timeChart.current.handleButton();
   }
@@ -243,7 +245,7 @@ onChange = (value) => {
 
     if((this.state.type) !== ""){
 
-        this.state.chartcomponent=true;
+        this.state.chartcomponent=true;        
 
 
        } 
@@ -364,67 +366,52 @@ else{
         return(
             
          <div>
-            <Col smOffset = {5}> 
-          <ReactLoading type={"spin"} color={" #2876e1 "} height={100} width={100} />
+            <Col className="firstSpin"> 
+            <Spin tip="Cargando ..." size="large">
+            </Spin>
           </Col>
         </div>
         )
       } 
       
         return (
-            <div>
+            <Grid className="containerStatics">
                 <Row> 
-                 <Col smOffset = {3}>
-                 <h4>
-                 <ControlLabel>Seleccione categoría de alumnos, de los cuales desea conocer estadísticas: </ControlLabel>
-                 </h4>
-                 </Col>
-                <br/>
-                
-                <br/>
-                 <Row smOffset = {5}>
-             
-                    <Col  md={4} xs={4}  smOffset = {5} >
-
-                        <TreeSelect
-                            showSearch
-                            style={{ width: 300 }}
-                            value={this.state.value}
-                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                            placeholder="Seleccione coordinación"
-                            allowClear
-                            onChange={this.onChange} 
-                            treeData={treeData1}    
-                        />
-                    </Col>
-                   <br/>
-                   <br/>
-                   <br/>
-                   <br/>
-                   <br/>
-                   <br/>
-                   <br/>
-                <Col  md={5} xs={5}  smOffset = {1} >
+                    <h4 className="title">
+                        <ControlLabel>Seleccione categoría de alumnos, de los cuales desea conocer estadísticas: </ControlLabel>
+                    </h4>
+                </Row>
+                <Row>
+                        <Col  className="treeSelect">
+                            <TreeSelect 
+                                showSearch
+                                style={{ width: 300 }}
+                                value={this.state.value}
+                                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                placeholder="Seleccione coordinación"
+                                allowClear
+                                onChange={this.onChange} 
+                                treeData={treeData1}    
+                            />
+                                <Button className="aceptButton" bsStyle="info" onClick={this.updateCharts}> Aceptar </Button>
+                            
+                        </Col>
+                        <Col >
+                        </Col>
+                </Row>
+                <Row className="rowCharts">
+                <Col  md={5} className="lineChart">
                   
                   {component}
 
                    
                  </Col>
 
-                <Col  md={4} xs={4}  smOffset = {1} >
+                <Col  md={5} className="timeCircle">
                     {component2}
                 </Col>
-
-                    </Row>
                 </Row>
-            
- 
-                
-
-              
-            
-              </div>
-
+            </Grid>
             );
         }   
           }

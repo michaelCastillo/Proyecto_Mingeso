@@ -6,8 +6,7 @@ import { Grid, Row, Col,Button,InputGroup, Popover } from 'react-bootstrap';
 import moment, { relativeTimeThreshold } from 'moment';
 import Chart from './charts'
 import axios from 'axios';
-import ReactLoading from "react-loading";
-
+import {Spin } from 'antd';
 
 
 
@@ -38,13 +37,10 @@ export default class ChartLine extends Component {
       }
 
       formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
+            var month = "01",
+            day = "01",
+            year = "1996";
     
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
     
         return [year, month, day].join('-');
     }
@@ -193,98 +189,45 @@ export default class ChartLine extends Component {
 
          //   <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
           if(this.state.ready !== true ){
-              if(this.state.ready1===true || this.state.message === "No se encuentran soluciones en las que haya trabajado el estudiante"){
+              if(this.state.ready1===true ){
                    return(
-                          <div> 
-                          <Col md={10}  smOffset={1.3} xs={10}>
-                          <Popover
-                              id="popover-basic"
-                              placement="right"
-                              positionLeft={180}
-                              positionTop={60}
-                              title=""
-                              >
-                            {this.state.message}
-                          </Popover>
-                          <DatePicker
-                              selected={this.state.startDate}
-                              onChange={this.handleChange}
-                              dateFormat="YYYY-MM-DD"
-                              todayButton={"today"}
-                              maxDate={moment()}
-                              onYearChange = {this.handleChange}
-                              
-                          />
-                          <br/>
-                            <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
-                         </Col> 
-              
-                         </div>
-            )
-            }
+                    <div>
+                    <br/>
+                      <br/>
+                      <br/> 
+                        Categoría:--
+                   
+                    <Line data={data}
+                    width = {600}
+                    height = {400}  
+                    />
+                  </div>
+            )}
             else{
               return(
-                <div> 
-                <Col md={10}  smOffset={1.3} xs={10}>
-                
-                <DatePicker
-                    selected={this.state.startDate}
-                    onChange={this.handleChange}
-                    dateFormat="YYYY-MM-DD"
-                    todayButton={"today"}
-                    maxDate={moment()}
-                    onYearChange = {this.handleChange}
-                    
-                />
-                <br/>
-                  <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
-               </Col> 
-               <ReactLoading type={"spin"} color={" #2876e1 "} height={667} width={375} />
-               </div>
+                <div  className="querySpin">
+                  <Spin tip="" size="large">
+                  </Spin>
+                </div>
+               
               )
-
             } 
           } 
-          
-          
           return (
-              <div>
-                  <Row > 
-                      <Col md={10}  smOffset={1.3} xs={10}>
-                          
-                          <DatePicker
-                              selected={this.state.startDate}
-                              onChange={this.handleChange}
-                              dateFormat="YYYY-MM-DD"
-                              todayButton={"today"}
-                              maxDate={moment()}
-                              onYearChange = {this.handleChange}
-                              
-                          />
+            <div>
                           <br/>
-                            <Button bsStyle="info" onClick = {this.handleButton}>Aceptar</Button>
                             <br/>
-                            <br/>
-                      </Col>    
-                      <Col md={8} smOffset={1.5} xs={6}>
-                          <h2>Cantidad problemas resueltos desde: {this.state.dateActual} <br/>
+                            <br/> 
                               Categoría:{this.state.nombreTipo}
-                          
-                          </h2>
                          
                           <Line data={data}
                           width = {600}
                           height = {400}  
                           />
-                      </Col>
-                      
-  
-                  
-                  </Row> 
                 </div>
-  
               );
             }
+
 
 
 
