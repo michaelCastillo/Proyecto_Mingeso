@@ -5,6 +5,7 @@ export const AUTHENTICATED = 'authenticated_user';
 export const UNAUTHENTICATED = 'unauthenticated_user';
 export const AUTHENTICATION_ERROR = 'authentication_error';
 export const LOGIN_PERMISSION = 'permision_user';
+export const LOADING = 'loading';
 
 
 
@@ -12,6 +13,9 @@ const URL = 'http://35.226.163.50:8080/Backend/users';
 
 export function signInAction( {email, password} , history) {
   return async (dispatch) => {
+
+    dispatch({ type: LOADING,  payload: 'Buscando...'});
+    
     const res = await axios.post(`${URL}/login/`,{ email, password });
     if(res.data.roles!= null){
 
@@ -26,7 +30,7 @@ export function signInAction( {email, password} , history) {
       console.log(password);
       dispatch({
         type: AUTHENTICATION_ERROR,
-        payload: 'Invalid email or password'
+        payload: 'Correo o contraseña inválidos'
       
       })
    }
