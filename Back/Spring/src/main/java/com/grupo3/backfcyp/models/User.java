@@ -58,7 +58,14 @@ public class User
 
     public User()
     {
+
         this.coordCoordinations = new ArrayList<>();
+        this.roles = new ArrayList<>();
+        this.careers = new ArrayList<>();
+        this.solutions = new ArrayList<>();
+        this.problems = new ArrayList<>();
+        this.classesStudents = new ArrayList<>();
+        this.classesTeachers = new ArrayList<>();
     }
 
     public User(String prueba)
