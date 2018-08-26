@@ -277,8 +277,6 @@ onChange = (value) => {
                          title : stud.name,
                          value: idString2,    
                          key : stud.id ,
-                   
-
                      }
 
              })   
@@ -338,26 +336,29 @@ onChange = (value) => {
         children: car
       }];
 if(role === "student"){
-
+    
+    
     return(
-        <div>
-            <Col  md={5} xs={5}  smOffset = {1} >
-            <h4>
-           <ControlLabel>Mis estadísticas: </ControlLabel>
-            </h4>
-            <br/>
-            <br/>
+
+        
+        
+        <Grid>
+        <Row className="updateButton" ><Button bsStyle="info" onClick={this.updateCharts}>Actualizar</Button></Row>
+            
+        <Row className="rowCharts">
+            <Col  md={5} className="lineChart">
+            
             {component}
 
- 
+            
             </Col>
 
-            <Col  md={4} xs={4}  smOffset = {1} >
-            {component2}
+            <Col  md={5} className="timeCircle">
+                {component2}
             </Col>
-        </div>
+        </Row>
+        </Grid>
     )
-
 }
 
 else{
