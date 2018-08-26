@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {ListGroup,ListGroupItem,Grid,Row,Col,Label,Button} from 'react-bootstrap';
+import {ListGroup,ListGroupItem,Grid,Row,Col,Label,Button,Panel,Glyphicon,Well, PanelGroup} from 'react-bootstrap';
 import axios from 'axios';
 import ReactLoading from "react-loading";
 import './students.css'
+import {publish} from 'react-icons-kit/entypo/publish';
+import Icon from 'react-icons-kit';
 
 
 class Students extends Component
@@ -33,6 +35,28 @@ class Students extends Component
             });
     };
 
+    showRole(student)
+    {
+        let items = [];
+        student.roles.map((role) => {
+            items.push(<ListGroupItem bsStyle="info"> {role.role} </ListGroupItem>);
+        });
+        return items;
+    }
+
+    showCareers(student)
+    {
+        return(
+            student.careers.map( (carrera) =>
+                {
+                    return(
+                        <p>{"- "+carrera.name}</p>
+                    );
+                }
+            )
+        );
+    }
+
     handleAlumnos()
     {
         if(!this.state.ready)
@@ -46,18 +70,41 @@ class Students extends Component
         else
         {
             return(
-                this.state.students.map((student) => {
-                    return (
-                  <Row className="grid-show">
-                      <Col sm ={6} md={12}>
-                        <ListGroup>
-                              
-                        <ListGroupItem style={{background:'#66B3DD'}} href={`/users/${student.id}`}> {student.name}</ListGroupItem>
-                        </ListGroup>
-                      </Col>
-                  </Row>
-
-                 );})
+                this.state.students.map((student) => 
+                {
+                    return(
+                        <Row className="grid-show">
+                            <Col sm ={6} md={12}>
+                                <PanelGroup accordion id="accordion-uncontrolled-example" defaultActiveKey="2">
+                                    <Panel eventKey="1" bsStyle="primary">
+                                        <Panel.Heading style={{background: '#66B3DD'  }}>
+                                            <Row>
+                                                <Col md={7} ms={12}>
+                                                    <Panel.Title toggle>
+                                                        {student.name}
+                                                    </Panel.Title>
+                                                </Col>
+                                                <Col md={1} sm={6}>
+                                                    <a href={`/users/`+student.id}><span class="glyphicon glyphicon-eye-open"></span></a>
+                                                </Col>
+                                            </Row>
+                                        </Panel.Heading>
+                                        <Panel.Body collapsible>
+                                            <Label>Correo:</Label> 
+                                            {" "+student.email}
+                                            <br/>
+                                            <br/>
+                                            <Label>Carreras:</Label>
+                                            <Well style={{background:'#c4def6' }}>
+                                                {this.showCareers(student)}
+                                            </Well>
+                                        </Panel.Body>
+                                    </Panel>
+                                </PanelGroup>
+                            </Col>
+                        </Row>
+                    );
+                })
             );
         }
     }

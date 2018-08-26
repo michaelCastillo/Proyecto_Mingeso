@@ -142,7 +142,7 @@ class ShowUser extends Component {
                                 <br />
                                 <p>
                                     <h3>
-                                        <Label bsStyle="info">E-mail</Label></h3>
+                                        <Label bsStyle="info">Correo</Label></h3>
                                     <br />
                                     <h4>
                                         {this.state.email}
