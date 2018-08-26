@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {ListGroup,ListGroupItem,Grid,Row,Col,Label,Button,Panel,Glyphicon,Well, PanelGroup} from 'react-bootstrap';
+import {Grid,Row,Col,Label,Panel,Well, PanelGroup} from 'react-bootstrap';
 import axios from 'axios';
 import ReactLoading from "react-loading";
 import './students.css'
-import {publish} from 'react-icons-kit/entypo/publish';
-import Icon from 'react-icons-kit';
 
 
 class Students extends Component
@@ -35,14 +33,6 @@ class Students extends Component
             });
     };
 
-    showRole(student)
-    {
-        let items = [];
-        student.roles.map((role) => {
-            items.push(<ListGroupItem bsStyle="info"> {role.role} </ListGroupItem>);
-        });
-        return items;
-    }
 
     showCareers(student)
     {
