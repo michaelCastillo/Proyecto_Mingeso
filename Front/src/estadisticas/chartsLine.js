@@ -7,6 +7,7 @@ import moment, { relativeTimeThreshold } from 'moment';
 import Chart from './charts'
 import axios from 'axios';
 import {Spin } from 'antd';
+import "./time.css";
 
 
 
@@ -191,15 +192,10 @@ export default class ChartLine extends Component {
           if(this.state.ready !== true ){
               if(this.state.ready1===true ){
                    return(
-                    <div>
-                    <br/>
-                      <br/>
-                      <br/> 
-                        Categoría:--
-                   
+                    <div>                   
                     <Line data={data}
                     width = {600}
-                    height = {400}  
+                    height = {530}  
                     />
                   </div>
             )}
@@ -215,14 +211,9 @@ export default class ChartLine extends Component {
           } 
           return (
             <div>
-                          <br/>
-                            <br/>
-                            <br/> 
-                              Categoría:{this.state.nombreTipo}
-                         
                           <Line data={data}
                           width = {600}
-                          height = {400}  
+                          height = {530}  
                           />
                 </div>
               );
