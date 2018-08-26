@@ -5,7 +5,7 @@ import {trashO} from 'react-icons-kit/fa/trashO';
 import {publish} from 'react-icons-kit/entypo/publish';
 import {info} from 'react-icons-kit/icomoon/info'
 import './ShowProblems.css';
-import ReactLoading from "react-loading";
+import {  Spin } from 'antd';
 import {buttonQuestion} from 'react-icons-kit/metrize/buttonQuestion'
 
 
@@ -174,9 +174,9 @@ class ShowProblems extends Component{
           );
         if(this.state.ready === false ){
             return (
-                <Col md={12} xs={12} smOffset={4}>
-                <ReactLoading type={"spin"} color={"#428cf3"} height={500} width={300} />
-                </Col>
+                <div className="SpinShowProblems" size="large">
+                <Spin tip="Cargando problemas ..."></Spin>
+                </div>
             );
 
         }
