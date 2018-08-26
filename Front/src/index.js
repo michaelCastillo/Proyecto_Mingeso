@@ -14,7 +14,13 @@ import HeaderUp from './header/HeaderUp';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Code from './code/AddCode';
 import Home from './home/Home';
+
+import Register from './register/register';
+
 import Redirect from './home/redirect';
+
+import ProblemProfile from './problems/ProblemProfile';
+
 import UserRoutes from './users/UserRoutes';
 import ProblemRoutes from './problems/ProblemRoutes';
 import Login from './login/login';
@@ -76,7 +82,10 @@ ReactDOM.render(
                 <Route path="/login" component ={noRequireAuth(Login)}/>
                 <Route path="/users/:id" component={perm1(UserProfile)}/>
                 <Route path="/signout" component ={requireAuth(Signout)}/>  
+                <Route path="/register" component ={Register}/>
+                <Route path="/problemsProfile/:id" component={ProblemProfile}/>
                 <Route path="/alumnos" component ={perm1(Students)}/>  
+
                 <Route path="/Profesores" component ={perm(Teachers)}/>
                 <Route path="/redirect" component ={requireAuth(Redirect)}/>
                 <Route path="/dashboard" component ={requireAuth(Chart)}/>

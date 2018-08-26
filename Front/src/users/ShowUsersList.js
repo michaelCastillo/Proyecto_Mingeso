@@ -1,14 +1,10 @@
 
 import React, { Component } from 'react';
-import { Button, Grid, Row, Col, Panel, Collapse, Well, Label, FormControl, ControlLabel, Checkbox } from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Collapse, Well, Label, FormControl, ControlLabel, Checkbox } from 'react-bootstrap';
 import axios from 'axios';
-import { trashO } from 'react-icons-kit/fa/trashO';
-import { edit } from 'react-icons-kit/fa/edit';
-import { publish } from 'react-icons-kit/entypo/publish';
 import './ShowUsersList.css';
 
 
-import Icon from 'react-icons-kit';
 
 
 
@@ -56,6 +52,7 @@ class ShowUsersList extends Component {
             }).catch(error => {
                 console.log(error.response)
             });
+
         axios.get(`http://35.226.163.50:8080/Backend/sections/`)
             .then(res => {
                 const sections = res.data;
@@ -66,6 +63,7 @@ class ShowUsersList extends Component {
               //  alert("Error con conexion a base de datos de secciones");
                 console.log(error.response)
             });
+
         axios.get(`http://35.226.163.50:8080/Backend/roles`)
             .then(res => {
                 const roles = res.data;
@@ -153,7 +151,7 @@ class ShowUsersList extends Component {
                 items.push(<option
                     key={aux++}
                     value={role.id}
-                    onChange={this.handleShowSections}> {role.role} </option>)
+                    > {role.role} </option>)
             )
         });
         return items;
@@ -168,7 +166,7 @@ class ShowUsersList extends Component {
                     items.push(<option
                         key={aux++}
                         value={section.id}
-                        onChange={this.handleShowSections}> {section.code} </option>)
+                        > {section.code} </option>)
                 )
             });
         }
@@ -262,15 +260,7 @@ class ShowUsersList extends Component {
                                 <Checkbox onChange={this.handleCheckbox}> Descendente </Checkbox>
                             </h4>
                         </Col>
-                        <Col md={4} xs={4}>
-                            <h3>
-                                <ControlLabel>Seccion: </ControlLabel>
-                                <FormControl componentClass="select" placeholder="select" onChange={this.selectSection}>
-                                    <option selected="true" value="all">Todas</option>
-                                    {this.createSectionsOptions()}
-                                </FormControl>
-                            </h3>
-                        </Col>
+                        
                         <Col md={4} xs={4}>
                             <h3>
                                 <ControlLabel>Rol: </ControlLabel>

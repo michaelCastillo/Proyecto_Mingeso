@@ -7,12 +7,12 @@ import com.grupo3.backfcyp.repositories.CareerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.ColumnResult;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/careers")
-public class CareerService {
+public class CareerService
+{
 
     @Autowired
     private CareerRepository careerRepository;

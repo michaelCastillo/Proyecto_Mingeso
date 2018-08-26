@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
-import {Button, Grid,Row,Col,Panel,Collapse,Well, Label} from 'react-bootstrap';
+import {Button, Grid,Row,Col,Panel,Collapse,Well, Label,OverlayTrigger,Tooltip} from 'react-bootstrap';
 import axios from 'axios';
-import {bullhorn} from 'react-icons-kit/icomoon/bullhorn';
-import {lock} from 'react-icons-kit/icomoon/lock';
 import {trashO} from 'react-icons-kit/fa/trashO';
-import {ic_unarchive} from 'react-icons-kit/md/ic_unarchive';
-import {newspaper} from 'react-icons-kit/icomoon/newspaper';
-import {edit} from 'react-icons-kit/fa/edit';
 import {publish} from 'react-icons-kit/entypo/publish';
-import {ic_code} from 'react-icons-kit/md/ic_code';
-import {  Link } from "react-router-dom";
+import {info} from 'react-icons-kit/icomoon/info'
 import './ShowProblems.css';
+import {  Spin } from 'antd';
+import {buttonQuestion} from 'react-icons-kit/metrize/buttonQuestion'
+
 
 
 import Icon from 'react-icons-kit';
@@ -27,18 +24,20 @@ class ShowProblems extends Component{
         this.state={
             problems:[],
             opened:[],
+            ready:false,
         }
         this.collapse = this.collapse.bind(this);
     }
 
     componentDidMount() {
             let global = `http://35.226.163.50:8080/Backend/problems/`;
+            let local = `http://localhost:1313/problems`;
             axios.get(global)
                 .then(res => {
                     const problems = res.data;
                     //Se asigna falso para opened, para el collapse
                     problems.map( (problem) => {problem.opened = false});
-                    this.setState({problems});
+                    this.setState({problems,ready:true});
                 }).catch(error => {
                     console.log(error.response)
                 });
@@ -65,10 +64,11 @@ class ShowProblems extends Component{
 
         navbarlinks(problemid){
             const role = localStorage.getItem('role');
-          
-            if (this.props.authenticated   && role == "su") {
+            
+            if (this.props.authenticated   && role === "su") {
                 return[
                     <div>
+                        
                         <Col md={1} sm={6}>                                    
                         <Button href={`/code/${problemid}`} >
                         A programar! 
@@ -78,7 +78,7 @@ class ShowProblems extends Component{
                         <Icon icon={publish} size={25}/>
                         </Col>
                         <Col md={1} sm={6} >
-                        <Icon icon ={edit} size={25} />
+                                                        
                         </Col>
                         <Col md={1} sm={6}>
                         <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
@@ -90,32 +90,65 @@ class ShowProblems extends Component{
                 ] 
             }
 
-            if (this.props.authenticated   && role == "student") {
+            if (this.props.authenticated   && role === "student") {
+                const tooltip = (
+                    <Tooltip id="tooltip">
+                      <strong>Resumen problema</strong>
+                    </Tooltip>
+                  ); 
                 return[
                     <div>
                         <Col md={1} sm={6}>                                    
                         <Button href={`/code/${problemid}`} >
                         A programar! 
                         </Button>
-                        </Col>     
+                        </Col>   
+                        <Col md={1} sm={4} smOffset = {1} >
+                        <OverlayTrigger placement="top" overlay={tooltip}>
+                        <a href={`/problemsProfile/${problemid}`}> <Icon icon={info} size={25}  style={{color:'#415171'}} /></a>
+                        </OverlayTrigger>                                
+                        </Col>  
                     </div>
 
                     
                 ] 
             }
 
-            if (this.props.authenticated   && (role == "teacher" || role ==="coordination")) {
+            if (this.props.authenticated   && (role === "teacher" || role ==="coordination")) {
+                const tooltip = (
+                    <Tooltip id="tooltip">
+                      <strong>Resumen problema</strong>
+                    </Tooltip>
+                  ); 
+                  const tooltip1 = (
+                    <Tooltip id="tooltip">
+                      <strong>Eliminar problema</strong>
+                    </Tooltip>
+                  ); 
+
+                  const tooltip2 = (
+                    <Tooltip id="tooltip">
+                      <strong>Publicar problema</strong>
+                    </Tooltip>
+                  );
+
                 return[
                     <div>
                       
                         <Col md={1} sm={6} mdOffset={1}>
+                        <OverlayTrigger placement="top" overlay={tooltip2}>
                         <Icon icon={publish} size={25}/>
+                        </OverlayTrigger>
                         </Col>
                         <Col md={1} sm={6} >
-                        <Icon icon ={edit} size={25} />
+                        <OverlayTrigger placement="top" overlay={tooltip}>
+                        <a href={`/problemsProfile/${problemid}`}><Icon icon={info} size={25}  style={{color:'#415171'}} /></a>
+                        </OverlayTrigger>
                         </Col>
                         <Col md={1} sm={6}>
+                        <OverlayTrigger placement="top" overlay={tooltip1}>
                         <Icon icon={trashO} size={25}  style={{color:'#f33'}}  />
+                        </OverlayTrigger>
                         </Col>  
                             
                     </div>
@@ -130,18 +163,63 @@ class ShowProblems extends Component{
 
 
     render(){
-        return(
-            <div id="problems" className = "problems">
-                <br/>
-                <br/>
-                <br/>
-                <Grid>
-                    <Row > 
-                        <Col md={12} xs={12}>
+        console.log(this.state.problems.length );
+        const tooltip1 = (
+            <Tooltip id="tooltip">
+              <strong>Aquí puedes conocer todos los problemas que se encuentran disponibles,
+                      si deseas conocer más sobre cada uno, puedes presionar el icono a la derecha  
+                      del mismo o bien presionar su título.      
+              </strong>
+            </Tooltip>
+          );
+        if(this.state.ready === false ){
+            return (
+                <div className="SpinShowProblems" size="large">
+                <Spin tip="Cargando problemas ..."></Spin>
+                </div>
+            );
+
+        }
+        else{
+
+            if(this.state.problems.length === 0){
+
+            return(
+
+                <div>
+
+                <Col md={12} xs={12}>
+                        <h1  className="center"><Label id="title">No hay problemas disponibles:</Label></h1>
+                        </Col>
+
+               </div>     
+
+
+            )
+             }
+
+            else{
+                return(
+                    <div id="problems" className = "problems">
+                    
+                    <br/>
+                    <Grid>
+                        <Row >
+
+                        <Col md={1} sm={6} smOffset={10}>
+                        <OverlayTrigger placement="left" overlay={tooltip1}>
+                        <Icon icon={buttonQuestion} size={25}  style={{color:'#2f2f37'}}  />
+                        </OverlayTrigger>
+                        </Col>       
+            
+                        <Col md={12} xs={12}>                       
                         <h1  className="center"><Label id="title">Problemas a realizar:</Label></h1>
                         </Col>
-                    </Row>
-                    {
+                        </Row>
+                        <br/>
+                        <br/>
+                        <br/>
+                        {
 
                         /* Aqui se mapean todos los problemas y se envian a la id según corresponda. */ 
                         this.state.problems.map((problem) => {return (
@@ -154,7 +232,7 @@ class ShowProblems extends Component{
                                             {/* Cabecera de cada panel */}
                                             <Row>
                                                 <Col md={7} ms={12} onClick={this.collapse(problem.id)}>
-                                                    <Panel.Title componentClass="h3">{problem.name}</Panel.Title>
+                                                    <Panel.Title toggle componentClass="h3">{problem.name}</Panel.Title>
                                                 </Col>
                                                {this.navbarlinks(problem.id)}
                                             </Row>
@@ -188,6 +266,8 @@ class ShowProblems extends Component{
                 </Grid>
             </div>
         );
+        }
+    }
     }
 
     

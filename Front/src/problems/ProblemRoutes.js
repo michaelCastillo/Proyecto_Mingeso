@@ -1,14 +1,17 @@
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router,Route } from 'react-router-dom';
-import Code from '../code/AddCode';
-import {Button, Grid,Row} from 'react-bootstrap';
+import { Grid,Row} from 'react-bootstrap';
 import ShowProblems from './ShowProblems';
 import CreateProblem from './CreateProblem';
 import Authorization from '../hoc/roleRequire';
 import requireAuth from '../hoc/requireAuth';
+import ProblemProfile from '../problems/ProblemProfile';
+
 
 const perm1 = Authorization(['teacher', 'coordination', 'su']);
+const perm3 = Authorization(['teacher', 'su']);
+
 
 
 // <Route path={`${this.props.match.path}/create`} render={props =>  
@@ -40,7 +43,7 @@ class ProblemRoutes extends Component{
                         <Grid >
                             <Row className = "grid-show" >
                             
-                            <Route path="/problems/create" component ={perm1(CreateProblem)}/>
+                            <Route path="/problems/create" component ={perm3(CreateProblem)}/>
 
 
 
@@ -48,6 +51,7 @@ class ProblemRoutes extends Component{
                             <Row className = "grid-show" >
 
                             <Route path="/problems/show" component ={requireAuth(ShowProblems)}/>
+                            <Route path="/problemsProfile/:id" component={perm1(ProblemProfile)}/>
 
                            
                             </Row >

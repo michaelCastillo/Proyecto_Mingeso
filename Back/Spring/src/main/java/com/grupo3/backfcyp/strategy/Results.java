@@ -1,12 +1,8 @@
 package com.grupo3.backfcyp.strategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grupo3.backfcyp.models.Solution;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "results")

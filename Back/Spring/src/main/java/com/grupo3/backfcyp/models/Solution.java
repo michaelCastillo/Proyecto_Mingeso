@@ -2,16 +2,19 @@ package com.grupo3.backfcyp.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grupo3.backfcyp.repositories.mongoRepos.CodeRepository;
+import com.grupo3.backfcyp.repositories.mongorepos.CodeRepository;
 import com.grupo3.backfcyp.strategy.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.*;
 
+
+
 @Entity
 @Table(name = "solutions")
-public class Solution {
+public class Solution
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,7 +40,7 @@ public class Solution {
     @JoinColumn(name = "id_student",nullable = false)
     private User student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name="id_problem",nullable = false)
     private Problem problem;
@@ -63,6 +66,24 @@ public class Solution {
         this.tests = new ArrayList<>();
     }
 
+    public Solution(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.title = "titulo"+prueba;
+        this.fails = 9;
+        this.time = 9;
+        this.timestamp = new java.util.Date();
+        this.success = false;
+        this.closed = false;
+        this.successes = 9;
+        this.errors = "error"+prueba;
+        this.solvedDate = new java.util.Date();
+        //this.codeRepositoryMongo
+        this.student = new User();
+        this.problem = new Problem();
+        this.tests = new ArrayList<>();
+    }
+
 
 
     public void addSucc(){
@@ -74,13 +95,13 @@ public class Solution {
 
     public String codeGet(CodeRepository codeRepository){
 
-        List<Test> tests = this.tests;
-        if(!tests.isEmpty()){
-            if(tests.size()>1){
-                Collections.sort(tests,new SortByDate());
+        List<Test> testsAux = this.tests;
+        if(!testsAux.isEmpty()){
+            if(testsAux.size()>1){
+                Collections.sort(testsAux,new SortByDate());
             }
-            if(tests.size() > 0){
-                return tests.get(0).getCode(codeRepository);
+            if(!testsAux.isEmpty()){
+                return testsAux.get(0).getCode(codeRepository);
             }
             return "ingrese codigo";
         }else{
@@ -91,11 +112,15 @@ public class Solution {
     public List<Test> testsGet() {
         return tests;
     }
-    public Test getTest(){
-        if(tests.size()>1){
+    public Test getTest()
+    {
+        if(tests.size()>1)
+        {
             Collections.sort(tests,new SortByDate());
         }
-        if(tests.size() > 0){
+        if(tests.size() > 0)
+        {
+
             return tests.get(0);
         }
         return null;
@@ -110,7 +135,8 @@ public class Solution {
         this.id = id;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 

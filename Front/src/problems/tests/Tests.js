@@ -48,6 +48,9 @@ class Tests extends Component{
                     <Col md={4}> 
                         <Button bsStyle="primary" onClick={this.onAddTuple}>+</Button>  
                     </Col>
+                    <br/>
+                    <br/>
+                    <br/>
                 </Row>
                 <Row>
                     {this.state.tuples.map((tuple,index) => {return(

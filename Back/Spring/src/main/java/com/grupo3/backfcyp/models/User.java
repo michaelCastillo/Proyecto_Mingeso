@@ -9,7 +9,9 @@ import java.util.List;
 @Entity
 @Inheritance
 @Table(name = "users")
-public class User {
+public class User
+{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,15 +22,17 @@ public class User {
     private boolean bloqued;
 
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private List<Role> roles;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private List<Career> careers;
 
     /* El alumno tiene soluciones */
+    @JsonIgnore
     @OneToMany(mappedBy = "student")
-
     private List<Solution> solutions;
 
     /* El profesor tiene problemas */
@@ -37,21 +41,41 @@ public class User {
     private List<Problem> problems;
 
     /* El coordinador tiene coordinaciones que manda */
-
+    @JsonIgnore
     @OneToMany(mappedBy = "coordinator")
     private List<Coordination> coordCoordinations;
 
     /* El alumno está en varias clases y las clases tienen varios alumnos.  */
     /* Para el caso del profesor */
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "students")
-    private List<Class> classes_students;
-
+    private List<Class> classesStudents;
+    @JsonIgnore
     @ManyToMany(mappedBy = "teachers")
-    private List<Class> classes_teachers;
+    private List<Class> classesTeachers;
 
 
-    public User(){
+    public User()
+    {
         this.coordCoordinations = new ArrayList<>();
+    }
+
+    public User(String prueba)
+    {
+        this.coordCoordinations = new ArrayList<>();
+        this.roles = new ArrayList<>();
+        this.careers = new ArrayList<>();
+        this.solutions = new ArrayList<>();
+        this.problems = new ArrayList<>();
+        this.classesStudents = new ArrayList<>();
+        this.classesTeachers = new ArrayList<>();
+
+        this.id = Long.valueOf(999);
+        this.name = "nombre"+prueba;
+        this.password = "pass"+prueba;
+        this.email = "email"+prueba;
+        this.bloqued = false;
     }
 
 
@@ -64,26 +88,26 @@ public class User {
     }
 
     public List<Class> getClasses_students() {
-        return classes_students;
+        return classesStudents;
     }
 
     public void addClasse_student(Class classs){
-        this.classes_students.add(classs);
+        this.classesStudents.add(classs);
     }
 
     public List<Class> getClasses_teachers() {
-        return classes_teachers;
+        return classesTeachers;
     }
     public void addClasse_teacher(Class classs){
-        this.classes_teachers.add(classs);
+        this.classesTeachers.add(classs);
     }
 
-    public void setClasses_teachers(List<Class> classes_teachers) {
-        this.classes_teachers = classes_teachers;
+    public void setClasses_teachers(List<Class> classesTeachers) {
+        this.classesTeachers = classesTeachers;
     }
 
-    public void setClasses_students(List<Class> classes_students) {
-        this.classes_students = classes_students;
+    public void setClasses_students(List<Class> classesStudents) {
+        this.classesStudents = classesStudents;
     }
 
     public List<Career> getCareers() {

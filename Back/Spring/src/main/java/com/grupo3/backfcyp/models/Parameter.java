@@ -14,7 +14,7 @@ public class Parameter {
     @Column(name = "id")
     private Long id;
 
-
+    private int pos;
     private String name;
     private boolean hidden;
 
@@ -25,6 +25,26 @@ public class Parameter {
 
     //constructores
 
+    public Parameter()
+    {
+
+    }
+
+    public Parameter(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombre"+prueba;
+        this.hidden = false;
+        this.problem = new Problem();
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
 
     public boolean isHidden() {
         return hidden;

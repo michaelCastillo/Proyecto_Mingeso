@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Navbar,NavItem,MenuItem,Nav,NavDropdown} from 'react-bootstrap'
 import imagen from './computer_77914.png';
-import { Grid, Row, Col} from 'react-bootstrap';
+import { Row, Col} from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 
@@ -24,7 +24,7 @@ class HeaderUp extends Component {
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
-                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar Problemas</MenuItem>
                 <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
@@ -47,7 +47,7 @@ class HeaderUp extends Component {
             <Nav pullRight>
              
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir({role})
                 </NavItem>
             </Nav>
           </Col> 
@@ -76,7 +76,7 @@ class HeaderUp extends Component {
             <Nav pullRight>
                 
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir(Estudiante)
                 </NavItem>
             </Nav>
             </Col>
@@ -94,7 +94,7 @@ class HeaderUp extends Component {
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
-                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar Problemas</MenuItem>
                 <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
@@ -107,7 +107,7 @@ class HeaderUp extends Component {
             
             <Nav pullRight>
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir (Profesor)
                 </NavItem>
             </Nav>
             </Col>
@@ -126,8 +126,9 @@ class HeaderUp extends Component {
               <Col md={11} xs={3} >           
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
+
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
-                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar Problemas</MenuItem>
                 <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
@@ -143,7 +144,7 @@ class HeaderUp extends Component {
             
             <Nav pullRight>
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir (Coordinación)
                 </NavItem>
             </Nav>
             </Col>

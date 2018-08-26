@@ -7,14 +7,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "returns")
-public class Return {
+public class Return
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
 
     private Long id;
-
+    private int pos;
     private String name;
     private boolean hidden;
 
@@ -22,6 +23,29 @@ public class Return {
     @JsonIgnore
     @JoinColumn(name = "id_problem" )
     private Problem problem ;
+
+
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+    public Return()
+    {
+
+    }
+
+    public Return(String prueba)
+    {
+        this.id = Long.valueOf(999);
+        this.name = "nombre"+prueba;
+        this.hidden = false;
+        this.problem = new Problem();
+
+    }
 
     public boolean isHidden() {
         return hidden;
