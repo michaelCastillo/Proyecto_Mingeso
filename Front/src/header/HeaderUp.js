@@ -129,10 +129,7 @@ class HeaderUp extends Component {
               <Col md={11} xs={3} >           
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
-                <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
-                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
-                <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
-                <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar Problemas</MenuItem>
                 {/*<MenuItem divider />*/}
                 </NavDropdown>
                 <NavItem eventKey={4} href="/alumnos">
