@@ -1350,15 +1350,10 @@ class Code extends Component{
         }else{
             return(
                 <Grid>
-                     <Col md={1} sm={4} smOffset = {0.1} >
-                        <a href={`/problems/show`}> <Icon icon={arrowLeftLight} size={25}  style={{color:'#415171'}} /></a>                                
-                     </Col>
-                     <br/>
-                     <br/>
-                     <br/>
-                     <br/>
+                        <a href={`/problems/show`}> <Icon icon={arrowLeftLight} size={30}  style={{color:'#415171'}} /></a>                                
                     <Row>
                         <Well>{this.state.statement}</Well>
+                        
                     </Row>
                     <Row>
                             {this.setError()}
