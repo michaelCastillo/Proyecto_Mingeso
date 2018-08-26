@@ -47,8 +47,7 @@ class ProblemProfile extends Component {
 
         } else {
 
-            item = <EditUser ref={this.editUser}
-                id={this.state.idProblem} />;
+            item = <EditUser ref={this.editUser} id={this.state.idProblem} />;
 
         }
         return item;
@@ -73,9 +72,22 @@ class ProblemProfile extends Component {
         return item;
     }
 
+    handleBack()
+    {
+        if(this.state.componentState)
+        {
+            return(<Button href={`/problems/show`} bsSize="large" bsStyle="warning" class="btn btn-primary">Volver</Button>);
+        }
+        else
+        {
+            return(<Button href={`/problemsProfile/`+this.state.idProblem} bsSize="large"  bsStyle="warning" class="btn btn-primary">Cancelar</Button>);
+        }
+    }
+
     render() {
         return (
             <Grid>
+                
                 <Row>
                     <div class="container">
                         <div class="row">
@@ -89,6 +101,7 @@ class ProblemProfile extends Component {
                                             <br />
                                             <div class="btn-group">
                                                 {this.handleEditButton()}
+                                                {this.handleBack()}
                                             </div>
 
                                         </Col>
