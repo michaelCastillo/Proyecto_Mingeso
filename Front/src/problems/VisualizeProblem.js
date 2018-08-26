@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Grid, Row, Col, Label, ListGroup, ListGroupItem } from 'react-bootstrap';
+import ReactLoading from "react-loading";
 
 class VisualizeProblem extends Component {
 
@@ -9,6 +10,7 @@ class VisualizeProblem extends Component {
         super(props);
 
         this.state = {
+            ready: false,
             editState: false,
             name: '',
             statement: '',
@@ -31,7 +33,8 @@ class VisualizeProblem extends Component {
                     name: problem.name,
                     statement: problem.statement,
                     language: problem.language,
-                    solutions: problem.solutions
+                    solutions: problem.solutions,
+                    ready:true
                 });
                 console.log(problem);
             }).catch(error => {
@@ -41,9 +44,11 @@ class VisualizeProblem extends Component {
     showSolutions(){
         let items = [];
         if(this.state.solutions.length>0){
-            items.push(<Label bsStyle="info">Datos Intentos Soluciones</Label>);
+            items.push(<Label bsStyle="info">Intentos para solucionar el problema:</Label>);
             this.state.solutions.map((careersAux) => {
-                items.push(<ListGroupItem bsStyle="info"> Correctos: {careersAux.successes} Fallidos: {careersAux.fails} </ListGroupItem>);
+                items.push(
+                <ListGroupItem bsStyle="info"> Correctos:{careersAux.successes}  Fallidos:{careersAux.fails}</ListGroupItem>
+                );
             });
         }
         
@@ -51,56 +56,66 @@ class VisualizeProblem extends Component {
     }
 
 
-    render() {
-        return (
-            <Grid>
-                <Row>
-                    <div class="container">
-                        <div class="row">
-                            <Col md={6} sm={6}>
-                                <h3>
-                                    <Label bsStyle="info">Título</Label> </h3>
-                                <br />
-                                <h4>
-                                    {this.state.name}</h4>
-                                <br />
-                                <p>
+    render() 
+    {
+        if(!this.state.ready)
+        {
+            return(
+                <ReactLoading type={"spin"} color={"#000"} height={667} width={375} />
+            );
+        }
+        else
+        {
+            return(
+                <Grid>
+                    <Row>
+                        <div class="container">
+                            <div class="row">
+                                <Col md={6} sm={6}>
                                     <h3>
-                                        <Label bsStyle="info">Enunciado</Label></h3>
+                                        <Label bsStyle="info">Título</Label> </h3>
                                     <br />
                                     <h4>
-                                        {this.state.statement}
-                                    </h4>
+                                        {this.state.name}</h4>
+                                    <br />
+                                    <p>
+                                        <h3>
+                                            <Label bsStyle="info">Enunciado</Label></h3>
+                                        <br />
+                                        <h4>
+                                            {this.state.statement}
+                                        </h4>
+                                        
+                                        <h3>
+                                            <Label bsStyle="info">Lenguaje</Label></h3>
+                                        <br />
+                                        <h4>
+                                            {this.state.language}</h4>
+                                        <br />
+
+                                    </p>
+
+                                </Col>
+                                    <Col md={3} sm={6}>
+                                        
+                                        
+                                
+                                        <br />
+                                        <h4>
+                                            <ListGroup>
+                                                {this.showSolutions()}
+                                            </ListGroup>
+                                        </h4>
                                     
-                                    <h3>
-                                        <Label bsStyle="info">Lenguaje</Label></h3>
-                                    <br />
-                                    <h4>
-                                        {this.state.language}</h4>
-                                    <br />
+                                    </Col>
 
-                                </p>
-
-                            </Col>
-                            <Col md={3} sm={6}>
-                                
-                                
-                           
-                                <br />
-                                <h4>
-                                    <ListGroup>
-                                        {this.showSolutions()}
-                                    </ListGroup>
-                                </h4>
-                               
-                             </Col>
-
+                            </div>
                         </div>
-                    </div>
-                </Row>
+                    </Row>
 
-            </Grid>
-        );
+                </Grid>
+            );
+        }
     }
 
 
