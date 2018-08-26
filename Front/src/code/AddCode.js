@@ -1275,8 +1275,10 @@ class Code extends Component{
             }
             setError(){
                 if(this.state.ready && (this.state.solution.test != null)){
-                    var err = this.state.solution.test.results[0].stderr; 
-                    console.log(this.state.solution.test.results[0].stderr);
+                    if(this.state.solution.test.results[0] != null){
+                        var err = this.state.solution.test.results[0].stderr; 
+                        console.log(this.state.solution.test.results[0].stderr);
+                    }
                     var total = this.state.nsucc + this.state.nfails;
                     if(err != null){
                         if(err != ""){
