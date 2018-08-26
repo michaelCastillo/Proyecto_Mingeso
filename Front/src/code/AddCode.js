@@ -215,6 +215,7 @@ class Code extends Component{
                         let closeSol = {
                             id_solution:this.state.solution.id
                         }
+
                         axios.post(global_url,closeSol)
                         .then(res => {
                             let solution = this.state.solution;
