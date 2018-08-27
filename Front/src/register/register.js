@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel, Checkbox } from "react-bootstrap";
+import { Label, Button, FormGroup, FormControl, ControlLabel, Checkbox } from "react-bootstrap";
 import './register.css'
 import axios from 'axios';
 
@@ -24,7 +24,11 @@ class Register extends Component {
       myClasses: [],
       coordinationCode: -1,
       flags: -1,
-      flagsCareer: -1
+      flagsCareer: -1,
+      flagName: -1,
+      flagPass: -1,
+      flagMail: -1,
+      flagRol: -1
     };
     this.handleName = this.handleName.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
@@ -38,6 +42,10 @@ class Register extends Component {
     this.generateClassesOptions = this.generateClassesOptions.bind(this);
     this.handleCheckboxClasses = this.handleCheckboxClasses.bind(this);
     this.handleCheckboxCareers = this.handleCheckboxCareers.bind(this);
+    this.nameLabel = this.nameLabel.bind(this);
+    this.passLabel = this.passLabel.bind(this);
+    this.mailLabel = this.mailLabel.bind(this);
+    this.rolLabel = this.rolLabel.bind(this);
   }
   
   handleCheckboxCareers(event) {
@@ -324,8 +332,36 @@ class Register extends Component {
         classesAuxTeacher = this.state.myClasses;
       }
     });
-    
-    
+    let aux = 0;
+    if(this.state.name===''){
+      this.state.flagName = 0;
+      aux = 1;
+    } else {
+      this.state.flagName = -1;
+    }
+    if(this.state.password===''){
+      this.state.flagPass = 0;
+      aux = 1;
+    } else {
+      this.state.flagPass = -1;
+    }
+    if(this.state.email===''){
+      this.state.flagMail = 0;
+      aux = 1;
+    } else {
+      this.state.flagMail = -1;
+    }
+    if(this.state.myRoles.length == 0){
+      this.state.flagRol = 0;
+      aux = 1;
+    } else {
+      this.state.flagRol = -1;
+    }
+    if(aux == 1){
+      alert("Error en uno de los campos");
+      this.forceUpdate();
+      return;
+    }    
     user = {
       name: this.state.name,
       password: this.state.password,
@@ -343,10 +379,25 @@ class Register extends Component {
     
     
     const url = 'http://35.226.163.50:8080/Backend/users/create';
-    axios.post(url, user)
+    const local = 'http://localhost:1313/users/create';
+    console.log("URL! => "+local);
+    axios.post(url  , user)
       .then(res => {
         let userResponse = res.data;
-        alert("Usuario agregado exitosamente!");
+        console.log(userResponse);
+        if(userResponse.status == 101){
+          alert("El mail ya esta registrado, elegir otro");
+                 
+        } else {
+          if(userResponse.status == 102){
+            alert("El nombre de usuario ya esta registrado, elegir otro");
+                  
+          } else {
+            alert("Usuario agregado exitosamente!");
+
+          }
+
+        }
       }).catch(error => {
         alert("Error");
         console.log(error.response);
@@ -386,50 +437,115 @@ class Register extends Component {
     this.setState({ users });
 
   };
+  passLabel(){
+    let item = [];
+    if(this.state.flagPass == -1){
+      item.push(<ControlLabel > Contraseña</ControlLabel>);
+      item.push(<FormControl
+        value={this.state.password}
+        onChange={this.handlePassword}
+        type="password"
+      />
+    );
+
+    } else {
+      item.push(<Label bsStyle = "danger"> Contraseña</Label>);
+      item.push(<FormControl
+        value={this.state.password}
+        onChange={this.handlePassword}
+        type="password"
+      />
+    );
+      item.push(<Label bsStyle = "danger"> Debe ingresar una contraseña válida </Label>);
+    }
+    return item;
+  }
+  rolLabel(){
+    let item = [];
+    if(this.state.flagRol == -1){
+      item.push(<ControlLabel > Rol</ControlLabel>);
+  
+
+    } else {
+      item.push(<Label bsStyle = "danger"> Debe seleccionar un rol</Label>);
+      
+    }
+    return item;
+  }
+  nameLabel(){
+    let item = [];
+    if(this.state.flagName == -1){
+      item.push(<ControlLabel > Nombre</ControlLabel>);
+      item.push(<FormControl
+        autoFocus
+        type="text"
+        value={this.state.name}
+        onChange={this.handleName}
+      />
+    );
+
+    } else {
+      item.push(<Label bsStyle = "danger"> Nombre</Label>);
+      item.push(<FormControl
+        autoFocus
+        type="text"
+        value={this.state.name}
+        onChange={this.handleName}
+      />
+    );
+      item.push(<Label bsStyle = "danger"> Debe ingresar un nombre </Label>);
+    }
+    return item;
+  }
+  mailLabel(){
+    let item = [];
+    if(this.state.flagMail == -1){
+      item.push(<ControlLabel > Correo</ControlLabel>);
+      item.push(<FormControl
+        autoFocus
+        type="text"
+        value={this.state.email}
+        onChange={this.handleEmail}
+      />
+    );
+
+    } else {
+      item.push(<Label bsStyle = "danger"> Correo</Label>);
+      item.push(<FormControl
+        autoFocus
+        type="text"
+        value={this.state.email}
+        onChange={this.handleEmail}
+      />
+    );
+      item.push(<Label bsStyle = "danger"> Debe ingresar una dirección de correo válida </Label>);
+    }
+    return item;
+  }
 
   //############################### RENDER ######################################
 
   render() {
+    
     return (
       <div className="Register"  >
         <row>
           <form onSubmit={this.handleSubmit}>
             <FormGroup controlId="name" bsSize="large">
-              <ControlLabel>Nombre</ControlLabel>
-              <FormControl
-                autoFocus
-                type="text"
-                value={this.state.name}
-                onChange={this.handleName}
-              />
+            {this.nameLabel()}
+            </FormGroup>
+             
+            
+            
+            <FormGroup controlId="email" bsSize="large">
+              {this.mailLabel()}              
             </FormGroup>
             <FormGroup controlId="password" bsSize="large">
-              <ControlLabel>Contraseña</ControlLabel>
-              <FormControl
-                value={this.state.password}
-                onChange={this.handlePassword}
-                type="password"
-              />
-            </FormGroup>
-            <FormGroup controlId="confirm password" bsSize="large">
-              <ControlLabel>Confirmar contraseña</ControlLabel>
-              <FormControl
-                value={this.state.confirmPassword}
-                onChange={this.handleConfirmPassword}
-                type="password"
-              />
-            </FormGroup>
-            <FormGroup controlId="email" bsSize="large">
-              <ControlLabel>Correo</ControlLabel>
-              <FormControl
-                autoFocus
-                type="text"
-                value={this.state.email}
-                onChange={this.handleEmail}
-              />
+              {this.passLabel()}
+              
             </FormGroup>
             <FormGroup>
-              <ControlLabel> Rol </ControlLabel>
+              {this.rolLabel()}
               {this.createSelectOptions()}
 
             </FormGroup>

@@ -116,7 +116,8 @@ public class UserService {
     @CrossOrigin
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> createUser(@Valid @RequestBody User user){
+    public Map<String,Object> createUser( @RequestBody User user){
+        System.out.printf(user.toString());
         List<Role> roleList;
         Map<String,Object> response = new HashMap<>();
 
@@ -133,6 +134,7 @@ public class UserService {
         /* desde el front debe elegir si o si un rol*/
         roleList = user.getRoles();
         if(roleList.isEmpty()) {
+            System.out.printf("Roles sin nada");
             response.put(STATUS,"El usuario no tiene roles seleccionados, vuelva a registrar uno valido");
             response.put("user",null);
             return response;
