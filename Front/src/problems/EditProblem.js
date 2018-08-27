@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Grid, Row, FormControl, Col, Label } from 'react-bootstrap';
+import ReactLoading from "react-loading";
 
 class EditProblem extends Component {
 
@@ -13,6 +14,7 @@ class EditProblem extends Component {
             name: '',
             statement: '',
             language: '',
+            ready:false,
         };
 
         this.handleEditStatement = this.handleEditStatement.bind(this);
@@ -32,6 +34,7 @@ class EditProblem extends Component {
                     name: problem.name,
                     statement: problem.statement,
                     language: problem.language,
+                    ready:true,
                 });
                 console.log(problem);
             }).catch(error => {
@@ -75,63 +78,72 @@ class EditProblem extends Component {
 
     
 
-    render() {
-
-        return (
-            <Grid>
-                <div class="container">
-                    <Row>
-                        <Col md={3} sm={6}>
-                            <h3>
-                                <Label bsStyle="danger">Título</Label> </h3>
-                            <br />
-                            <h4>
-                                <FormControl
-                                    autoFocus
-                                    type="text"
-                                    value={this.state.name}
-                                    onChange={this.handleEditName}
-                                /></h4>
-                            <br />
-                            <br />
-                            <p>
+    render() 
+    {
+        if(!this.state.ready)
+        {
+            return(
+                <ReactLoading type={"spin"} color={"#000"} height={667} width={375} />
+            );
+        }
+        else
+        {
+            return (
+                <Grid>
+                    <div class="container">
+                        <Row>
+                            <Col md={3} sm={6}>
                                 <h3>
-                                    <Label bsStyle="danger">Enunciado</Label></h3>
+                                    <Label bsStyle="danger">Título</Label> </h3>
                                 <br />
                                 <h4>
                                     <FormControl
                                         autoFocus
                                         type="text"
-                                        value={this.state.statement}
-                                        onChange={this.handleEditStatement}
-
-                                    />
-                                </h4>
-                                <br />
-                                <br />
-                                <h3>
-                                    <Label bsStyle="danger">Lenguaje</Label></h3>
-                                <br />
-                                <h4>
-                                    <FormControl
-                                        autoFocus
-                                        type="text"
-                                        value={this.state.language}
-                                        onChange={this.handleEditLenguage}
-
+                                        value={this.state.name}
+                                        onChange={this.handleEditName}
                                     /></h4>
                                 <br />
-                            </p>
-                        </Col>
+                                <br />
+                                <p>
+                                    <h3>
+                                        <Label bsStyle="danger">Enunciado</Label></h3>
+                                    <br />
+                                    <h4>
+                                        <FormControl
+                                            autoFocus
+                                            type="text"
+                                            value={this.state.statement}
+                                            onChange={this.handleEditStatement}
 
-                       
-                    </Row>
-                    
+                                        />
+                                    </h4>
+                                    <br />
+                                    <br />
+                                    <h3>
+                                        <Label bsStyle="danger">Lenguaje</Label></h3>
+                                    <br />
+                                    <h4>
+                                        <FormControl
+                                            autoFocus
+                                            type="text"
+                                            value={this.state.language}
+                                            onChange={this.handleEditLenguage}
 
-                </div>
+                                        /></h4>
+                                    <br />
+                                </p>
+                            </Col>
 
-            </Grid>
-        );
+                        
+                        </Row>
+                        
+
+                    </div>
+
+                </Grid>
+            );
+        }
     }
 
 

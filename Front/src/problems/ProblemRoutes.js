@@ -10,6 +10,8 @@ import ProblemProfile from '../problems/ProblemProfile';
 
 
 const perm1 = Authorization(['teacher', 'coordination', 'su']);
+const perm3 = Authorization(['teacher', 'su']);
+
 
 
 // <Route path={`${this.props.match.path}/create`} render={props =>  
@@ -41,7 +43,7 @@ class ProblemRoutes extends Component{
                         <Grid >
                             <Row className = "grid-show" >
                             
-                            <Route path="/problems/create" component ={perm1(CreateProblem)}/>
+                            <Route path="/problems/create" component ={perm3(CreateProblem)}/>
 
 
 
@@ -49,7 +51,7 @@ class ProblemRoutes extends Component{
                             <Row className = "grid-show" >
 
                             <Route path="/problems/show" component ={requireAuth(ShowProblems)}/>
-                            <Route path="/problemsProfile/:id" component={ProblemProfile}/>
+                            <Route path="/problemsProfile/:id" component={perm1(ProblemProfile)}/>
 
                            
                             </Row >
