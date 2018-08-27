@@ -15,7 +15,8 @@ class VisualizeProblem extends Component {
             name: '',
             statement: '',
             language: '',
-            solutions: []
+            solutions: [],
+            ready:false
         };
       
         this.showSolutions = this.showSolutions.bind(this);
@@ -54,6 +55,7 @@ class VisualizeProblem extends Component {
         
         return items;
     }
+
 
 
     render() 

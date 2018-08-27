@@ -102,5 +102,13 @@ public class ProblemService {
         return this.problemRepository.save(problem);
     }
 
+    @CrossOrigin
+    @DeleteMapping(value = "/{id}")
+    @ResponseBody
+    public void deleteProblemById(@PathVariable Long id){
+        Problem problem= this.problemRepository.findProblemById(id);
+        this.problemRepository.delete(problem);
+    }
+
 
 }

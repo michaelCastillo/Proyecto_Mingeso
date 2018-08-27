@@ -9,6 +9,8 @@ import 'brace/theme/github';
 import 'brace/theme/monokai';
 import AceEditor from 'react-ace';
 import ReactLoading from "react-loading";
+import {  Spin } from 'antd';
+import "./Editor.css";
 
 class Editor extends Component{
 
@@ -52,7 +54,11 @@ class Editor extends Component{
         if(this.state.charge){
 
             return(
-                <ReactLoading type={"cylon"} color="#42b6f4" height={500} width={300} />
+                <div className="spinCode">
+                    <Spin tip="ejecutando codigo..."  >
+                        
+                    </Spin>
+                </div>
             );
         }else{
             console.log(this.props);
@@ -70,6 +76,7 @@ class Editor extends Component{
                             showPrintMargin={true}
                             showGutter={true}
                             highlightActiveLine={true}
+                            width="auto"
                             value={this.state.code}
                             setOptions={{
                             enableBasicAutocompletion: false,

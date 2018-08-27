@@ -24,7 +24,7 @@ class HeaderUp extends Component {
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
-                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar Problemas</MenuItem>
                 <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
@@ -36,10 +36,7 @@ class HeaderUp extends Component {
                  Profesores
                 </NavItem>
 
-                <NavDropdown eventKey={6}  title="Soluciones" id="basic-nav-dropdown">
-                <MenuItem eventKey={6.1} href='/soluciones/enproceso'>En proceso</MenuItem>
-                <MenuItem eventKey={6.2} href='/soluciones/misSoluciones'> Mis soluciones</MenuItem>
-                </NavDropdown>
+               
                 <NavItem eventKey={7} href="/users/showlist">
                  Administrar usuarios
                 </NavItem>
@@ -50,7 +47,7 @@ class HeaderUp extends Component {
             <Nav pullRight>
              
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir({role})
                 </NavItem>
             </Nav>
           </Col> 
@@ -79,7 +76,7 @@ class HeaderUp extends Component {
             <Nav pullRight>
                 
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir(Estudiante)
                 </NavItem>
             </Nav>
             </Col>
@@ -97,7 +94,7 @@ class HeaderUp extends Component {
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
-                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar Problemas</MenuItem>
                 <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
@@ -110,7 +107,7 @@ class HeaderUp extends Component {
             
             <Nav pullRight>
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir (Profesor)
                 </NavItem>
             </Nav>
             </Col>
@@ -129,8 +126,9 @@ class HeaderUp extends Component {
               <Col md={11} xs={3} >           
             <Nav>
                 <NavDropdown eventKey={3}  title="Problemas" id="basic-nav-dropdown">
+
                 <MenuItem eventKey={3.1} href='/problems/create'>Crear</MenuItem>
-                <MenuItem eventKey={3.2} href='/problems/show'>Administrar</MenuItem>
+                <MenuItem eventKey={3.2} href='/problems/show'>Administrar Problemas</MenuItem>
                 <MenuItem eventKey={3.3} href='/problems/misAportes'>Mis Aportes</MenuItem>
                 <MenuItem eventKey={3.4} href='/problems/generales'>Generales</MenuItem>
                 {/*<MenuItem divider />*/}
@@ -146,7 +144,7 @@ class HeaderUp extends Component {
             
             <Nav pullRight>
                 <NavItem eventKey={2} style={{background:'#37d67a0'}} href="/signout" >
-                SignOut ({role})
+                Salir (Coordinación)
                 </NavItem>
             </Nav>
             </Col>
