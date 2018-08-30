@@ -1,0 +1,9 @@
+config:
+  target: "http://35.226.163.50:8080/Backend"
+  phases:
+    - duration: 10
+      arrivalRate: 3
+scenarios:
+  - flow:
+      - get:
+          url: "/problems/"

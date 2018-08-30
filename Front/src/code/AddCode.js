@@ -78,6 +78,7 @@ class Code extends Component{
         this.setNumSuccFails = this.setNumSuccFails.bind(this);
         this.setError = this.setError.bind(this);
         this.handleRedaction = this.handleRedaction.bind(this);
+        this.findOutput = this.findOutput.bind(this);
     };
             
             componentDidMount(){
@@ -103,6 +104,9 @@ class Code extends Component{
                 }).catch(error => {
                     console.log(error.response)
                 });
+                console.log("parametros");
+                console.log(this.state.o_inputs);
+                console.log(this.state.o_outputs);
                 //Se crea una solución vacía.
                 let solution = {
                     title:"",
@@ -210,6 +214,8 @@ class Code extends Component{
                     let local_url = `http://localhost:1313/solutions/save`;
                     let global_url = `http://35.226.163.50:8080/Backend/solutions/save`;
                     let code = this.deformCode(res.data.code);
+                    console.log("RESULTADOS!!!");
+                    console.log(res.data.solution);
                     this.setState({
                         code:code,
                         results:res.data.results,
@@ -1237,12 +1243,19 @@ class Code extends Component{
                     return(<th> - </th>);
                 }
             }
+            findOutput(list,index){
+                for(var i =0; i<list.length;i++){
+                    if(list[i].pos == index){
+                        return list[i];
+                    }
+                }
+            }
             setResults(){
 
                 if(this.state.solution.test != null){
                     this.state.o_outputs.map((out,index)=>{return(
                         <tr>
-                            <th> {out.name} </th>
+                            <th> {this.findOutput(this.state.o_outputs,index)} </th>
                             <th>{this.state.solution.test.results[index].stdout}</th>
                             <th> {this.onComparison(index)} </th>
                         </tr>
